@@ -1,7 +1,9 @@
-#pragma once
+// HACK: No idea where this should actually be defined
+#define nullptr 0x0
+#include "openvr.h"
+using namespace vr;
 
 #include <cstdio>
-#include "openvr.h"
 
 VR_INTERFACE void *VR_CALLTYPE WOVR_GetGenericInterface(const char *pchInterfaceVersion, EVRInitError *peError)
 {
@@ -36,7 +38,7 @@ VR_INTERFACE bool VR_CALLTYPE WOVR_IsHmdPresent()
 
 VR_INTERFACE bool VR_CALLTYPE WOVR_IsInterfaceVersionValid(const char *pchInterfaceVersion)
 {
-  printf("WOVR info: App requested version %s\n", pchInterfaceVersion)
+  printf("WOVR info: App requested version %s\n", pchInterfaceVersion);
   return VR_IsInterfaceVersionValid(pchInterfaceVersion);
 }
 
