@@ -12,23 +12,13 @@
 11 stub VR_GetStringForHmdError
 
 # enums are long
-#9 cdecl VR_GetGenericInterface(str long) WOVR_GetGenericInterface
-9 stub VR_GetGenericInterface
-#10 cdecl VR_GetInitToken() WOVR_GetInitToken
-10 stub VR_GetInitToken
-#12 cdecl VR_GetVRInitErrorAsEnglishDescription(long) WOVR_GetVRInitErrorAsEnglishDescription
-12 stub VR_GetVRInitErrorAsEnglishDescription
-#13 cdecl VR_GetVRInitErrorAsSymbol(long) WOVR_GetVRInitErrorAsSymbol
-13 stub VR_GetVRInitErrorAsSymbol
-#14 cdecl VR_initInternal(ptr long) WOVR_InitInternal
-14 stub VR_InitInternal
-#15 cdecl VR_IsHmdPresent() WOVR_IsHmdPresent
-15 stub VR_IsHmdPresent
-#16 cdecl VR_IsInterfaceVersionValid(str) WOVR_IsInterfaceVersionValid
-16 stub VR_IsInterfaceVersionValid
-#17 cdecl VR_IsRuntimeInstalled() WOVR_IsRuntimeInstalled
-17 stub VR_IsRuntimeInstalled
-#18 cdecl VR_RuntimePath() WOVR_RuntimePath
-18 stub VR_RuntimePath
-#19 cdecl VR_ShutdownInternal() WOVR_ShutdownInternal
-19 stub VR_ShutdownInternal
+9 cdecl VR_GetGenericInterface(str long) WOVR_GetGenericInterface
+10 cdecl VR_GetInitToken() WOVR_GetInitToken
+12 cdecl VR_GetVRInitErrorAsEnglishDescription(long) WOVR_GetVRInitErrorAsEnglishDescription
+13 cdecl VR_GetVRInitErrorAsSymbol(long) WOVR_GetVRInitErrorAsSymbol
+14 cdecl VR_initInternal(ptr long) WOVR_InitInternal
+15 cdecl VR_IsHmdPresent() WOVR_IsHmdPresent
+16 cdecl VR_IsInterfaceVersionValid(str) WOVR_IsInterfaceVersionValid
+17 cdecl VR_IsRuntimeInstalled() WOVR_IsRuntimeInstalled
+18 cdecl VR_RuntimePath() WOVR_RuntimePath
+19 cdecl VR_ShutdownInternal() WOVR_ShutdownInternal
