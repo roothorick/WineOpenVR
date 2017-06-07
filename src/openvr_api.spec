@@ -16,7 +16,7 @@
 10 cdecl VR_GetInitToken() WOVR_GetInitToken
 12 cdecl VR_GetVRInitErrorAsEnglishDescription(long) WOVR_GetVRInitErrorAsEnglishDescription
 13 cdecl VR_GetVRInitErrorAsSymbol(long) WOVR_GetVRInitErrorAsSymbol
-14 cdecl VR_initInternal(ptr long) WOVR_InitInternal
+14 cdecl VR_InitInternal(ptr long) WOVR_InitInternal
 15 cdecl VR_IsHmdPresent() WOVR_IsHmdPresent
 16 cdecl VR_IsInterfaceVersionValid(str) WOVR_IsInterfaceVersionValid
 17 cdecl VR_IsRuntimeInstalled() WOVR_IsRuntimeInstalled
