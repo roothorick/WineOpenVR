@@ -14,14 +14,15 @@ EXES                  =
 
 ### Common settings
 
-CEXTRA                = -mno-cygwin
-CXXEXTRA              =
-RCEXTRA               =
+CEXTRA                = -m32 -mno-cygwin
+CXXEXTRA              = -m32
+RCEXTRA               = -m32
 DEFINES               =
 INCLUDE_PATH          = -I.
 DLL_PATH              =
 DLL_IMPORTS           =
-LIBRARY_PATH          = -L../openvr/bin/linux64
+# TODO: Find a way to not hardcode wine path
+LIBRARY_PATH          = -L../openvr/bin/linux32 -L/opt/wine-staging/lib -L/opt/wine-staging/lib/wine
 LIBRARIES             = -lopenvr_api
 
 
@@ -34,7 +35,7 @@ openvr_api_dll_CXX_SRCS= ivroverlay.cpp \
 openvr_api_dll_RC_SRCS=
 openvr_api_dll_LDFLAGS= -shared \
 			$(openvr_api_dll_MODULE:.dll=.spec) \
-			-mno-cygwin
+			-m32 -mno-cygwin
 openvr_api_dll_ARFLAGS=
 openvr_api_dll_DLL_PATH=
 openvr_api_dll_DLLS   = odbc32 \
