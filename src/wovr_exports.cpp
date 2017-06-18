@@ -60,7 +60,7 @@ VR_INTERFACE void *VR_CALLTYPE WOVR_GetGenericInterface(const char *pchInterface
     */
 
     // Fallthrough for NIYs
-    printf("WOVR WARNING: App requested unimplemented interface!\n", pchInterfaceVersion);
+    printf("WOVR WARNING: App requested unimplemented interface!\n");
     // Pretend to work but let the app segfault if it tries to use it.
     // This is better for debugging because the samples try to load interfaces early and are overzealous about error
     // checking.
