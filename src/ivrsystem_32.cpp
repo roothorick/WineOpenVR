@@ -5,6 +5,7 @@
 #include "openvr.h"
 using namespace vr;
 
+#include "repacked_structs.h"
 
 #define THISCALL __attribute__((thiscall))
 
@@ -39,8 +40,8 @@ public:
 	THISCALL virtual void GetMatrix34TrackedDeviceProperty(HmdMatrix34_t* ret, vr::TrackedDeviceIndex_t unDeviceIndex, ETrackedDeviceProperty prop, ETrackedPropertyError *pError ) = 0; // ERP hack
 	THISCALL virtual uint32_t GetStringTrackedDeviceProperty( vr::TrackedDeviceIndex_t unDeviceIndex, ETrackedDeviceProperty prop, VR_OUT_STRING() char *pchValue, uint32_t unBufferSize, ETrackedPropertyError *pError ) = 0;
 	THISCALL virtual const char *GetPropErrorNameFromEnum( ETrackedPropertyError error ) = 0;
-	THISCALL virtual bool PollNextEvent( VREvent_t *pEvent, uint32_t uncbVREvent ) = 0;
-	THISCALL virtual bool PollNextEventWithPose( ETrackingUniverseOrigin eOrigin, VREvent_t *pEvent, uint32_t uncbVREvent, vr::TrackedDevicePose_t *pTrackedDevicePose ) = 0;
+	THISCALL virtual bool PollNextEvent( Repacked_VREvent_t *pEvent, uint32_t uncbVREvent ) = 0; // Struct packing mismatch
+	THISCALL virtual bool PollNextEventWithPose( ETrackingUniverseOrigin eOrigin, Repacked_VREvent_t *pEvent, uint32_t uncbVREvent, vr::TrackedDevicePose_t *pTrackedDevicePose ) = 0; // Struct packing mismatch
 	THISCALL virtual const char *GetEventTypeNameFromEnum( EVREventType eType ) = 0;
 	THISCALL virtual void GetHiddenAreaMesh(HiddenAreaMesh_t* ret, EVREye eEye, EHiddenAreaMeshType type = k_eHiddenAreaMesh_Standard ) = 0; // ERP hack
 	THISCALL virtual bool GetControllerState( vr::TrackedDeviceIndex_t unControllerDeviceIndex, vr::VRControllerState_t *pControllerState, uint32_t unControllerStateSize ) = 0;
@@ -223,14 +224,28 @@ public:
 		return realImpl->GetPropErrorNameFromEnum(error);
 	}
 
-	THISCALL bool PollNextEvent( VREvent_t *pEvent, uint32_t uncbVREvent )
+	THISCALL bool PollNextEvent( Repacked_VREvent_t *pEvent, uint32_t uncbVREvent )
 	{
-		return realImpl->PollNextEvent(pEvent, uncbVREvent);
+		// Struct packing mismatch
+		VREvent_t linpacked;
+		bool ret;
+
+		ret = realImpl->PollNextEvent(&linpacked, uncbVREvent - VREVENT_PACKSIZE_DIFFERENCE);
+
+		repackVREvent(&linpacked, pEvent);
+		return ret;
 	}
 
-	THISCALL bool PollNextEventWithPose( ETrackingUniverseOrigin eOrigin, VREvent_t *pEvent, uint32_t uncbVREvent, vr::TrackedDevicePose_t *pTrackedDevicePose )
+	THISCALL bool PollNextEventWithPose( ETrackingUniverseOrigin eOrigin, Repacked_VREvent_t *pEvent, uint32_t uncbVREvent, vr::TrackedDevicePose_t *pTrackedDevicePose )
 	{
-		return realImpl->PollNextEventWithPose(eOrigin, pEvent, uncbVREvent, pTrackedDevicePose);
+		// Struct packing mismatch
+		VREvent_t linpacked;
+		bool ret;
+
+		ret = realImpl->PollNextEventWithPose(eOrigin, &linpacked, uncbVREvent - VREVENT_PACKSIZE_DIFFERENCE, pTrackedDevicePose);
+
+		repackVREvent(&linpacked, pEvent);
+		return ret;
 	}
 
 	THISCALL const char *GetEventTypeNameFromEnum( EVREventType eType )
