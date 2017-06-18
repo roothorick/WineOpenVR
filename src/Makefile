@@ -33,7 +33,9 @@ openvr_api_dll_C_SRCS =
 openvr_api_dll_CXX_SRCS= ivroverlay.cpp \
 			wovr_exports.cpp \
 			ivrapplications_32.cpp \
-			ivrsystem_32.cpp
+			ivrsystem_32.cpp \
+			ivrcompositor_32.cpp \
+			ivrrendermodels_32.cpp
 openvr_api_dll_RC_SRCS=
 openvr_api_dll_LDFLAGS= -shared \
 			$(openvr_api_dll_MODULE:.dll=.spec) \
