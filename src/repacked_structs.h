@@ -77,7 +77,7 @@ struct Repacked_RenderModel_TextureMap_t
   RenderModel_TextureMap_t* original;
 };
 
-inline void repackVRRenderModelTextureMap(RenderModel_TextureMap_t* src, Repacked_RenderModel_TextureMap_t* dst)
+inline void repackRenderModelTextureMap(RenderModel_TextureMap_t* src, Repacked_RenderModel_TextureMap_t* dst)
 {
   dst->unWidth = src->unWidth;
   dst->unHeight = src->unHeight;
@@ -98,7 +98,7 @@ struct Repacked_RenderModel_t
   RenderModel_t* original;
 };
 
-inline void repackVRRenderModel(RenderModel_t* src, Repacked_RenderModel_t* dst)
+inline void repackRenderModel(RenderModel_t* src, Repacked_RenderModel_t* dst)
 {
   dst->rVertexData = src->rVertexData;
   dst->unVertexCount = src->unVertexCount;
