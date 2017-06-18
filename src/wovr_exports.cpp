@@ -24,6 +24,12 @@ VR_INTERFACE void *VR_CALLTYPE WOVR_GetGenericInterface(const char *pchInterface
     if( strstr(pchInterfaceVersion, "IVRApplications") != 0 )
         return getIVRApplicationsProxy( (IVRApplications*) ntv );
 
+    if( strstr(pchInterfaceVersion, "IVRCompositor") != 0 )
+        return getIVRCompositorProxy( (IVRCompositor*) ntv );
+
+    if( strstr(pchInterfaceVersion, "IVRRenderModels") != 0 )
+        return getIVRRenderModelsProxy( (IVRRenderModels*) ntv );
+
     /* TODO: NIYs
     if( strstr(pchInterfaceVersion, "IVRSettings") != 0 )
         return getIVRSettingsProxy( (IVRSettings*) ntv );
@@ -34,17 +40,11 @@ VR_INTERFACE void *VR_CALLTYPE WOVR_GetGenericInterface(const char *pchInterface
     if( strstr(pchInterfaceVersion, "IVRChaperoneSetup") != 0 )
         return getIVRChaperoneSetupProxy( (IVRChaperoneSetup*) ntv );
 
-    if( strstr(pchInterfaceVersion, "IVRCompositor") != 0 )
-        return getIVRCompositorProxy( (IVRCompositor*) ntv );
-
     if( strstr(pchInterfaceVersion, "IVRNotifications") != 0 )
         return getIVRNotificationsProxy( (IVRNotifications*) ntv );
 
     if( strstr(pchInterfaceVersion, "IVROverlay") != 0 )
         return getIVROverlayProxy( (IVROverlay*) ntv );
-
-    if( strstr(pchInterfaceVersion, "IVRRenderModels") != 0 )
-        return getIVRRenderModelsProxy( (IVRRenderModels*) ntv );
 
     if( strstr(pchInterfaceVersion, "IVRExtendedDisplay") != 0 )
         return getIVRExtendedDisplayProxy( (IVRExtendedDisplay*) ntv );
