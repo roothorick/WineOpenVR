@@ -31,7 +31,9 @@ LIBRARIES             = -lopenvr_api
 openvr_api_dll_MODULE = openvr_api.dll
 openvr_api_dll_C_SRCS =
 openvr_api_dll_CXX_SRCS= ivroverlay.cpp \
-			wovr_exports.cpp
+			wovr_exports.cpp \
+			ivrapplications_32.cpp \
+			ivrsystem_32.cpp
 openvr_api_dll_RC_SRCS=
 openvr_api_dll_LDFLAGS= -shared \
 			$(openvr_api_dll_MODULE:.dll=.spec) \
@@ -115,5 +117,3 @@ DEFLIB = $(LIBRARY_PATH) $(LIBRARIES) $(DLL_PATH) $(DLL_IMPORTS:%=-l%)
 
 $(openvr_api_dll_MODULE).so: $(openvr_api_dll_OBJS) $(openvr_api_dll_MODULE:.dll=.spec)
 	$(CXX) $(openvr_api_dll_LDFLAGS) -o $@ $(openvr_api_dll_OBJS) $(openvr_api_dll_LIBRARY_PATH) $(openvr_api_dll_DLL_PATH) $(DEFLIB) $(openvr_api_dll_DLLS:%=-l%) $(openvr_api_dll_LIBRARIES:%=-l%)
-
-
