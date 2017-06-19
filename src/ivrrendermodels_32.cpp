@@ -31,7 +31,7 @@ class clone_IVRRenderModels
 	THISCALL virtual const char *GetRenderModelErrorNameFromEnum( vr::EVRRenderModelError error ) = 0;
 };
 
-class proxy_IVRRenderModels
+class proxy_IVRRenderModels : public clone_IVRRenderModels
 {
 public:
   proxy_IVRRenderModels(IVRRenderModels* real) { realImpl = real; }
