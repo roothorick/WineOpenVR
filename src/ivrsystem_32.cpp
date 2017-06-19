@@ -230,7 +230,11 @@ public:
 		VREvent_t linpacked;
 		bool ret;
 
-		ret = realImpl->PollNextEvent(&linpacked, uncbVREvent - VREVENT_PACKSIZE_DIFFERENCE);
+		//printf("WOVR trace: PollNextEvent: winpack %u, linpack %u, passed %u\n", sizeof(Repacked_VREvent_t), sizeof(VREvent_t), uncbVREvent);
+
+		// HACK: GCC seems to be interpreting #pragma pack differently from MSVC. We substitute our own value just to
+		// preserve the stack.
+		ret = realImpl->PollNextEvent(&linpacked, sizeof(VREvent_t) );
 
 		repackVREvent(&linpacked, pEvent);
 		return ret;
@@ -242,7 +246,7 @@ public:
 		VREvent_t linpacked;
 		bool ret;
 
-		ret = realImpl->PollNextEventWithPose(eOrigin, &linpacked, uncbVREvent - VREVENT_PACKSIZE_DIFFERENCE, pTrackedDevicePose);
+		ret = realImpl->PollNextEventWithPose(eOrigin, &linpacked, sizeof(VREvent_t), pTrackedDevicePose);
 
 		repackVREvent(&linpacked, pEvent);
 		return ret;
