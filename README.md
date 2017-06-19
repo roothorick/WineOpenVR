@@ -1,6 +1,13 @@
 # WineOpenVR
 Wrapper connecting Windows apps in Wine to native SteamVR
 
+## Installation and use
+
+1. Install Wine, Steam, and Linux SteamVR. **Do not install Windows SteamVR in Wine.** Make sure SteamVR is working correctly (i.e. Home starts up okay and you get an image in the headset).
+2. Clone repo and compile.
+3. Put `~/.local/share/Steam/steamapps/common/SteamVR/bin/linux32/libopenvr_api.so` in your `LD_LIBRARY_PATH` and `openvr_api.dll.so` in your `WINEDLLPATH`.
+4. Run applications with `~/.local/share/Steam/ubuntu12_32/steam-runtime/run.sh wine vrapp.exe`
+
 ## C++ ABI differences
 For 32bit i.e. x86, we can't rely solely on `__attribute__((thiscall))` for methods that return complex types due to what appears to be a bug in GCC.
 
