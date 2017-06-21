@@ -1,11 +1,4 @@
-#include <cstdio>
-
-// HACK: No idea where this should actually be defined
-#define nullptr 0x0
-#include "openvr.h"
-using namespace vr;
-
-#define THISCALL __attribute__((thiscall))
+#include "common.h"
 
 // XXX: IVRSettings contains const static char arrays (i.e. C strings).
 // I expect them to not be stored in the class object itself but instead treated as a constant, but this hasn't been

@@ -1,13 +1,5 @@
-#include <cstdio>
-
-// HACK: No idea where this should actually be defined
-#define nullptr 0x0
-#include "openvr.h"
-using namespace vr;
-
+#include "common.h"
 #include "repacked_structs.h"
-
-#define THISCALL __attribute__((thiscall))
 
 class clone_IVRRenderModels
 {

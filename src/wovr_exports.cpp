@@ -1,12 +1,6 @@
-// HACK: No idea where this should actually be defined
-#define nullptr 0x0
-#include "openvr.h"
-using namespace vr;
-
-#include <cstdio>
-#include <cstring>
-
+#include "common.h"
 #include "proxy_getters.h"
+#include <cstring>
 
 /* Interface dispatcher. Try to acquire the native impl, then create and return our proxy. */
 VR_INTERFACE void *VR_CALLTYPE WOVR_GetGenericInterface(const char *pchInterfaceVersion, EVRInitError *peError)

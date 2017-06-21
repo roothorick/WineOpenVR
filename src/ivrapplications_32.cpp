@@ -1,13 +1,4 @@
-#include "proxy_getters.h"
-
-#include <cstdio>
-
-// HACK: No idea where this should actually be defined
-#define nullptr 0x0
-#include "openvr.h"
-using namespace vr;
-
-#define THISCALL __attribute__((thiscall))
+#include "common.h"
 
 // TODO: This probably should be wrapped a little more intelligently, to give SteamVR wine-based shortcuts instead of
 // the values given directly by the app itself.

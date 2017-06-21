@@ -1,11 +1,4 @@
-#include <cstdio>
-
-// HACK: No idea where this should actually be defined
-#define nullptr 0x0
-#include "openvr.h"
-using namespace vr;
-
-#define THISCALL __attribute__((thiscall))
+#include "common.h"
 
 class clone_IVRCompositor
 {

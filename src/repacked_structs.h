@@ -1,6 +1,6 @@
 #pragma once
 
-#include "openvr.h"
+#include "common.h"
 
 // Some structs are packed differently on Windows vs. Linux.
 // These are packed the way they are on Windows, so we can convert between them.
