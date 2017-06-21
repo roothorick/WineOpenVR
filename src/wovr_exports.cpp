@@ -15,11 +15,11 @@ extern "C" void *VR_CALLTYPE WOVR_GetGenericInterface(const char *pchInterfaceVe
     if( strstr(pchInterfaceVersion, "IVRSystem") != 0 )
         return getIVRSystemProxy( (IVRSystem*) ntv );
 
-    if( strstr(pchInterfaceVersion, "IVRSettings") != 0 )
-        return getIVRSettingsProxy( (IVRSettings*) ntv );
-
     if( strstr(pchInterfaceVersion, "IVRApplications") != 0 )
         return getIVRApplicationsProxy( (IVRApplications*) ntv );
+
+    if( strstr(pchInterfaceVersion, "IVRSettings") != 0 )
+        return getIVRSettingsProxy( (IVRSettings*) ntv );
 
     if( strstr(pchInterfaceVersion, "IVRCompositor") != 0 )
         return getIVRCompositorProxy( (IVRCompositor*) ntv );
