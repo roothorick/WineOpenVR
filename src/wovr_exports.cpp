@@ -21,6 +21,9 @@ VR_INTERFACE void *VR_CALLTYPE WOVR_GetGenericInterface(const char *pchInterface
     if( strstr(pchInterfaceVersion, "IVRSystem") != 0 )
         return getIVRSystemProxy( (IVRSystem*) ntv );
 
+    if( strstr(pchInterfaceVersion, "IVRSettings") != 0 )
+        return getIVRSettingsProxy( (IVRSettings*) ntv );
+
     if( strstr(pchInterfaceVersion, "IVRApplications") != 0 )
         return getIVRApplicationsProxy( (IVRApplications*) ntv );
 
@@ -31,9 +34,6 @@ VR_INTERFACE void *VR_CALLTYPE WOVR_GetGenericInterface(const char *pchInterface
         return getIVRRenderModelsProxy( (IVRRenderModels*) ntv );
 
     /* TODO: NIYs
-    if( strstr(pchInterfaceVersion, "IVRSettings") != 0 )
-        return getIVRSettingsProxy( (IVRSettings*) ntv );
-
     if( strstr(pchInterfaceVersion, "IVRChaperone") != 0 )
         return getIVRChaperoneProxy( (IVRChaperone*) ntv );
 
