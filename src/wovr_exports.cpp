@@ -45,10 +45,10 @@ extern "C" void *VR_CALLTYPE WOVR_GetGenericInterface(const char *pchInterfaceVe
     if( strstr(pchInterfaceVersion, "IVRTrackedCamera") != 0 )
         return getIVRTrackedCameraProxy( (IVRTrackedCamera*) ntv );
 
-    /* TODO: NIYs
     if( strstr(pchInterfaceVersion, "IVRScreenshots") != 0 )
         return getIVRScreenshotsProxy( (IVRScreenshots*) ntv );
 
+    /* TODO: NIYs
     if( strstr(pchInterfaceVersion, "IVRResources") != 0 )
         return getIVRResourcesProxy( (IVRResources*) ntv );
     */
