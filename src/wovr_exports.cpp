@@ -33,13 +33,13 @@ extern "C" void *VR_CALLTYPE WOVR_GetGenericInterface(const char *pchInterfaceVe
     if( strstr(pchInterfaceVersion, "IVRNotifications") != 0 )
         return getIVRNotificationsProxy( (IVRNotifications*) ntv );
 
+    if( strstr(pchInterfaceVersion, "IVROverlay") != 0 )
+        return getIVROverlayProxy( (IVROverlay*) ntv );
+
     if( strstr(pchInterfaceVersion, "IVRRenderModels") != 0 )
         return getIVRRenderModelsProxy( (IVRRenderModels*) ntv );
 
     /* TODO: NIYs
-    if( strstr(pchInterfaceVersion, "IVROverlay") != 0 )
-        return getIVROverlayProxy( (IVROverlay*) ntv );
-
     if( strstr(pchInterfaceVersion, "IVRExtendedDisplay") != 0 )
         return getIVRExtendedDisplayProxy( (IVRExtendedDisplay*) ntv );
 

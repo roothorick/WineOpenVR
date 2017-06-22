@@ -39,6 +39,7 @@ openvr_api_dll_CXX_SRCS= ivroverlay.cpp \
 			ivrchaperonesetup_32.cpp \
 			ivrcompositor_32.cpp \
 			ivrnotifications_32.cpp \
+			ivroverlay_32.cpp \
 			ivrrendermodels_32.cpp
 openvr_api_dll_RC_SRCS=
 openvr_api_dll_LDFLAGS= -shared \
