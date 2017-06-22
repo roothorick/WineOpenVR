@@ -48,17 +48,16 @@ extern "C" void *VR_CALLTYPE WOVR_GetGenericInterface(const char *pchInterfaceVe
     if( strstr(pchInterfaceVersion, "IVRScreenshots") != 0 )
         return getIVRScreenshotsProxy( (IVRScreenshots*) ntv );
 
-    /* TODO: NIYs
     if( strstr(pchInterfaceVersion, "IVRResources") != 0 )
         return getIVRResourcesProxy( (IVRResources*) ntv );
-    */
 
-    // Fallthrough for NIYs
-    printf("WOVR WARNING: App requested unimplemented interface!\n");
-    // Pretend to work but let the app segfault if it tries to use it.
-    // This is better for debugging because the samples try to load interfaces early and are overzealous about error
-    // checking.
-    return (void*) 0x1;
+    // Fallthrough for unknowns
+    printf("WOVR WARNING: App requested unknown interface!\n");
+
+    // Passing the native interface directly will cause cryptic crashes due to calling convention differences.
+    // Fail now and give the app a chance to do without.
+    *peError = VRInitError_Init_InvalidInterface;
+    return 0x0;
 }
 
 extern "C" uint32_t VR_CALLTYPE WOVR_GetInitToken()

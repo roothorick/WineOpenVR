@@ -43,7 +43,8 @@ openvr_api_dll_CXX_SRCS= ivroverlay.cpp \
 			ivrrendermodels_32.cpp \
 			ivrextendeddisplay_32.cpp \
 			ivrtrackedcamera_32.cpp \
-			ivrscreenshots_32.cpp
+			ivrscreenshots_32.cpp \
+			ivrresources_32.cpp
 openvr_api_dll_RC_SRCS=
 openvr_api_dll_LDFLAGS= -shared \
 			$(openvr_api_dll_MODULE:.dll=.spec) \
