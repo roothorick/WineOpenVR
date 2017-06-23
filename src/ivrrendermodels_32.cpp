@@ -16,7 +16,7 @@ class clone_IVRRenderModels
 	THISCALL virtual uint32_t GetComponentName( const char *pchRenderModelName, uint32_t unComponentIndex, VR_OUT_STRING( ) char *pchComponentName, uint32_t unComponentNameLen ) = 0;
 	THISCALL virtual uint64_t GetComponentButtonMask( const char *pchRenderModelName, const char *pchComponentName ) = 0;
 	THISCALL virtual uint32_t GetComponentRenderModelName( const char *pchRenderModelName, const char *pchComponentName, VR_OUT_STRING( ) char *pchComponentRenderModelName, uint32_t unComponentRenderModelNameLen ) = 0;
-	THISCALL virtual bool GetComponentState( const char *pchRenderModelName, const char *pchComponentName, const vr::VRControllerState_t *pControllerState, const RenderModel_ControllerMode_State_t *pState, RenderModel_ComponentState_t *pComponentState ) = 0;
+	THISCALL virtual bool GetComponentState( const char *pchRenderModelName, const char *pchComponentName, const Repacked_VRControllerState_t *pControllerState, const RenderModel_ControllerMode_State_t *pState, RenderModel_ComponentState_t *pComponentState ) = 0; // Struct packing mismatch
 	THISCALL virtual bool RenderModelHasComponent( const char *pchRenderModelName, const char *pchComponentName ) = 0;
 	THISCALL virtual uint32_t GetRenderModelThumbnailURL( const char *pchRenderModelName, VR_OUT_STRING() char *pchThumbnailURL, uint32_t unThumbnailURLLen, vr::EVRRenderModelError *peError ) = 0;
 	THISCALL virtual uint32_t GetRenderModelOriginalPath( const char *pchRenderModelName, VR_OUT_STRING() char *pchOriginalPath, uint32_t unOriginalPathLen, vr::EVRRenderModelError *peError ) = 0;
@@ -131,9 +131,13 @@ public:
     return realImpl->GetComponentRenderModelName(pchRenderModelName, pchComponentName, pchComponentRenderModelName, unComponentRenderModelNameLen);
   }
 
-	THISCALL bool GetComponentState( const char *pchRenderModelName, const char *pchComponentName, const vr::VRControllerState_t *pControllerState, const RenderModel_ControllerMode_State_t *pState, RenderModel_ComponentState_t *pComponentState )
+	THISCALL bool GetComponentState( const char *pchRenderModelName, const char *pchComponentName, const Repacked_VRControllerState_t *pControllerState, const RenderModel_ControllerMode_State_t *pState, RenderModel_ComponentState_t *pComponentState )
   {
-    return realImpl->GetComponentState(pchRenderModelName, pchComponentName, pControllerState, pState, pComponentState);
+    // Struct packing mismatch
+    VRControllerState_t linpacked;
+    repackVRControllerState(pControllerState, &linpacked);
+
+    return realImpl->GetComponentState(pchRenderModelName, pchComponentName, &linpacked, pState, pComponentState);
   }
 
 	THISCALL bool RenderModelHasComponent( const char *pchRenderModelName, const char *pchComponentName )

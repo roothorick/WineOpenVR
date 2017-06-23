@@ -36,8 +36,8 @@ public:
 	THISCALL virtual bool PollNextEventWithPose( ETrackingUniverseOrigin eOrigin, Repacked_VREvent_t *pEvent, uint32_t uncbVREvent, vr::TrackedDevicePose_t *pTrackedDevicePose ) = 0; // Struct packing mismatch
 	THISCALL virtual const char *GetEventTypeNameFromEnum( EVREventType eType ) = 0;
 	THISCALL virtual void GetHiddenAreaMesh(HiddenAreaMesh_t* ret, EVREye eEye, EHiddenAreaMeshType type = k_eHiddenAreaMesh_Standard ) = 0; // ERP hack
-	THISCALL virtual bool GetControllerState( vr::TrackedDeviceIndex_t unControllerDeviceIndex, vr::VRControllerState_t *pControllerState, uint32_t unControllerStateSize ) = 0;
-	THISCALL virtual bool GetControllerStateWithPose( ETrackingUniverseOrigin eOrigin, vr::TrackedDeviceIndex_t unControllerDeviceIndex, vr::VRControllerState_t *pControllerState, uint32_t unControllerStateSize, TrackedDevicePose_t *pTrackedDevicePose ) = 0;
+	THISCALL virtual bool GetControllerState( vr::TrackedDeviceIndex_t unControllerDeviceIndex, Repacked_VRControllerState_t *pControllerState, uint32_t unControllerStateSize ) = 0; // Struct packing mismatch
+	THISCALL virtual bool GetControllerStateWithPose( ETrackingUniverseOrigin eOrigin, vr::TrackedDeviceIndex_t unControllerDeviceIndex, Repacked_VRControllerState_t *pControllerState, uint32_t unControllerStateSize, TrackedDevicePose_t *pTrackedDevicePose ) = 0; // Struct packing mismatch
 	THISCALL virtual void TriggerHapticPulse( vr::TrackedDeviceIndex_t unControllerDeviceIndex, uint32_t unAxisId, unsigned short usDurationMicroSec ) = 0;
 	THISCALL virtual const char *GetButtonIdNameFromEnum( EVRButtonId eButtonId ) = 0;
 	THISCALL virtual const char *GetControllerAxisTypeNameFromEnum( EVRControllerAxisType eAxisType ) = 0;
@@ -256,14 +256,30 @@ public:
 		return;
 	}
 
-	THISCALL bool GetControllerState( vr::TrackedDeviceIndex_t unControllerDeviceIndex, vr::VRControllerState_t *pControllerState, uint32_t unControllerStateSize )
+	THISCALL bool GetControllerState( vr::TrackedDeviceIndex_t unControllerDeviceIndex, Repacked_VRControllerState_t *pControllerState, uint32_t unControllerStateSize )
 	{
-		return realImpl->GetControllerState(unControllerDeviceIndex, pControllerState, unControllerStateSize);
+		// Struct packing mismatch
+		VRControllerState_t linpacked;
+
+		// HACK: GCC seems to be interpreting #pragma pack differently from MSVC. We substitute our own value just to
+		// preserve the stack.
+		bool ret = realImpl->GetControllerState(unControllerDeviceIndex, &linpacked, sizeof(VRControllerState_t) );
+
+		repackVRControllerState(&linpacked, pControllerState);
+		return ret;
 	}
 
-	THISCALL bool GetControllerStateWithPose( ETrackingUniverseOrigin eOrigin, vr::TrackedDeviceIndex_t unControllerDeviceIndex, vr::VRControllerState_t *pControllerState, uint32_t unControllerStateSize, TrackedDevicePose_t *pTrackedDevicePose )
+	THISCALL bool GetControllerStateWithPose( ETrackingUniverseOrigin eOrigin, vr::TrackedDeviceIndex_t unControllerDeviceIndex, Repacked_VRControllerState_t *pControllerState, uint32_t unControllerStateSize, TrackedDevicePose_t *pTrackedDevicePose )
 	{
-		return realImpl->GetControllerStateWithPose(eOrigin, unControllerDeviceIndex, pControllerState, unControllerStateSize, pTrackedDevicePose);
+		// Struct packing mismatch
+		VRControllerState_t linpacked;
+
+		// HACK: GCC seems to be interpreting #pragma pack differently from MSVC. We substitute our own value just to
+		// preserve the stack.
+		bool ret = realImpl->GetControllerStateWithPose(eOrigin, unControllerDeviceIndex, &linpacked, sizeof(VRControllerState_t), pTrackedDevicePose);
+
+		repackVRControllerState(&linpacked, pControllerState);
+		return ret;
 	}
 
 	THISCALL void TriggerHapticPulse( vr::TrackedDeviceIndex_t unControllerDeviceIndex, uint32_t unAxisId, unsigned short usDurationMicroSec )
