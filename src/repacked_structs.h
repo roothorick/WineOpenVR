@@ -43,7 +43,7 @@ struct Repacked_VRControllerState_t
 	VRControllerAxis_t rAxis[ k_unControllerStateAxisCount ];
 };
 
-inline void repackVRControllerState(VRControllerState_t* src, Repacked_VRControllerState_t* dst)
+inline void repackVRControllerState(const VRControllerState_t* src, Repacked_VRControllerState_t* dst)
 {
   dst->unPacketNum = src->unPacketNum;
   dst->ulButtonPressed = src->ulButtonPressed;
@@ -55,7 +55,7 @@ inline void repackVRControllerState(VRControllerState_t* src, Repacked_VRControl
   }
 }
 
-inline void repackVRControllerState(Repacked_VRControllerState_t* src, VRControllerState_t* dst)
+inline void repackVRControllerState(const Repacked_VRControllerState_t* src, VRControllerState_t* dst)
 {
   dst->unPacketNum = src->unPacketNum;
   dst->ulButtonPressed = src->ulButtonPressed;
