@@ -30,7 +30,7 @@ LIBRARIES             = -lopenvr_api
 
 openvr_api_dll_MODULE = openvr_api.dll
 openvr_api_dll_C_SRCS =
-openvr_api_dll_CXX_SRCS= ivroverlay.cpp \
+openvr_api_dll_CXX_SRCS= \
 			wovr_exports.cpp \
 			ivrsystem_32.cpp \
 			ivrapplications_32.cpp \
