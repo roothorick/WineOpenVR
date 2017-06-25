@@ -15,4 +15,6 @@ In MSVC land (i.e. "thiscall"), when a member method returns a complex type, the
 
 Our workaround is to pretend the method returns nothing, and make the first argument the return value pointer. That is, `FooMatrix_t GetFooMatrix(int index)` becomes `void GetFooMatrix(FooMatrix_t* ret, int index)`. GCC will treat the top of the stack as the first argument, which does what we *actually* want, and makes `ECX` once again the `this` pointer. Methods returning primitives work with `__attribute__((thiscall))` as-is, because the return value is passed via registers.
 
+Interestingly, the same workaround is required in 64bit i.e. amd64/x86-64. It appears that MSVC and GCC disagree on which hidden argument comes first. MSVC puts the `this` pointer before the return value pointer, but GCC puts the return value pointer before the `this` pointer. This is *also* reconciled by making the return value pointer an explicit argument.
+
 To avoid having to manually desecrate the vtable, we have a hidden "clone" class with the same virtual methods in the same order, except the methods returning complex types are replaced with modified versions using the explicit return pointer hack described above. Then our proxy class derives from the clone, not the real one.
