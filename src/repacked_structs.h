@@ -23,10 +23,10 @@ struct Repacked_VREvent_t
 
 inline void repackVREvent(const VREvent_t* src, Repacked_VREvent_t* dst)
 {
-  dst->eventType = src->eventType;
-  dst->trackedDeviceIndex = src->trackedDeviceIndex;
-  dst->eventAgeSeconds = src->eventAgeSeconds;
-  dst->data = src->data;
+	dst->eventType = src->eventType;
+	dst->trackedDeviceIndex = src->trackedDeviceIndex;
+	dst->eventAgeSeconds = src->eventAgeSeconds;
+	dst->data = src->data;
 }
 
 struct Repacked_VRControllerState_t
@@ -45,26 +45,26 @@ struct Repacked_VRControllerState_t
 
 inline void repackVRControllerState(const VRControllerState_t* src, Repacked_VRControllerState_t* dst)
 {
-  dst->unPacketNum = src->unPacketNum;
-  dst->ulButtonPressed = src->ulButtonPressed;
-  dst->ulButtonTouched = src->ulButtonTouched;
+	dst->unPacketNum = src->unPacketNum;
+	dst->ulButtonPressed = src->ulButtonPressed;
+	dst->ulButtonTouched = src->ulButtonTouched;
 
-  for(int i=0; i<k_unControllerStateAxisCount; i++)
-  {
-    dst->rAxis[i] = src->rAxis[i];
-  }
+	for(int i=0; i<k_unControllerStateAxisCount; i++)
+	{
+		dst->rAxis[i] = src->rAxis[i];
+	}
 }
 
 inline void repackVRControllerState(const Repacked_VRControllerState_t* src, VRControllerState_t* dst)
 {
-  dst->unPacketNum = src->unPacketNum;
-  dst->ulButtonPressed = src->ulButtonPressed;
-  dst->ulButtonTouched = src->ulButtonTouched;
+	dst->unPacketNum = src->unPacketNum;
+	dst->ulButtonPressed = src->ulButtonPressed;
+	dst->ulButtonTouched = src->ulButtonTouched;
 
-  for(int i=0; i<k_unControllerStateAxisCount; i++)
-  {
-    dst->rAxis[i] = src->rAxis[i];
-  }
+	for(int i=0; i<k_unControllerStateAxisCount; i++)
+	{
+		dst->rAxis[i] = src->rAxis[i];
+	}
 }
 
 struct Repacked_RenderModel_TextureMap_t
@@ -79,10 +79,10 @@ struct Repacked_RenderModel_TextureMap_t
 
 inline void repackRenderModelTextureMap(RenderModel_TextureMap_t* src, Repacked_RenderModel_TextureMap_t* dst)
 {
-  dst->unWidth = src->unWidth;
-  dst->unHeight = src->unHeight;
-  dst->rubTextureMapData = src->rubTextureMapData;
-  dst->original = src;
+	dst->unWidth = src->unWidth;
+	dst->unHeight = src->unHeight;
+	dst->rubTextureMapData = src->rubTextureMapData;
+	dst->original = src;
 }
 
 struct Repacked_RenderModel_t
@@ -93,20 +93,20 @@ struct Repacked_RenderModel_t
 	uint32_t unTriangleCount;					// Number of triangles in the mesh. Index count is 3 * TriangleCount
 	TextureID_t diffuseTextureId;				// Session unique texture identifier. Rendermodels which share the same texture will have the same id. <0 == texture not present
 
-  // Similarly, to RenderModel_TextureMap_t, it is the application's responsibility to call
-  // IVRRenderModels::FreeRenderModel when it's done with the model.
-  RenderModel_t* original;
+	// Similarly, to RenderModel_TextureMap_t, it is the application's responsibility to call
+	// IVRRenderModels::FreeRenderModel when it's done with the model.
+	RenderModel_t* original;
 };
 
 inline void repackRenderModel(RenderModel_t* src, Repacked_RenderModel_t* dst)
 {
-  dst->rVertexData = src->rVertexData;
-  dst->unVertexCount = src->unVertexCount;
-  dst->rIndexData = src->rIndexData;
-  dst->unTriangleCount = src->unTriangleCount;
-  dst->diffuseTextureId = src->diffuseTextureId;
+	dst->rVertexData = src->rVertexData;
+	dst->unVertexCount = src->unVertexCount;
+	dst->rIndexData = src->rIndexData;
+	dst->unTriangleCount = src->unTriangleCount;
+	dst->diffuseTextureId = src->diffuseTextureId;
 
-  dst->original = src;
+	dst->original = src;
 }
 
 #pragma pack(pop)

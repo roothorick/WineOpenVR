@@ -4,19 +4,19 @@
 // To avoid having to include openvr.h
 namespace vr
 {
-  class IVRSystem;
-  class IVRApplications;
-  class IVRSettings;
-  class IVRChaperone;
-  class IVRChaperoneSetup;
-  class IVRCompositor;
-  class IVRNotifications;
-  class IVROverlay;
-  class IVRRenderModels;
-  class IVRExtendedDisplay;
-  class IVRTrackedCamera;
-  class IVRScreenshots;
-  class IVRResources;
+	class IVRSystem;
+	class IVRApplications;
+	class IVRSettings;
+	class IVRChaperone;
+	class IVRChaperoneSetup;
+	class IVRCompositor;
+	class IVRNotifications;
+	class IVROverlay;
+	class IVRRenderModels;
+	class IVRExtendedDisplay;
+	class IVRTrackedCamera;
+	class IVRScreenshots;
+	class IVRResources;
 }
 
 // These are defined in their respective ivrxxx_32/64.cpp's
