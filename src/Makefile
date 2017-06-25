@@ -32,19 +32,19 @@ openvr_api_dll_MODULE = openvr_api.dll
 openvr_api_dll_C_SRCS =
 openvr_api_dll_CXX_SRCS= \
 			wovr_exports.cpp \
-			ivrsystem_32.cpp \
-			ivrapplications_32.cpp \
-			ivrsettings_32.cpp \
-			ivrchaperone_32.cpp \
-			ivrchaperonesetup_32.cpp \
-			ivrcompositor_32.cpp \
-			ivrnotifications_32.cpp \
-			ivroverlay_32.cpp \
-			ivrrendermodels_32.cpp \
-			ivrextendeddisplay_32.cpp \
-			ivrtrackedcamera_32.cpp \
-			ivrscreenshots_32.cpp \
-			ivrresources_32.cpp
+			ivrsystem.cpp \
+			ivrapplications.cpp \
+			ivrsettings.cpp \
+			ivrchaperone.cpp \
+			ivrchaperonesetup.cpp \
+			ivrcompositor.cpp \
+			ivrnotifications.cpp \
+			ivroverlay.cpp \
+			ivrrendermodels.cpp \
+			ivrextendeddisplay.cpp \
+			ivrtrackedcamera.cpp \
+			ivrscreenshots.cpp \
+			ivrresources.cpp
 openvr_api_dll_RC_SRCS=
 openvr_api_dll_LDFLAGS= -shared \
 			$(openvr_api_dll_MODULE:.dll=.spec) \
