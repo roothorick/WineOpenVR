@@ -9,7 +9,10 @@
 #pragma GCC diagnostic warning "-Wattributes"
 using namespace vr;
 
-// Thispointer-in-ECX for 32bit
-#define THISCALL __attribute__((thiscall))
+#ifdef __x86_64__
 // MS instead of SysV ABI for 64bit
-#define MSABI __attribute__((ms_abi))
+#define WOVR_ENTRY __attribute__((ms_abi))
+#else
+// Thispointer-in-ECX for 32bit
+#define WOVR_ENTRY __attribute__((thiscall))
+#endif

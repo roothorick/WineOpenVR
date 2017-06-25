@@ -3,14 +3,14 @@
 class clone_IVRChaperone
 {
 public:
-	THISCALL virtual ChaperoneCalibrationState GetCalibrationState() = 0;
-	THISCALL virtual bool GetPlayAreaSize( float *pSizeX, float *pSizeZ ) = 0;
-	THISCALL virtual bool GetPlayAreaRect( HmdQuad_t *rect ) = 0;
-	THISCALL virtual void ReloadInfo( void ) = 0;
-	THISCALL virtual void SetSceneColor( HmdColor_t color ) = 0;
-	THISCALL virtual void GetBoundsColor( HmdColor_t *pOutputColorArray, int nNumOutputColors, float flCollisionBoundsFadeDistance, HmdColor_t *pOutputCameraColor ) = 0;
-	THISCALL virtual bool AreBoundsVisible() = 0;
-	THISCALL virtual void ForceBoundsVisible( bool bForce ) = 0;
+	WOVR_ENTRY virtual ChaperoneCalibrationState GetCalibrationState() = 0;
+	WOVR_ENTRY virtual bool GetPlayAreaSize( float *pSizeX, float *pSizeZ ) = 0;
+	WOVR_ENTRY virtual bool GetPlayAreaRect( HmdQuad_t *rect ) = 0;
+	WOVR_ENTRY virtual void ReloadInfo( void ) = 0;
+	WOVR_ENTRY virtual void SetSceneColor( HmdColor_t color ) = 0;
+	WOVR_ENTRY virtual void GetBoundsColor( HmdColor_t *pOutputColorArray, int nNumOutputColors, float flCollisionBoundsFadeDistance, HmdColor_t *pOutputCameraColor ) = 0;
+	WOVR_ENTRY virtual bool AreBoundsVisible() = 0;
+	WOVR_ENTRY virtual void ForceBoundsVisible( bool bForce ) = 0;
 };
 
 class proxy_IVRChaperone : public clone_IVRChaperone
@@ -18,45 +18,45 @@ class proxy_IVRChaperone : public clone_IVRChaperone
 public:
 	proxy_IVRChaperone(IVRChaperone* real) { realImpl = real; }
 
-	THISCALL ChaperoneCalibrationState GetCalibrationState()
+	WOVR_ENTRY ChaperoneCalibrationState GetCalibrationState()
 	{
 		return realImpl->GetCalibrationState();
 	}
 
-	THISCALL bool GetPlayAreaSize( float *pSizeX, float *pSizeZ )
+	WOVR_ENTRY bool GetPlayAreaSize( float *pSizeX, float *pSizeZ )
 	{
 		return realImpl->GetPlayAreaSize(pSizeX, pSizeZ);
 	}
 
-	THISCALL bool GetPlayAreaRect( HmdQuad_t *rect )
+	WOVR_ENTRY bool GetPlayAreaRect( HmdQuad_t *rect )
 	{
 		return realImpl->GetPlayAreaRect(rect);
 	}
 
-	THISCALL void ReloadInfo( void )
+	WOVR_ENTRY void ReloadInfo( void )
 	{
 		realImpl->ReloadInfo();
 		return;
 	}
 
-	THISCALL void SetSceneColor( HmdColor_t color )
+	WOVR_ENTRY void SetSceneColor( HmdColor_t color )
 	{
 		realImpl->SetSceneColor(color);
 		return;
 	}
 
-	THISCALL void GetBoundsColor( HmdColor_t *pOutputColorArray, int nNumOutputColors, float flCollisionBoundsFadeDistance, HmdColor_t *pOutputCameraColor )
+	WOVR_ENTRY void GetBoundsColor( HmdColor_t *pOutputColorArray, int nNumOutputColors, float flCollisionBoundsFadeDistance, HmdColor_t *pOutputCameraColor )
 	{
 		realImpl->GetBoundsColor(pOutputColorArray, nNumOutputColors, flCollisionBoundsFadeDistance, pOutputCameraColor);
 		return;
 	}
 
-	THISCALL bool AreBoundsVisible()
+	WOVR_ENTRY bool AreBoundsVisible()
 	{
 		return realImpl->AreBoundsVisible();
 	}
 
-	THISCALL void ForceBoundsVisible( bool bForce )
+	WOVR_ENTRY void ForceBoundsVisible( bool bForce )
 	{
 		realImpl->ForceBoundsVisible(bForce);
 		return;
