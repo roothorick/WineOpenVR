@@ -2,8 +2,14 @@
 #include "proxy_getters.h"
 #include <cstring>
 
+#ifdef __x86_64__
+#define WOVR_EXPORT extern "C" __attribute__((ms_abi))
+#else
+#define WOVR_EXPORT extern "C"
+#endif
+
 /* Interface dispatcher. Try to acquire the native impl, then create and return our proxy. */
-extern "C" void *VR_CALLTYPE WOVR_GetGenericInterface(const char *pchInterfaceVersion, EVRInitError *peError)
+WOVR_EXPORT void * WOVR_GetGenericInterface(const char *pchInterfaceVersion, EVRInitError *peError)
 {
 	printf("WOVR info: App requested API version %s\n", pchInterfaceVersion);
 
@@ -60,49 +66,50 @@ extern "C" void *VR_CALLTYPE WOVR_GetGenericInterface(const char *pchInterfaceVe
 	return 0x0;
 }
 
-extern "C" uint32_t VR_CALLTYPE WOVR_GetInitToken()
+WOVR_EXPORT uint32_t  WOVR_GetInitToken()
 {
 	return VR_GetInitToken();
 }
 
-extern "C" const char *VR_CALLTYPE WOVR_GetVRInitErrorAsEnglishDescription(EVRInitError error)
+WOVR_EXPORT const char * WOVR_GetVRInitErrorAsEnglishDescription(EVRInitError error)
 {
 	return VR_GetVRInitErrorAsEnglishDescription(error);
 }
 
-extern "C" const char *VR_CALLTYPE WOVR_GetVRInitErrorAsSymbol(EVRInitError error)
+WOVR_EXPORT const char * WOVR_GetVRInitErrorAsSymbol(EVRInitError error)
 {
 	return VR_GetVRInitErrorAsSymbol(error);
 }
 
-extern "C" uint32_t VR_CALLTYPE WOVR_InitInternal(EVRInitError *peError, EVRApplicationType eApplicationType)
+WOVR_EXPORT uint32_t  WOVR_InitInternal(EVRInitError *peError, EVRApplicationType eApplicationType)
 {
+	// printf("c\n");
 	return VR_InitInternal(peError, eApplicationType);
 }
 
-extern "C" bool VR_CALLTYPE WOVR_IsHmdPresent()
+WOVR_EXPORT bool  WOVR_IsHmdPresent()
 {
 	return VR_IsHmdPresent();
 }
 
-extern "C" bool VR_CALLTYPE WOVR_IsInterfaceVersionValid(const char *pchInterfaceVersion)
+WOVR_EXPORT bool  WOVR_IsInterfaceVersionValid(const char *pchInterfaceVersion)
 {
 	printf("WOVR info: App requested version %s\n", pchInterfaceVersion);
 	return VR_IsInterfaceVersionValid(pchInterfaceVersion);
 }
 
-extern "C" bool VR_CALLTYPE WOVR_IsRuntimeInstalled()
+WOVR_EXPORT bool  WOVR_IsRuntimeInstalled()
 {
 	return VR_IsRuntimeInstalled();
 }
 
-extern "C" const char *VR_CALLTYPE WOVR_RuntimePath()
+WOVR_EXPORT const char * WOVR_RuntimePath()
 {
 	// FIXME: This should convert to a Wndows X:\\ type path before returning
 	return VR_RuntimePath();
 }
 
-extern "C" void VR_CALLTYPE WOVR_ShutdownInternal()
+WOVR_EXPORT void  WOVR_ShutdownInternal()
 {
 	VR_ShutdownInternal();
 }
