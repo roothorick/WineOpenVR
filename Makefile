@@ -6,7 +6,7 @@ CXXFLAGS=-Isrc
 CXXFLAGS_32=-m32 $(CXXFLAGS)
 CXXFLAGS_64=$(CXXFLAGS)
 
-LDFLAGS=-shared -mno-cygwin -lopenvr_api
+LDFLAGS=-shared -lopenvr_api
 LDFLAGS_32=-Lopenvr/bin/linux32 -L$(WINEPATH_32) -L$(WINEPATH_32)/wine -m32 $(LDFLAGS)
 LDFLAGS_64=-Lopenvr/bin/linux64 -L$(WINEPATH_64) -L$(WINEPATH_64)/wine $(LDFLAGS)
 
