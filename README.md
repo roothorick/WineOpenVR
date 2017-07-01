@@ -4,8 +4,8 @@ Wrapper connecting Windows apps in Wine to native SteamVR
 ## Installation and use
 
 1. Install Wine, Steam, and Linux SteamVR. **Do not install Windows SteamVR in Wine.** Make sure SteamVR is working correctly (i.e. Home starts up okay and you get an image in the headset).
-2. Clone repo and compile. (`cd src && make`)
-3. Put `openvr/lib/linux32/libopenvr_api.so` in your `LD_LIBRARY_PATH` and `src/openvr_api.dll.so` in your `WINEDLLPATH`.
+2. Clone repo and `make`.
+3. Put `openvr/lib/linux32/libopenvr_api.so` and `openvr/lib/linux64/libopenvr_api.so` somewhere in your `LD_LIBRARY_PATH` folders; put `bin32/openvr_api.dll.so` and `bin64/openvr_api.dll.so` somewhere in your `WINEDLLPATH` folders.
 4. Run applications with `~/.local/share/Steam/ubuntu12_32/steam-runtime/run.sh wine vrapp.exe`
 
 ## C++ ABI differences
