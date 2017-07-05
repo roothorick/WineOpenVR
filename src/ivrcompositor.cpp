@@ -90,7 +90,7 @@ public:
 			switch(pTexture->eType)
 			{
 				case TextureType_DirectX:
-					printf("WOVR info: IVRCompositor::Submit: DirectX 9/10/11 application.\n");
+					printf("WOVR info: IVRCompositor::Submit: DirectX 11 application.\n");
 					break;
 
 				case TextureType_OpenGL:
