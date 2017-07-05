@@ -1,4 +1,5 @@
 #include "common.h"
+#include "d3dproxy.h"
 
 class clone_IVRCompositor
 {
@@ -110,7 +111,10 @@ public:
 			}
 		}
 
-		return realImpl->Submit(eEye, pTexture, pBounds, nSubmitFlags);
+		if(pTexture->eType == TextureType_DirectX || pTexture->eType == TextureType_DirectX12)
+			return D3DProxy()->Submit(eEye, pTexture, pBounds, nSubmitFlags);
+		else // Natively supported (OpenGL or Vulkan); pass directly.
+			return realImpl->Submit(eEye, pTexture, pBounds, nSubmitFlags);
 	}
 
 	WOVR_ENTRY void ClearLastSubmittedFrame()
@@ -172,7 +176,10 @@ public:
 
 	WOVR_ENTRY EVRCompositorError SetSkyboxOverride( VR_ARRAY_COUNT( unTextureCount ) const Texture_t *pTextures, uint32_t unTextureCount )
 	{
-		return realImpl->SetSkyboxOverride(pTextures, unTextureCount);
+		if(pTextures->eType == TextureType_DirectX || pTextures->eType == TextureType_DirectX12)
+			return D3DProxy()->SetSkyboxOverride(pTextures, unTextureCount);
+		else // Natively supported (OpenGL or Vulkan); pass directly.
+			return realImpl->SetSkyboxOverride(pTextures, unTextureCount);
 	}
 
 	WOVR_ENTRY void ClearSkyboxOverride()
@@ -267,13 +274,12 @@ public:
 
 	WOVR_ENTRY vr::EVRCompositorError GetMirrorTextureD3D11( vr::EVREye eEye, void *pD3D11DeviceOrResource, void **ppD3D11ShaderResourceView )
 	{
-		printf("WOVR fixme: GetMirrorTextureD3D11 stub!\n");
-		return VRCompositorError_RequestFailed;
+		return D3DProxy()->GetMirrorTextureD3D11(eEye, pD3D11DeviceOrResource, ppD3D11ShaderResourceView);
 	}
 
 	WOVR_ENTRY void ReleaseMirrorTextureD3D11( void *pD3D11ShaderResourceView )
 	{
-		printf("WOVR fixme: ReleaseMirrorTextureD3D11 stub!\n");
+		D3DProxy()->ReleaseMirrorTextureD3D11(pD3D11ShaderResourceView);
 		return;
 	}
 

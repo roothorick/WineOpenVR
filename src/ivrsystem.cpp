@@ -1,4 +1,5 @@
 #include "common.h"
+#include "d3dproxy.h"
 #include "repacked_structs.h"
 
 class clone_IVRSystem
@@ -93,16 +94,12 @@ public:
 
 	WOVR_ENTRY int32_t GetD3D9AdapterIndex()
 	{
-		// STUB
-		printf("WOVR fixme: GetD3D9AdapterIndex stub!\n");
-		return 0;
+		return D3DProxy()->GetD3D9AdapterIndex();
 	}
 
 	WOVR_ENTRY void GetDXGIOutputInfo( int32_t *pnAdapterIndex )
 	{
-		// STUB
-		printf("WOVR fixme: GetDXGIOutputInfo stub!\n");
-		pnAdapterIndex = 0;
+		D3DProxy()->GetDXGIOutputInfo(pnAdapterIndex);
 		return;
 	}
 

@@ -1,4 +1,5 @@
 #include "common.h"
+#include "d3dproxy.h"
 
 class clone_IVRTrackedCamera
 {
@@ -69,8 +70,7 @@ public:
 
 	WOVR_ENTRY virtual vr::EVRTrackedCameraError GetVideoStreamTextureD3D11( vr::TrackedCameraHandle_t hTrackedCamera, vr::EVRTrackedCameraFrameType eFrameType, void *pD3D11DeviceOrResource, void **ppD3D11ShaderResourceView, vr::CameraVideoStreamFrameHeader_t *pFrameHeader, uint32_t nFrameHeaderSize )
 	{
-		printf("WOVR fixme: IVRTrackedCamera::GetVideoStreamTextureD3D11 stub!\n");
-		return VRTrackedCameraError_NotSupportedForThisDevice;
+		return D3DProxy()->GetVideoStreamTextureD3D11(hTrackedCamera, eFrameType, pD3D11DeviceOrResource, ppD3D11ShaderResourceView, pFrameHeader, nFrameHeaderSize);
 	}
 
 	WOVR_ENTRY virtual vr::EVRTrackedCameraError GetVideoStreamTextureGL( vr::TrackedCameraHandle_t hTrackedCamera, vr::EVRTrackedCameraFrameType eFrameType, vr::glUInt_t *pglTextureId, vr::CameraVideoStreamFrameHeader_t *pFrameHeader, uint32_t nFrameHeaderSize )

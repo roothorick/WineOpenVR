@@ -1,5 +1,6 @@
 #include "common.h"
 #include "repacked_structs.h"
+#include "d3dproxy.h"
 
 /*
 WARNING: openvr.h does not specify packing alignment for these structs:
@@ -399,7 +400,10 @@ public:
 
 	WOVR_ENTRY EVROverlayError SetOverlayTexture( VROverlayHandle_t ulOverlayHandle, const Texture_t *pTexture )
 	{
-		return realImpl->SetOverlayTexture(ulOverlayHandle, pTexture);
+		if(pTexture->eType == TextureType_DirectX || pTexture->eType == TextureType_DirectX12)
+			return D3DProxy()->SetOverlayTexture(ulOverlayHandle, pTexture);
+		else // Natively supported (OpenGL or Vulkan); pass directly.
+			return realImpl->SetOverlayTexture(ulOverlayHandle, pTexture);
 	}
 
 	WOVR_ENTRY EVROverlayError ClearOverlayTexture( VROverlayHandle_t ulOverlayHandle )
@@ -419,7 +423,10 @@ public:
 
 	WOVR_ENTRY EVROverlayError GetOverlayTexture( VROverlayHandle_t ulOverlayHandle, void **pNativeTextureHandle, void *pNativeTextureRef, uint32_t *pWidth, uint32_t *pHeight, uint32_t *pNativeFormat, ETextureType *pAPIType, EColorSpace *pColorSpace, VRTextureBounds_t *pTextureBounds )
 	{
-		return realImpl->GetOverlayTexture(ulOverlayHandle, pNativeTextureHandle, pNativeTextureRef, pWidth, pHeight, pNativeFormat, pAPIType, pColorSpace, pTextureBounds);
+		if(*pAPIType == TextureType_DirectX || *pAPIType == TextureType_DirectX12)
+			return D3DProxy()->GetOverlayTexture(ulOverlayHandle, pNativeTextureHandle, pNativeTextureRef, pWidth, pHeight, pNativeFormat, pAPIType, pColorSpace, pTextureBounds);
+		else // Natively supported (OpenGL or Vulkan); pass directly.
+			return realImpl->GetOverlayTexture(ulOverlayHandle, pNativeTextureHandle, pNativeTextureRef, pWidth, pHeight, pNativeFormat, pAPIType, pColorSpace, pTextureBounds);
 	}
 
 	WOVR_ENTRY EVROverlayError ReleaseNativeOverlayHandle( VROverlayHandle_t ulOverlayHandle, void *pNativeTextureHandle )

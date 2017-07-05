@@ -1,4 +1,5 @@
 #include "common.h"
+#include "d3dproxy.h"
 
 /*
 This probably won't ever work correctly, but this part of the API isn't intended for production use anyway.
@@ -32,10 +33,7 @@ public:
 
 	WOVR_ENTRY void GetDXGIOutputInfo( int32_t *pnAdapterIndex, int32_t *pnAdapterOutputIndex )
 	{
-		printf("WOVR fixme: IVRExtendedDisplay::GetDXGIOutputInfo stub!\n");
-		*pnAdapterIndex = -1;
-		*pnAdapterOutputIndex = -1;
-		return;
+		D3DProxy()->ExtendedDisplay_GetDXGIOutputInfo(pnAdapterIndex, pnAdapterOutputIndex);
 	}
 
 private:

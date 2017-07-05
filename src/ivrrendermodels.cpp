@@ -1,5 +1,6 @@
 #include "common.h"
 #include "repacked_structs.h"
+#include "d3dproxy.h"
 
 class clone_IVRRenderModels
 {
@@ -84,20 +85,17 @@ public:
 
 	WOVR_ENTRY EVRRenderModelError LoadTextureD3D11_Async( TextureID_t textureId, void *pD3D11Device, void **ppD3D11Texture2D )
 	{
-		printf("WOVR fixme: LoadTextureD3D11_Async stub!\n");
-		return VRRenderModelError_NotSupported;
+		return D3DProxy()->LoadTextureD3D11_Async(textureId, pD3D11Device, ppD3D11Texture2D);
 	}
 
 	WOVR_ENTRY EVRRenderModelError LoadIntoTextureD3D11_Async( TextureID_t textureId, void *pDstTexture )
 	{
-		printf("WOVR fixme: LoadIntoTextureD3D11_Async stub!\n");
-		return VRRenderModelError_NotSupported;
-
+		return D3DProxy()->LoadIntoTextureD3D11_Async(textureId, pDstTexture);
 	}
 
 	WOVR_ENTRY void FreeTextureD3D11( void *pD3D11Texture2D )
 	{
-		printf("WOVR fixme: FreeTextureD3D11 stub!\n");
+		D3DProxy()->FreeTextureD3D11(pD3D11Texture2D);
 		return;
 	}
 

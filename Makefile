@@ -12,6 +12,7 @@ LDFLAGS_64=-Lopenvr/bin/linux64 -L$(WINEPATH_64) -L$(WINEPATH_64)/wine $(LDFLAGS
 
 SOURCES= \
 	wovr_exports.cpp \
+	d3dproxy.cpp \
 	ivrsystem.cpp \
 	ivrapplications.cpp \
 	ivrsettings.cpp \
