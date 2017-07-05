@@ -83,6 +83,33 @@ public:
 
 	WOVR_ENTRY EVRCompositorError Submit( EVREye eEye, const Texture_t *pTexture, const VRTextureBounds_t* pBounds, EVRSubmitFlags nSubmitFlags )
 	{
+		static bool bReportedTextureType = false;
+		if(!bReportedTextureType)
+		{
+			switch(pTexture->eType)
+			{
+				case TextureType_DirectX:
+					printf("WOVR info: IVRCompositor::Submit: DirectX 9/10/11 application.\n");
+					break;
+
+				case TextureType_OpenGL:
+					printf("WOVR info: IVRCompositor::Submit: OpenGL application.\n");
+					break;
+
+				case TextureType_Vulkan:
+					printf("WOVR info: IVRCompositor::Submit: Vulkan application.\n");
+					break;
+
+				case TextureType_DirectX12:
+					printf("WOVR info: IVRCompositor::Submit: DirectX 12 application.\n");
+					break;
+
+				default:
+					printf("WOVR error: IVRCompositor::Submit: Unknown texture type!\n");
+					return VRCompositorError_InvalidTexture;
+			}
+		}
+
 		return realImpl->Submit(eEye, pTexture, pBounds, nSubmitFlags);
 	}
 
