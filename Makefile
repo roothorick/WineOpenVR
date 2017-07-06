@@ -44,19 +44,19 @@ all: $(DLL_32) $(DLL_64)
 clean:
 	rm -rf bin32 bin64
 
-$(DLL_32): $(OBJECTS_32) $(SPECFILE) bin32
-	$(CXX) $(LDFLAGS_32) $(SPECFILE) -o $@ $(OBJECTS_32)
+$(DLL_32): $(OBJECTS_32) $(SPECFILE)
+	@mkdir -p bin32
+	$(CXX) $(SPECFILE) -o $@ $(OBJECTS_32) $(LDFLAGS_32)
 
-$(DLL_64): $(OBJECTS_64) $(SPECFILE) bin64
-	$(CXX) $(LDFLAGS_64) $(SPECFILE) -o $@ $(OBJECTS_64)
+$(DLL_64): $(OBJECTS_64) $(SPECFILE)
+	@mkdir -p bin64
+	$(CXX) $(SPECFILE) -o $@ $(OBJECTS_64) $(LDFLAGS_64)
 
 
-$(OBJECTS_32): bin32/%.o: src/%.cpp bin32
+$(OBJECTS_32): bin32/%.o: src/%.cpp src/*.h
+	@mkdir -p bin32
 	$(CXX) -c $(CXXFLAGS_32) -o $@ $<
 
-$(OBJECTS_64): bin64/%.o: src/%.cpp bin64
+$(OBJECTS_64): bin64/%.o: src/%.cpp src/*.h
+	@mkdir -p bin64
 	$(CXX) -c $(CXXFLAGS_64) -o $@ $<
-
-
-bin32 bin64:
-	mkdir -p $@
