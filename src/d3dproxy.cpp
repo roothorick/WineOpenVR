@@ -1,8 +1,17 @@
 #include "d3dproxy.h"
-#include <d3d11.h>
+
+#include <vector>
 #include <cstdio>
 
+#define VK_USE_PLATFORM_WIN32_KHR
+#define VK_USE_PLATFORM_WIN32_KHX
+#include <vulkan/vulkan.h>
+
+#include <d3d11.h>
+
 bool initted = false;
+
+VkInstance instance;
 
 int32_t ID3DProxy::GetD3D9AdapterIndex()
 {
@@ -17,7 +26,6 @@ void ID3DProxy::GetDXGIOutputInfo( int32_t *pnAdapterIndex )
     return;
 }
 
-// IVRCompositor
 EVRCompositorError ID3DProxy::GetMirrorTextureD3D11( EVREye eEye, void *pD3D11DeviceOrResource, void **ppD3D11ShaderResourceView )
 {
     printf("WOVR fixme: ID3DProxy::GetMirrorTextureD3D11 stub!\n");
@@ -85,13 +93,94 @@ void ID3DProxy::ExtendedDisplay_GetDXGIOutputInfo( int32_t *pnAdapterIndex, int3
 EVRTrackedCameraError ID3DProxy::GetVideoStreamTextureD3D11( TrackedCameraHandle_t hTrackedCamera, EVRTrackedCameraFrameType eFrameType, void *pD3D11DeviceOrResource, void **ppD3D11ShaderResourceView, CameraVideoStreamFrameHeader_t *pFrameHeader, uint32_t nFrameHeaderSize )
 {
     printf("WOVR fixme: ID3DProxy::GetVideoStreamTextureD3D11 stub!\n");
+    return VRTrackedCameraError_OperationFailed;
+}
+
+void arrayizeStr(char* in, std::vector<const char*> out, int len)
+{
+    out.clear();
+    for(int i=0; i<len; i++)
+    {
+        if(in[i] == ' ' && in[i+1] != '\0')
+        {
+            out.push_back( &(in[i+1]) );
+            in[i] = '\0';
+        }
+    }
+}
+
+static VKAPI_ATTR VkBool32 VKAPI_CALL printVkError( VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType, uint64_t obj, size_t location, int32_t code, const char* layerPrefix, const char* msg, void* userData)
+{
+    printf("WOVR warning: D3DProxy printVkError: %s\n", msg);
+    return VK_FALSE;
 }
 
 bool Init()
 {
-    // TODO
+    printf("WOVR info: D3DProxy Init: setting up Vulkan\n");
+
+    VkApplicationInfo appInfo = {};
+    appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
+    appInfo.pApplicationName = "WineOpenVR";
+    appInfo.applicationVersion = 0x000001; // pre-alpha
+    appInfo.pEngineName = "Wine";
+    // XXX: Should query Wine version somehow
+    appInfo.engineVersion = 0x020B00; // Assuming 2.11 (-staging, but that's implied by using Vulkan at all)
+    appInfo.apiVersion = VK_API_VERSION_1_0;
+
+    // Used for getting instance and device extensions
+    char* in_exts;
+    std::vector<const char*> out_exts;
+    int len;
+
+    // Get instance extensions needed
+    len = VRCompositor()->GetVulkanInstanceExtensionsRequired(NULL, 0);
+    if(len > 0)
+    {
+        in_exts = new char[len];
+        VRCompositor()->GetVulkanInstanceExtensionsRequired(in_exts, len);
+        arrayizeStr(in_exts, out_exts, len);
+    }
+    else printf ("WOVR warning: D3DProxy Init: No instance extensions needed?\n");
+
+    // Needed for texture sharing with D3D (which is the whole point!)
+    out_exts.push_back(VK_KHX_EXTERNAL_MEMORY_WIN32_EXTENSION_NAME);
+
+    // Needed to print messages from validation layers.
+    // We COULD do without...technically. But we REALLY don't want to.
+    // Besides, what are the odds it's not available?
+    out_exts.push_back(VK_EXT_DEBUG_REPORT_EXTENSION_NAME);
+
+    VkInstanceCreateInfo instanceInfo = {};
+    instanceInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+    instanceInfo.pApplicationInfo = &appInfo;
+    instanceInfo.enabledLayerCount = 0;
+    // instanceInfo.ppEnabledLayerNames = ...
+    instanceInfo.enabledExtensionCount = out_exts.size();
+    instanceInfo.ppEnabledExtensionNames = out_exts.data();
+
+    VkResult res = vkCreateInstance(&instanceInfo, NULL, &instance);
+    if(res != VK_SUCCESS)
+    {
+        printf("WOVR error: D3DProxy Init: failed to create Vulkan instance!\n");
+        printf("WOVR error: This is usually caused by graphics drivers or Wine being too old or incompatible.\n");
+        printf("WOVR error: Verify your system meets the requirements.\n");
+        return false;
+    }
+
+
+
     return true;
 }
+
+// In case we ever find an application that'll shutdown VR but continue with something else, or even start VR multiple
+// times.
+/*
+void D3DProxy_Shutdown()
+{
+    vkDestroyInstance(&instance, NULL);
+}
+*/
 
 ID3DProxy* D3DProxy()
 {
