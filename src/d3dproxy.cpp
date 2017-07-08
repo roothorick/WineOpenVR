@@ -119,53 +119,57 @@ bool Init()
 {
     printf("WOVR info: D3DProxy Init: setting up Vulkan\n");
 
-    VkApplicationInfo appInfo = {};
-    appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
-    appInfo.pApplicationName = "WineOpenVR";
-    appInfo.applicationVersion = 0x000001; // pre-alpha
-    appInfo.pEngineName = "Wine";
-    // XXX: Should query Wine version somehow
-    appInfo.engineVersion = 0x020B00; // Assuming 2.11 (-staging, but that's implied by using Vulkan at all)
-    appInfo.apiVersion = VK_API_VERSION_1_0;
+    // ====================== Instance Creation
 
-    // Used for getting instance and device extensions
-    char* in_exts;
-    std::vector<const char*> out_exts;
-    int len;
-
-    // Get instance extensions needed
-    len = VRCompositor()->GetVulkanInstanceExtensionsRequired(NULL, 0);
-    if(len > 0)
     {
-        in_exts = new char[len];
-        VRCompositor()->GetVulkanInstanceExtensionsRequired(in_exts, len);
-        arrayizeStr(in_exts, out_exts, len);
-    }
-    else printf ("WOVR warning: D3DProxy Init: No instance extensions needed?\n");
+        VkApplicationInfo appInfo = {};
+        appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
+        appInfo.pApplicationName = "WineOpenVR";
+        appInfo.applicationVersion = 0x000001; // pre-alpha
+        appInfo.pEngineName = "Wine";
+        // XXX: Should query Wine version somehow
+        appInfo.engineVersion = 0x020B00; // Assuming 2.11 (-staging, but that's implied by using Vulkan at all)
+        appInfo.apiVersion = VK_API_VERSION_1_0;
 
-    // Needed for texture sharing with D3D (which is the whole point!)
-    out_exts.push_back(VK_KHX_EXTERNAL_MEMORY_WIN32_EXTENSION_NAME);
+        // Used for getting instance and device extensions
+        char* in_exts;
+        std::vector<const char*> out_exts;
+        int len;
 
-    // Needed to print messages from validation layers.
-    // We COULD do without...technically. But we REALLY don't want to.
-    // Besides, what are the odds it's not available?
-    out_exts.push_back(VK_EXT_DEBUG_REPORT_EXTENSION_NAME);
+        // Get instance extensions needed
+        len = VRCompositor()->GetVulkanInstanceExtensionsRequired(NULL, 0);
+        if(len > 0)
+        {
+            in_exts = new char[len];
+            VRCompositor()->GetVulkanInstanceExtensionsRequired(in_exts, len);
+            arrayizeStr(in_exts, out_exts, len);
+        }
+        else printf ("WOVR warning: D3DProxy Init: No instance extensions needed?\n");
 
-    VkInstanceCreateInfo instanceInfo = {};
-    instanceInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-    instanceInfo.pApplicationInfo = &appInfo;
-    instanceInfo.enabledLayerCount = 0;
-    // instanceInfo.ppEnabledLayerNames = ...
-    instanceInfo.enabledExtensionCount = out_exts.size();
-    instanceInfo.ppEnabledExtensionNames = out_exts.data();
+        // Needed for texture sharing with D3D (which is the whole point!)
+        out_exts.push_back(VK_KHX_EXTERNAL_MEMORY_WIN32_EXTENSION_NAME);
 
-    VkResult res = vkCreateInstance(&instanceInfo, NULL, &instance);
-    if(res != VK_SUCCESS)
-    {
-        printf("WOVR error: D3DProxy Init: failed to create Vulkan instance!\n");
-        printf("WOVR error: This is usually caused by graphics drivers or Wine being too old or incompatible.\n");
-        printf("WOVR error: Verify your system meets the requirements.\n");
-        return false;
+        // Needed to print messages from validation layers.
+        // We COULD do without...technically. But we REALLY don't want to.
+        // Besides, what are the odds it's not available?
+        out_exts.push_back(VK_EXT_DEBUG_REPORT_EXTENSION_NAME);
+
+        VkInstanceCreateInfo instanceInfo = {};
+        instanceInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+        instanceInfo.pApplicationInfo = &appInfo;
+        instanceInfo.enabledLayerCount = 0;
+        // instanceInfo.ppEnabledLayerNames = ...
+        instanceInfo.enabledExtensionCount = out_exts.size();
+        instanceInfo.ppEnabledExtensionNames = out_exts.data();
+
+        VkResult res = vkCreateInstance(&instanceInfo, NULL, &instance);
+        if(res != VK_SUCCESS)
+        {
+            printf("WOVR error: D3DProxy Init: failed to create Vulkan instance!\n");
+            printf("WOVR error: This is usually caused by graphics drivers or Wine being too old or incompatible.\n");
+            printf("WOVR error: Verify your system meets the requirements.\n");
+            return false;
+        }
     }
 
 
