@@ -1,0 +1,1 @@
+We really don't need the latest and greatest Vulkan stuff, just newer than a certain version. For the sake of avoiding extra variables and changes the code may potentially have to deal with, we're generating a vkel.c and vkel.h out-of-tree and copying it directly into the WOVR repository. We'll manually update these if/when needed.
