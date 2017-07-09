@@ -34,7 +34,9 @@ public:
 	WOVR_ENTRY virtual vr::EVRApplicationError LaunchApplicationFromMimeType( const char *pchMimeType, const char *pchArgs ) = 0;
 #endif
 	WOVR_ENTRY virtual EVRApplicationError LaunchDashboardOverlay( const char *pchAppKey ) = 0;
+#if ABIVER >= 4
 	WOVR_ENTRY virtual bool CancelApplicationLaunch( const char *pchAppKey ) = 0;
+#endif
 	WOVR_ENTRY virtual EVRApplicationError IdentifyApplication( uint32_t unProcessId, const char *pchAppKey ) = 0;
 	WOVR_ENTRY virtual uint32_t GetApplicationProcessId( const char *pchAppKey ) = 0;
 	WOVR_ENTRY virtual const char *GetApplicationsErrorNameFromEnum( EVRApplicationError error ) = 0;
@@ -116,10 +118,12 @@ public:
 		return VRApplications()->LaunchDashboardOverlay(pchAppKey);
 	}
 
+#if ABIVER >= 4
 	WOVR_ENTRY bool CancelApplicationLaunch( const char *pchAppKey )
 	{
 		return VRApplications()->CancelApplicationLaunch(pchAppKey);
 	}
+#endif
 
 	WOVR_ENTRY EVRApplicationError IdentifyApplication( uint32_t unProcessId, const char *pchAppKey )
 	{
