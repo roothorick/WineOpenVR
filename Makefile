@@ -19,6 +19,7 @@ SOURCES= \
 	ivrsystem_015.cpp \
 	ivrsystem_016.cpp \
 	\
+	ivrapplications_005.cpp \
 	ivrapplications_006.cpp \
 	\
 	ivrsettings_002.cpp \

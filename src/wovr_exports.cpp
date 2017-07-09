@@ -27,6 +27,8 @@ WOVR_EXPORT void * WOVR_GetGenericInterface(const char *pchInterfaceVersion, EVR
 		return getIVRSystemProxy_016();
 
 	// IVRApplications
+	if( strcmp(pchInterfaceVersion, "IVRApplications_005") != 0)
+		return getIVRApplicationsProxy_005();
 	if( strcmp(pchInterfaceVersion, "IVRApplications_006") != 0)
 		return getIVRApplicationsProxy_006();
 

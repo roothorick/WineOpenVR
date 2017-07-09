@@ -25,6 +25,7 @@ vr::IVRSystem* getIVRSystemProxy_014();
 vr::IVRSystem* getIVRSystemProxy_015();
 vr::IVRSystem* getIVRSystemProxy_016();
 
+vr::IVRApplications* getIVRApplicationsProxy_005();
 vr::IVRApplications* getIVRApplicationsProxy_006();
 
 vr::IVRSettings* getIVRSettingsProxy_002();
