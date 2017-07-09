@@ -30,7 +30,8 @@ SOURCES= \
 	\
 	ivroverlay_016.cpp \
 	\
-	ivrrendermodels.cpp \
+	ivrrendermodels_005.cpp \
+	\
 	ivrextendeddisplay.cpp \
 	ivrtrackedcamera.cpp \
 	ivrscreenshots.cpp \
