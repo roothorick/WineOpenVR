@@ -21,6 +21,7 @@ SOURCES= \
 	ivrsystem/ivrsystem_015.cpp \
 	ivrsystem/ivrsystem_016.cpp \
 	\
+	ivrapplications/ivrapplications_002.cpp \
 	ivrapplications/ivrapplications_003.cpp \
 	ivrapplications/ivrapplications_004.cpp \
 	ivrapplications/ivrapplications_005.cpp \

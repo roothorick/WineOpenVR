@@ -15,6 +15,7 @@ vr::IVRSystem* getIVRSystemProxy_014();
 vr::IVRSystem* getIVRSystemProxy_015();
 vr::IVRSystem* getIVRSystemProxy_016();
 
+vr::IVRApplications* getIVRApplicationsProxy_002();
 vr::IVRApplications* getIVRApplicationsProxy_003();
 vr::IVRApplications* getIVRApplicationsProxy_004();
 vr::IVRApplications* getIVRApplicationsProxy_005();
@@ -82,6 +83,8 @@ WOVR_EXPORT void * WOVR_GetGenericInterface(const char *pchInterfaceVersion, EVR
 	if( strcmp(pchInterfaceVersion, "IVRSystem_016") != 0 )
 		return getIVRSystemProxy_016();
 
+	if( strcmp(pchInterfaceVersion, "IVRApplications_002") != 0)
+		return getIVRApplicationsProxy_002();
 	if( strcmp(pchInterfaceVersion, "IVRApplications_003") != 0)
 		return getIVRApplicationsProxy_003();
 	if( strcmp(pchInterfaceVersion, "IVRApplications_004") != 0)
