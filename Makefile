@@ -33,7 +33,9 @@ SOURCES= \
 	ivrrendermodels_005.cpp \
 	\
 	ivrextendeddisplay.cpp \
-	ivrtrackedcamera.cpp \
+	\
+	ivrtrackedcamera_003.cpp \
+	\
 	ivrscreenshots.cpp \
 	ivrresources.cpp
 
