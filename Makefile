@@ -14,10 +14,10 @@ SOURCES= \
 	wovr_exports.cpp \
 	d3dproxy.cpp \
 	\
-	ivrsystem_012.cpp \
-	ivrsystem_014.cpp \
-	ivrsystem_015.cpp \
-	ivrsystem_016.cpp \
+	ivrsystem/ivrsystem_012.cpp \
+	ivrsystem/ivrsystem_014.cpp \
+	ivrsystem/ivrsystem_015.cpp \
+	ivrsystem/ivrsystem_016.cpp \
 	\
 	ivrapplications/ivrapplications_005.cpp \
 	ivrapplications/ivrapplications_006.cpp \
