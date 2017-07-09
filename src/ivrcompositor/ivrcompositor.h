@@ -55,8 +55,10 @@ public:
 	WOVR_ENTRY virtual void CompositorDumpImages() = 0;
 	WOVR_ENTRY virtual bool ShouldAppRenderWithLowResources() = 0;
 	WOVR_ENTRY virtual void ForceInterleavedReprojectionOn( bool bOverride ) = 0;
+#if ABIVER >= 14
 	WOVR_ENTRY virtual void ForceReconnectProcess() = 0;
 	WOVR_ENTRY virtual void SuspendRendering( bool bSuspend ) = 0;
+#endif
 #if ABIVER >= 15
 #if ABIVER < 16
 	WOVR_ENTRY virtual vr::EVRCompositorError RequestScreenshot( vr::EVRScreenshotType type, const char *pchDestinationFileName, const char *pchVRDestinationFileName ) = 0;
@@ -290,6 +292,7 @@ public:
 		return;
 	}
 
+#if ABIVER >= 14
 	WOVR_ENTRY void ForceReconnectProcess()
 	{
 		VRCompositor()->ForceReconnectProcess();
@@ -301,6 +304,7 @@ public:
 		VRCompositor()->SuspendRendering(bSuspend);
 		return;
 	}
+#endif
 
 #if ABIVER >= 15
 #if ABIVER < 16
