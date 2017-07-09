@@ -17,6 +17,11 @@ void ID3DProxy::GetDXGIOutputInfo( int32_t *pnAdapterIndex )
     return;
 }
 
+void ID3DProxy::GetOutputDevice( uint64_t *pnDevice, ETextureType textureType )
+{
+    printf("WOVR fixme: ID3DProxy::GetOutputDevice stub!\n");
+}
+
 // IVRCompositor
 EVRCompositorError ID3DProxy::GetMirrorTextureD3D11( EVREye eEye, void *pD3D11DeviceOrResource, void **ppD3D11ShaderResourceView )
 {

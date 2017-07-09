@@ -13,6 +13,7 @@ public:
 	WOVR_ENTRY virtual bool GetTimeSinceLastVsync( float *pfSecondsSinceLastVsync, uint64_t *pulFrameCounter ) = 0;
 	WOVR_ENTRY virtual int32_t GetD3D9AdapterIndex() = 0;
 	WOVR_ENTRY virtual void GetDXGIOutputInfo( int32_t *pnAdapterIndex ) = 0;
+	WOVR_ENTRY virtual void GetOutputDevice( uint64_t *pnDevice, ETextureType textureType ) = 0;
 	WOVR_ENTRY virtual bool IsDisplayOnDesktop() = 0;
 	WOVR_ENTRY virtual bool SetDisplayVisibility( bool bIsVisibleOnDesktop ) = 0;
 	WOVR_ENTRY virtual void GetDeviceToAbsoluteTrackingPose( ETrackingUniverseOrigin eOrigin, float fPredictedSecondsToPhotonsFromNow, VR_ARRAY_COUNT(unTrackedDevicePoseArrayCount) TrackedDevicePose_t *pTrackedDevicePoseArray, uint32_t unTrackedDevicePoseArrayCount ) = 0;
@@ -100,6 +101,16 @@ public:
 	WOVR_ENTRY void GetDXGIOutputInfo( int32_t *pnAdapterIndex )
 	{
 		D3DProxy()->GetDXGIOutputInfo(pnAdapterIndex);
+		return;
+	}
+
+	WOVR_ENTRY void GetOutputDevice( uint64_t *pnDevice, ETextureType textureType )
+	{
+		if(textureType == TextureType_DirectX || textureType == TextureType_DirectX12)
+			D3DProxy()->GetOutputDevice(pnDevice, textureType);
+		else // Natively supported (OpenGL or Vulkan); pass directly
+			realImpl->GetOutputDevice(pnDevice, textureType);
+
 		return;
 	}
 
