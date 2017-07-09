@@ -31,7 +31,9 @@ public:
 	WOVR_ENTRY virtual bool GetFrameTiming( Compositor_FrameTiming *pTiming, uint32_t unFramesAgo = 0 ) = 0;
 	WOVR_ENTRY virtual uint32_t GetFrameTimings( Compositor_FrameTiming *pTiming, uint32_t nFrames ) = 0;
 	WOVR_ENTRY virtual float GetFrameTimeRemaining() = 0;
+#if ABIVER >= 15
 	WOVR_ENTRY virtual void GetCumulativeStats( Compositor_CumulativeStats *pStats, uint32_t nStatsSizeInBytes ) = 0;
+#endif
 	WOVR_ENTRY virtual void FadeToColor( float fSeconds, float fRed, float fGreen, float fBlue, float fAlpha, bool bBackground = false ) = 0;
 	WOVR_ENTRY virtual void GetCurrentFadeColor( HmdColor_t* ret, bool bBackground = false ) = 0; // ERP hack
 	WOVR_ENTRY virtual void FadeGrid( float fSeconds, bool bFadeIn ) = 0;
@@ -53,6 +55,7 @@ public:
 	WOVR_ENTRY virtual void ForceInterleavedReprojectionOn( bool bOverride ) = 0;
 	WOVR_ENTRY virtual void ForceReconnectProcess() = 0;
 	WOVR_ENTRY virtual void SuspendRendering( bool bSuspend ) = 0;
+#if ABIVER >= 15
 #if ABIVER < 16
 	WOVR_ENTRY virtual vr::EVRCompositorError RequestScreenshot( vr::EVRScreenshotType type, const char *pchDestinationFileName, const char *pchVRDestinationFileName ) = 0;
 	WOVR_ENTRY virtual vr::EVRScreenshotType GetCurrentScreenshotType() = 0;
@@ -65,6 +68,7 @@ public:
 	WOVR_ENTRY virtual bool ReleaseSharedGLTexture( vr::glUInt_t glTextureId, vr::glSharedTextureHandle_t glSharedTextureHandle ) = 0;
 	WOVR_ENTRY virtual void LockGLSharedTextureForAccess( vr::glSharedTextureHandle_t glSharedTextureHandle ) = 0;
 	WOVR_ENTRY virtual void UnlockGLSharedTextureForAccess( vr::glSharedTextureHandle_t glSharedTextureHandle ) = 0;
+#endif // >= 15
 #if ABIVER >= 19
 	WOVR_ENTRY virtual uint32_t GetVulkanInstanceExtensionsRequired( VR_OUT_STRING() char *pchValue, uint32_t unBufferSize ) = 0;
 	WOVR_ENTRY virtual uint32_t GetVulkanDeviceExtensionsRequired( VkPhysicalDevice_T *pPhysicalDevice, VR_OUT_STRING() char *pchValue, uint32_t unBufferSize ) = 0;
@@ -164,11 +168,13 @@ public:
 		return VRCompositor()->GetFrameTimeRemaining();
 	}
 
+#if ABIVER >= 15
 	WOVR_ENTRY void GetCumulativeStats( Compositor_CumulativeStats *pStats, uint32_t nStatsSizeInBytes )
 	{
 		VRCompositor()->GetCumulativeStats(pStats, nStatsSizeInBytes);
 		return;
 	}
+#endif
 
 	WOVR_ENTRY void FadeToColor( float fSeconds, float fRed, float fGreen, float fBlue, float fAlpha, bool bBackground )
 	{
@@ -292,6 +298,7 @@ public:
 		return;
 	}
 
+#if ABIVER >= 15
 #if ABIVER < 16
 	WOVR_ENTRY vr::EVRCompositorError RequestScreenshot( vr::EVRScreenshotType type, const char *pchDestinationFileName, const char *pchVRDestinationFileName )
 	{
@@ -340,6 +347,7 @@ public:
 		VRCompositor()->UnlockGLSharedTextureForAccess(glSharedTextureHandle);
 		return;
 	}
+#endif // >= 15
 
 #if ABIVER >= 19
 	WOVR_ENTRY uint32_t GetVulkanInstanceExtensionsRequired( VR_OUT_STRING() char *pchValue, uint32_t unBufferSize )
