@@ -1,6 +1,23 @@
-#include "ivrapplications.h"
+#include "common.h"
 
-class clone_IVRApplications_005
+#ifndef ABIVER
+#error "No ABIVER?"
+#endif
+
+#define CLONECLASS__(abiver_) clone_IVRApplications_ ## abiver_
+#define CLONECLASS_(abiver) CLONECLASS__(abiver)
+#define CLONECLASS CLONECLASS_(ABIVER)
+#define PROXYCLASS__(abiver_) proxy_IVRApplications_ ## abiver_
+#define PROXYCLASS_(abiver) PROXYCLASS__(abiver)
+#define PROXYCLASS PROXYCLASS_(ABIVER)
+#define GETTER__(abiver_) getIVRApplicationsProxy_ ## abiver_
+#define GETTER_(abiver) GETTER__(abiver)
+#define GETTER GETTER_(ABIVER)
+
+// TODO: This probably should be wrapped a little more intelligently, to give SteamVR wine-based shortcuts instead of
+// the values given directly by the app itself.
+
+class CLONECLASS
 {
 public:
 	WOVR_ENTRY virtual EVRApplicationError AddApplicationManifest( const char *pchApplicationManifestFullPath, bool bTemporary ) = 0;
@@ -11,6 +28,9 @@ public:
 	WOVR_ENTRY virtual EVRApplicationError GetApplicationKeyByProcessId( uint32_t unProcessId, char *pchAppKeyBuffer, uint32_t unAppKeyBufferLen ) = 0;
 	WOVR_ENTRY virtual EVRApplicationError LaunchApplication( const char *pchAppKey ) = 0;
 	WOVR_ENTRY virtual EVRApplicationError LaunchTemplateApplication( const char *pchTemplateAppKey, const char *pchNewAppKey, VR_ARRAY_COUNT( unKeys ) const AppOverrideKeys_t *pKeys, uint32_t unKeys ) = 0;
+#if ABIVER <= 006
+	WOVR_ENTRY virtual vr::EVRApplicationError LaunchApplicationFromMimeType( const char *pchMimeType, const char *pchArgs ) = 0;
+#endif
 	WOVR_ENTRY virtual EVRApplicationError LaunchDashboardOverlay( const char *pchAppKey ) = 0;
 	WOVR_ENTRY virtual bool CancelApplicationLaunch( const char *pchAppKey ) = 0;
 	WOVR_ENTRY virtual EVRApplicationError IdentifyApplication( uint32_t unProcessId, const char *pchAppKey ) = 0;
@@ -21,6 +41,13 @@ public:
 	WOVR_ENTRY virtual uint64_t GetApplicationPropertyUint64( const char *pchAppKey, EVRApplicationProperty eProperty, EVRApplicationError *peError ) = 0;
 	WOVR_ENTRY virtual EVRApplicationError SetApplicationAutoLaunch( const char *pchAppKey, bool bAutoLaunch ) = 0;
 	WOVR_ENTRY virtual bool GetApplicationAutoLaunch( const char *pchAppKey ) = 0;
+#if ABIVER <= 006
+	WOVR_ENTRY virtual EVRApplicationError SetDefaultApplicationForMimeType( const char *pchAppKey, const char *pchMimeType ) = 0;
+	WOVR_ENTRY virtual bool GetDefaultApplicationForMimeType( const char *pchMimeType, char *pchAppKeyBuffer, uint32_t unAppKeyBufferLen ) = 0;
+	WOVR_ENTRY virtual bool GetApplicationSupportedMimeTypes( const char *pchAppKey, char *pchMimeTypesBuffer, uint32_t unMimeTypesBuffer ) = 0;
+	WOVR_ENTRY virtual uint32_t GetApplicationsThatSupportMimeType( const char *pchMimeType, char *pchAppKeysThatSupportBuffer, uint32_t unAppKeysThatSupportBuffer ) = 0;
+	WOVR_ENTRY virtual uint32_t GetApplicationLaunchArguments( uint32_t unHandle, char *pchArgs, uint32_t unArgs ) = 0;
+#endif
 	WOVR_ENTRY virtual EVRApplicationError GetStartingApplication( char *pchAppKeyBuffer, uint32_t unAppKeyBufferLen ) = 0;
 	WOVR_ENTRY virtual EVRApplicationTransitionState GetTransitionState() = 0;
 	WOVR_ENTRY virtual EVRApplicationError PerformApplicationPrelaunchCheck( const char *pchAppKey ) = 0;
@@ -30,137 +57,172 @@ public:
 	WOVR_ENTRY virtual uint32_t GetCurrentSceneProcessId() = 0;
 };
 
-class proxy_IVRApplications_005 : public clone_IVRApplications_005
+class PROXYCLASS : public CLONECLASS
 {
 public:
 	WOVR_ENTRY EVRApplicationError AddApplicationManifest( const char *pchApplicationManifestFullPath, bool bTemporary )
 	{
-		return fns_IVRApplications::AddApplicationManifest(pchApplicationManifestFullPath, bTemporary);
+		return VRApplications()->AddApplicationManifest(pchApplicationManifestFullPath, bTemporary);
 	}
 
 	WOVR_ENTRY EVRApplicationError RemoveApplicationManifest( const char *pchApplicationManifestFullPath )
 	{
-		return fns_IVRApplications::RemoveApplicationManifest(pchApplicationManifestFullPath);
+		return VRApplications()->RemoveApplicationManifest(pchApplicationManifestFullPath);
 	}
 
 	WOVR_ENTRY bool IsApplicationInstalled( const char *pchAppKey )
 	{
-		return fns_IVRApplications::IsApplicationInstalled(pchAppKey);
+		return VRApplications()->IsApplicationInstalled(pchAppKey);
 	}
 
 	WOVR_ENTRY uint32_t GetApplicationCount()
 	{
-		return fns_IVRApplications::GetApplicationCount();
+		return VRApplications()->GetApplicationCount();
 	}
 
 	WOVR_ENTRY EVRApplicationError GetApplicationKeyByIndex( uint32_t unApplicationIndex, VR_OUT_STRING() char *pchAppKeyBuffer, uint32_t unAppKeyBufferLen )
 	{
-		return fns_IVRApplications::GetApplicationKeyByIndex(unApplicationIndex, pchAppKeyBuffer, unAppKeyBufferLen);
+		return VRApplications()->GetApplicationKeyByIndex(unApplicationIndex, pchAppKeyBuffer, unAppKeyBufferLen);
 	}
 
 	WOVR_ENTRY EVRApplicationError GetApplicationKeyByProcessId( uint32_t unProcessId, char *pchAppKeyBuffer, uint32_t unAppKeyBufferLen )
 	{
-		return fns_IVRApplications::GetApplicationKeyByProcessId(unProcessId, pchAppKeyBuffer, unAppKeyBufferLen);
+		return VRApplications()->GetApplicationKeyByProcessId(unProcessId, pchAppKeyBuffer, unAppKeyBufferLen);
 	}
 
 	WOVR_ENTRY EVRApplicationError LaunchApplication( const char *pchAppKey )
 	{
-		return fns_IVRApplications::LaunchApplication(pchAppKey);
+		return VRApplications()->LaunchApplication(pchAppKey);
 	}
 
 	WOVR_ENTRY EVRApplicationError LaunchTemplateApplication( const char *pchTemplateAppKey, const char *pchNewAppKey, VR_ARRAY_COUNT( unKeys ) const AppOverrideKeys_t *pKeys, uint32_t unKeys )
 	{
-		return fns_IVRApplications::LaunchTemplateApplication(pchTemplateAppKey, pchNewAppKey, pKeys, unKeys);
+		return VRApplications()->LaunchTemplateApplication(pchTemplateAppKey, pchNewAppKey, pKeys, unKeys);
 	}
+
+#if ABIVER <= 006
+	WOVR_ENTRY vr::EVRApplicationError LaunchApplicationFromMimeType( const char *pchMimeType, const char *pchArgs )
+	{
+		return VRApplications()->LaunchApplicationFromMimeType(pchMimeType, pchArgs);
+	}
+#endif
 
 	WOVR_ENTRY EVRApplicationError LaunchDashboardOverlay( const char *pchAppKey )
 	{
-		return fns_IVRApplications::LaunchDashboardOverlay(pchAppKey);
+		return VRApplications()->LaunchDashboardOverlay(pchAppKey);
 	}
 
 	WOVR_ENTRY bool CancelApplicationLaunch( const char *pchAppKey )
 	{
-		return fns_IVRApplications::CancelApplicationLaunch(pchAppKey);
+		return VRApplications()->CancelApplicationLaunch(pchAppKey);
 	}
 
 	WOVR_ENTRY EVRApplicationError IdentifyApplication( uint32_t unProcessId, const char *pchAppKey )
 	{
-		return fns_IVRApplications::IdentifyApplication(unProcessId, pchAppKey);
+		return VRApplications()->IdentifyApplication(unProcessId, pchAppKey);
 	}
 
 	WOVR_ENTRY uint32_t GetApplicationProcessId( const char *pchAppKey )
 	{
-		return fns_IVRApplications::GetApplicationProcessId(pchAppKey);
+		return VRApplications()->GetApplicationProcessId(pchAppKey);
 	}
 
 	WOVR_ENTRY const char *GetApplicationsErrorNameFromEnum( EVRApplicationError error )
 	{
-		return fns_IVRApplications::GetApplicationsErrorNameFromEnum(error);
+		return VRApplications()->GetApplicationsErrorNameFromEnum(error);
 	}
 
 	WOVR_ENTRY uint32_t GetApplicationPropertyString( const char *pchAppKey, EVRApplicationProperty eProperty, VR_OUT_STRING() char *pchPropertyValueBuffer, uint32_t unPropertyValueBufferLen, EVRApplicationError *peError )
 	{
-		return fns_IVRApplications::GetApplicationPropertyString(pchAppKey, eProperty, pchPropertyValueBuffer, unPropertyValueBufferLen, peError);
+		return VRApplications()->GetApplicationPropertyString(pchAppKey, eProperty, pchPropertyValueBuffer, unPropertyValueBufferLen, peError);
 	}
 
 	WOVR_ENTRY bool GetApplicationPropertyBool( const char *pchAppKey, EVRApplicationProperty eProperty, EVRApplicationError *peError )
 	{
-		return fns_IVRApplications::GetApplicationPropertyBool(pchAppKey, eProperty, peError);
+		return VRApplications()->GetApplicationPropertyBool(pchAppKey, eProperty, peError);
 	}
 
 	WOVR_ENTRY uint64_t GetApplicationPropertyUint64( const char *pchAppKey, EVRApplicationProperty eProperty, EVRApplicationError *peError )
 	{
-		return fns_IVRApplications::GetApplicationPropertyUint64(pchAppKey, eProperty, peError);
+		return VRApplications()->GetApplicationPropertyUint64(pchAppKey, eProperty, peError);
 	}
 
 	WOVR_ENTRY EVRApplicationError SetApplicationAutoLaunch( const char *pchAppKey, bool bAutoLaunch )
 	{
-		return fns_IVRApplications::SetApplicationAutoLaunch(pchAppKey, bAutoLaunch);
+		return VRApplications()->SetApplicationAutoLaunch(pchAppKey, bAutoLaunch);
 	}
 
 	WOVR_ENTRY bool GetApplicationAutoLaunch( const char *pchAppKey )
 	{
-		return fns_IVRApplications::GetApplicationAutoLaunch(pchAppKey);
+		return VRApplications()->GetApplicationAutoLaunch(pchAppKey);
 	}
+
+#if ABIVER <= 006
+	WOVR_ENTRY EVRApplicationError SetDefaultApplicationForMimeType( const char *pchAppKey, const char *pchMimeType )
+	{
+		return VRApplications()->SetDefaultApplicationForMimeType(pchAppKey, pchMimeType);
+	}
+
+	WOVR_ENTRY bool GetDefaultApplicationForMimeType( const char *pchMimeType, char *pchAppKeyBuffer, uint32_t unAppKeyBufferLen )
+	{
+		return VRApplications()->GetDefaultApplicationForMimeType(pchMimeType, pchAppKeyBuffer, unAppKeyBufferLen);
+	}
+
+	WOVR_ENTRY bool GetApplicationSupportedMimeTypes( const char *pchAppKey, char *pchMimeTypesBuffer, uint32_t unMimeTypesBuffer )
+	{
+		return VRApplications()->GetApplicationSupportedMimeTypes(pchAppKey, pchMimeTypesBuffer, unMimeTypesBuffer);
+	}
+
+	WOVR_ENTRY uint32_t GetApplicationsThatSupportMimeType( const char *pchMimeType, char *pchAppKeysThatSupportBuffer, uint32_t unAppKeysThatSupportBuffer )
+	{
+		return VRApplications()->GetApplicationsThatSupportMimeType(pchMimeType, pchAppKeysThatSupportBuffer, unAppKeysThatSupportBuffer);
+	}
+
+	WOVR_ENTRY uint32_t GetApplicationLaunchArguments( uint32_t unHandle, char *pchArgs, uint32_t unArgs )
+	{
+		return VRApplications()->GetApplicationLaunchArguments(unHandle, pchArgs, unArgs);
+	}
+#endif
 
 	WOVR_ENTRY EVRApplicationError GetStartingApplication( char *pchAppKeyBuffer, uint32_t unAppKeyBufferLen )
 	{
-		return fns_IVRApplications::GetStartingApplication(pchAppKeyBuffer, unAppKeyBufferLen);
+		return VRApplications()->GetStartingApplication(pchAppKeyBuffer, unAppKeyBufferLen);
 	}
 
 	WOVR_ENTRY EVRApplicationTransitionState GetTransitionState()
 	{
-		return fns_IVRApplications::GetTransitionState();
+		return VRApplications()->GetTransitionState();
 	}
 
 	WOVR_ENTRY EVRApplicationError PerformApplicationPrelaunchCheck( const char *pchAppKey )
 	{
-		return fns_IVRApplications::PerformApplicationPrelaunchCheck(pchAppKey);
+		return VRApplications()->PerformApplicationPrelaunchCheck(pchAppKey);
 	}
 
 	WOVR_ENTRY const char *GetApplicationsTransitionStateNameFromEnum( EVRApplicationTransitionState state )
 	{
-		return fns_IVRApplications::GetApplicationsTransitionStateNameFromEnum(state);
+		return VRApplications()->GetApplicationsTransitionStateNameFromEnum(state);
 	}
 
 	WOVR_ENTRY bool IsQuitUserPromptRequested()
 	{
-		return fns_IVRApplications::IsQuitUserPromptRequested();
+		return VRApplications()->IsQuitUserPromptRequested();
 	}
 
 	WOVR_ENTRY EVRApplicationError LaunchInternalProcess( const char *pchBinaryPath, const char *pchArguments, const char *pchWorkingDirectory )
 	{
-		return fns_IVRApplications::LaunchInternalProcess(pchBinaryPath, pchArguments, pchWorkingDirectory);
+		return VRApplications()->LaunchInternalProcess(pchBinaryPath, pchArguments, pchWorkingDirectory);
 	}
 
+	// DANGER: This method was added in 1.0.6 but ABI version was not increased!
 	WOVR_ENTRY uint32_t GetCurrentSceneProcessId()
 	{
-		return fns_IVRApplications::GetCurrentSceneProcessId();
+		return VRApplications()->GetCurrentSceneProcessId();
 	}
 };
 
 // Declared in proxy_getters.h
-IVRApplications* getIVRApplicationsProxy_005()
+IVRApplications* GETTER ()
 {
-	return (IVRApplications*) new proxy_IVRApplications_005();
+	return (IVRApplications*) new PROXYCLASS ();
 }

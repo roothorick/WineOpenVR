@@ -19,8 +19,8 @@ SOURCES= \
 	ivrsystem_015.cpp \
 	ivrsystem_016.cpp \
 	\
-	ivrapplications_005.cpp \
-	ivrapplications_006.cpp \
+	ivrapplications/ivrapplications_005.cpp \
+	ivrapplications/ivrapplications_006.cpp \
 	\
 	ivrsettings_002.cpp \
 	\
@@ -67,16 +67,13 @@ OBJECTS_64=$(SOURCES:%.cpp=bin64/%.o)
 all: $(DLL_32) $(DLL_64)
 
 clean:
-	rm -rf bin32 bin64
+	rm -rf $(OBJECTS_32) $(OBJECTS_64) $(DLL_32) $(DLL_64)
 
 $(DLL_32): $(OBJECTS_32) $(SPECFILE)
-	@mkdir -p bin32
 	$(CXX) $(SPECFILE) -o $@ $(OBJECTS_32) $(LDFLAGS_32)
 
 $(DLL_64): $(OBJECTS_64) $(SPECFILE)
-	@mkdir -p bin64
 	$(CXX) $(SPECFILE) -o $@ $(OBJECTS_64) $(LDFLAGS_64)
-
 
 $(OBJECTS_32): bin32/%.o: src/%.cpp src/*.h
 	@mkdir -p bin32
