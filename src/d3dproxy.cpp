@@ -5,7 +5,7 @@
 
 #define VK_USE_PLATFORM_WIN32_KHR
 #define VK_USE_PLATFORM_WIN32_KHX
-#include <vulkan/vulkan.h>
+#include <vkel.h>
 
 #include <d3d11.h>
 
@@ -119,6 +119,12 @@ bool Init()
 {
     printf("WOVR info: D3DProxy Init: setting up Vulkan\n");
 
+    if(vkelInit() != VK_TRUE)
+    {
+        printf("WOVR error: D3DProxy Init: vkelInit failed!\n");
+        return false;
+    }
+
     // ====================== Instance Creation
 
     {
@@ -170,8 +176,13 @@ bool Init()
             printf("WOVR error: Verify your system meets the requirements.\n");
             return false;
         }
-    }
 
+        if(vkelInstanceInit(instance) != VK_TRUE)
+        {
+            printf("WOVR Error: D3DProxy Init: vkelInstanceInit() failed!\n");
+            return false;
+        }
+    }
 
 
     return true;
