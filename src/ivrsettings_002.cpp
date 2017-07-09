@@ -1,10 +1,6 @@
-#include "common.h"
+#include "ivrsettings.h"
 
-// XXX: IVRSettings contains const static char arrays (i.e. C strings).
-// I expect them to not be stored in the class object itself but instead treated as a constant, but this hasn't been
-// verified.
-
-class clone_IVRSettings
+class clone_IVRSettings_002
 {
 public:
 	WOVR_ENTRY virtual const char *GetSettingsErrorNameFromEnum( EVRSettingsError eError ) = 0;
@@ -21,84 +17,79 @@ public:
 	WOVR_ENTRY virtual void RemoveKeyInSection( const char *pchSection, const char *pchSettingsKey, EVRSettingsError *peError ) = 0;
 };
 
-class proxy_IVRSettings : public clone_IVRSettings
+class proxy_IVRSettings_002 : public clone_IVRSettings_002
 {
 public:
-	proxy_IVRSettings(IVRSettings* real) { realImpl = real; }
-
 	WOVR_ENTRY const char *GetSettingsErrorNameFromEnum( EVRSettingsError eError )
 	{
-		return realImpl->GetSettingsErrorNameFromEnum(eError);
+		return fns_IVRSettings::GetSettingsErrorNameFromEnum(eError);
 	}
 
 	WOVR_ENTRY bool Sync( bool bForce, EVRSettingsError *peError )
 	{
-		return realImpl->Sync(bForce, peError);
+		return fns_IVRSettings::Sync(bForce, peError);
 	}
 
 	WOVR_ENTRY void SetBool( const char *pchSection, const char *pchSettingsKey, bool bValue, EVRSettingsError *peError )
 	{
-		realImpl->SetBool(pchSection, pchSettingsKey, bValue, peError);
+		fns_IVRSettings::SetBool(pchSection, pchSettingsKey, bValue, peError);
 		return;
 	}
 
 	WOVR_ENTRY void SetInt32( const char *pchSection, const char *pchSettingsKey, int32_t nValue, EVRSettingsError *peError )
 	{
-		realImpl->SetInt32(pchSection, pchSettingsKey, nValue, peError);
+		fns_IVRSettings::SetInt32(pchSection, pchSettingsKey, nValue, peError);
 		return;
 	}
 
 	WOVR_ENTRY void SetFloat( const char *pchSection, const char *pchSettingsKey, float flValue, EVRSettingsError *peError )
 	{
-		realImpl->SetFloat(pchSection, pchSettingsKey, flValue, peError);
+		fns_IVRSettings::SetFloat(pchSection, pchSettingsKey, flValue, peError);
 		return;
 	}
 
 	WOVR_ENTRY void SetString( const char *pchSection, const char *pchSettingsKey, const char *pchValue, EVRSettingsError *peError )
 	{
-		realImpl->SetString(pchSection, pchSettingsKey, pchValue, peError);
+		fns_IVRSettings::SetString(pchSection, pchSettingsKey, pchValue, peError);
 		return;
 	}
 
 	WOVR_ENTRY bool GetBool( const char *pchSection, const char *pchSettingsKey, EVRSettingsError *peError )
 	{
-		return realImpl->GetBool(pchSection, pchSettingsKey, peError);
+		return fns_IVRSettings::GetBool(pchSection, pchSettingsKey, peError);
 	}
 
 	WOVR_ENTRY int32_t GetInt32( const char *pchSection, const char *pchSettingsKey, EVRSettingsError *peError )
 	{
-		return realImpl->GetInt32(pchSection, pchSettingsKey, peError);
+		return fns_IVRSettings::GetInt32(pchSection, pchSettingsKey, peError);
 	}
 
 	WOVR_ENTRY float GetFloat( const char *pchSection, const char *pchSettingsKey, EVRSettingsError *peError )
 	{
-		return realImpl->GetFloat(pchSection, pchSettingsKey, peError);
+		return fns_IVRSettings::GetFloat(pchSection, pchSettingsKey, peError);
 	}
 
 	WOVR_ENTRY void GetString( const char *pchSection, const char *pchSettingsKey, VR_OUT_STRING() char *pchValue, uint32_t unValueLen, EVRSettingsError *peError )
 	{
-		realImpl->GetString(pchSection, pchSettingsKey, pchValue, unValueLen, peError);
+		fns_IVRSettings::GetString(pchSection, pchSettingsKey, pchValue, unValueLen, peError);
 		return;
 	}
 
 	WOVR_ENTRY void RemoveSection( const char *pchSection, EVRSettingsError *peError )
 	{
-		realImpl->RemoveSection(pchSection, peError);
+		fns_IVRSettings::RemoveSection(pchSection, peError);
 		return;
 	}
 
 	WOVR_ENTRY void RemoveKeyInSection( const char *pchSection, const char *pchSettingsKey, EVRSettingsError *peError )
 	{
-		realImpl->RemoveKeyInSection(pchSection, pchSettingsKey, peError);
+		fns_IVRSettings::RemoveKeyInSection(pchSection, pchSettingsKey, peError);
 		return;
 	}
-
-private:
-	IVRSettings* realImpl;
 };
 
 // Declared in proxy_getters.h
-IVRSettings* getIVRSettingsProxy(IVRSettings* real)
+IVRSettings* getIVRSettingsProxy_002()
 {
-	return (IVRSettings*) new proxy_IVRSettings(real);
+	return (IVRSettings*) new proxy_IVRSettings_002();
 }

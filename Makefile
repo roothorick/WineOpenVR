@@ -18,7 +18,8 @@ SOURCES= \
 	\
 	ivrapplications_006.cpp \
 	\
-	ivrsettings.cpp \
+	ivrsettings_002.cpp \
+	\
 	ivrchaperone.cpp \
 	ivrchaperonesetup.cpp \
 	ivrcompositor.cpp \
