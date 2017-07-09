@@ -1,5 +1,4 @@
 #include "common.h"
-#include "proxy_getters.h"
 #include <cstring>
 
 #ifdef __x86_64__
@@ -7,6 +6,45 @@
 #else
 #define WOVR_EXPORT extern "C"
 #endif
+
+// These are all defined in their respective ivrxxx_xxx.cpp's
+vr::IVRSystem* getIVRSystemProxy_012();
+vr::IVRSystem* getIVRSystemProxy_014();
+vr::IVRSystem* getIVRSystemProxy_015();
+vr::IVRSystem* getIVRSystemProxy_016();
+
+vr::IVRApplications* getIVRApplicationsProxy_005();
+vr::IVRApplications* getIVRApplicationsProxy_006();
+
+vr::IVRSettings* getIVRSettingsProxy_002();
+
+vr::IVRChaperone* getIVRChaperoneProxy_003();
+
+vr::IVRChaperoneSetup* getIVRChaperoneSetupProxy_005();
+
+vr::IVRCompositor* getIVRCompositorProxy_015();
+vr::IVRCompositor* getIVRCompositorProxy_016();
+vr::IVRCompositor* getIVRCompositorProxy_018();
+vr::IVRCompositor* getIVRCompositorProxy_019();
+vr::IVRCompositor* getIVRCompositorProxy_020();
+
+vr::IVRNotifications* getIVRNotificationsProxy_002();
+
+vr::IVROverlay* getIVROverlayProxy_013();
+vr::IVROverlay* getIVROverlayProxy_014();
+vr::IVROverlay* getIVROverlayProxy_016();
+
+vr::IVRRenderModels* getIVRRenderModelsProxy_005();
+
+vr::IVRTrackedCamera* getIVRTrackedCameraProxy_003();
+
+vr::IVRExtendedDisplay* getIVRExtendedDisplayProxy_001();
+
+vr::IVRScreenshots* getIVRScreenshotsProxy_001();
+
+vr::IVRResources* getIVRResourcesProxy_001();
+
+vr::IVRDriverManager* getIVRDriverManagerProxy_001();
 
 /* Interface dispatcher. Try to acquire the native impl, then create and return our proxy. */
 WOVR_EXPORT void * WOVR_GetGenericInterface(const char *pchInterfaceVersion, EVRInitError *peError)
