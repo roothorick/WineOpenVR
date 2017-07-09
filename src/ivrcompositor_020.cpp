@@ -1,7 +1,6 @@
-#include "common.h"
-#include "d3dproxy.h"
+#include "ivrcompositor.h"
 
-class clone_IVRCompositor
+class clone_IVRCompositor_020
 {
 public:
 	WOVR_ENTRY virtual void SetTrackingSpace( ETrackingUniverseOrigin eOrigin ) = 0;
@@ -49,278 +48,240 @@ public:
 	WOVR_ENTRY virtual uint32_t GetVulkanDeviceExtensionsRequired( VkPhysicalDevice_T *pPhysicalDevice, VR_OUT_STRING() char *pchValue, uint32_t unBufferSize ) = 0;
 };
 
-class proxy_IVRCompositor : public clone_IVRCompositor
+class proxy_IVRCompositor_020 : public clone_IVRCompositor_020
 {
 public:
-	proxy_IVRCompositor(IVRCompositor* real) { realImpl = real; }
-
 	WOVR_ENTRY void SetTrackingSpace( ETrackingUniverseOrigin eOrigin )
 	{
-		realImpl->SetTrackingSpace(eOrigin);
+		fns_IVRCompositor::SetTrackingSpace(eOrigin);
 		return;
 	}
 
 	WOVR_ENTRY ETrackingUniverseOrigin GetTrackingSpace()
 	{
-		return realImpl->GetTrackingSpace();
+		return fns_IVRCompositor::GetTrackingSpace();
 	}
 
 	WOVR_ENTRY EVRCompositorError WaitGetPoses( VR_ARRAY_COUNT(unRenderPoseArrayCount) TrackedDevicePose_t* pRenderPoseArray, uint32_t unRenderPoseArrayCount,
 		VR_ARRAY_COUNT(unGamePoseArrayCount) TrackedDevicePose_t* pGamePoseArray, uint32_t unGamePoseArrayCount )
 	{
-		return realImpl->WaitGetPoses(pRenderPoseArray, unRenderPoseArrayCount, pGamePoseArray, unGamePoseArrayCount);
+		return fns_IVRCompositor::WaitGetPoses(pRenderPoseArray, unRenderPoseArrayCount, pGamePoseArray, unGamePoseArrayCount);
 	}
 
 	WOVR_ENTRY EVRCompositorError GetLastPoses( VR_ARRAY_COUNT( unRenderPoseArrayCount ) TrackedDevicePose_t* pRenderPoseArray, uint32_t unRenderPoseArrayCount,
 		VR_ARRAY_COUNT( unGamePoseArrayCount ) TrackedDevicePose_t* pGamePoseArray, uint32_t unGamePoseArrayCount )
 	{
-		return realImpl->GetLastPoses(pRenderPoseArray, unRenderPoseArrayCount, pGamePoseArray, unGamePoseArrayCount);
+		return fns_IVRCompositor::GetLastPoses(pRenderPoseArray, unRenderPoseArrayCount, pGamePoseArray, unGamePoseArrayCount);
 	}
 
 	WOVR_ENTRY EVRCompositorError GetLastPoseForTrackedDeviceIndex( TrackedDeviceIndex_t unDeviceIndex, TrackedDevicePose_t *pOutputPose, TrackedDevicePose_t *pOutputGamePose )
 	{
-		return realImpl->GetLastPoseForTrackedDeviceIndex(unDeviceIndex, pOutputPose, pOutputGamePose);
+		return fns_IVRCompositor::GetLastPoseForTrackedDeviceIndex(unDeviceIndex, pOutputPose, pOutputGamePose);
 	}
 
 	WOVR_ENTRY EVRCompositorError Submit( EVREye eEye, const Texture_t *pTexture, const VRTextureBounds_t* pBounds, EVRSubmitFlags nSubmitFlags )
 	{
-		static bool bReportedTextureType = false;
-		if(!bReportedTextureType)
-		{
-			switch(pTexture->eType)
-			{
-				case TextureType_DirectX:
-					printf("WOVR info: IVRCompositor::Submit: DirectX 11 application.\n");
-					break;
-
-				case TextureType_OpenGL:
-					printf("WOVR info: IVRCompositor::Submit: OpenGL application.\n");
-					break;
-
-				case TextureType_Vulkan:
-					printf("WOVR info: IVRCompositor::Submit: Vulkan application.\n");
-					break;
-
-				case TextureType_DirectX12:
-					printf("WOVR info: IVRCompositor::Submit: DirectX 12 application.\n");
-					break;
-
-				default:
-					printf("WOVR error: IVRCompositor::Submit: Unknown texture type!\n");
-					return VRCompositorError_InvalidTexture;
-			}
-		}
-
-		if(pTexture->eType == TextureType_DirectX || pTexture->eType == TextureType_DirectX12)
-			return D3DProxy()->Submit(eEye, pTexture, pBounds, nSubmitFlags);
-		else // Natively supported (OpenGL or Vulkan); pass directly.
-			return realImpl->Submit(eEye, pTexture, pBounds, nSubmitFlags);
+		return fns_IVRCompositor::Submit(eEye, pTexture, pBounds, nSubmitFlags);
 	}
 
 	WOVR_ENTRY void ClearLastSubmittedFrame()
 	{
-		realImpl->ClearLastSubmittedFrame();
+		fns_IVRCompositor::ClearLastSubmittedFrame();
 		return;
 	}
 
 	WOVR_ENTRY void PostPresentHandoff()
 	{
-		realImpl->PostPresentHandoff();
+		fns_IVRCompositor::PostPresentHandoff();
 		return;
 	}
 
 	WOVR_ENTRY bool GetFrameTiming( Compositor_FrameTiming *pTiming, uint32_t unFramesAgo )
 	{
-		return realImpl->GetFrameTiming(pTiming, unFramesAgo);
+		return fns_IVRCompositor::GetFrameTiming(pTiming, unFramesAgo);
 	}
 
 	WOVR_ENTRY uint32_t GetFrameTimings( Compositor_FrameTiming *pTiming, uint32_t nFrames )
 	{
-		return realImpl->GetFrameTimings(pTiming, nFrames);
+		return fns_IVRCompositor::GetFrameTimings(pTiming, nFrames);
 	}
 
 	WOVR_ENTRY float GetFrameTimeRemaining()
 	{
-		return realImpl->GetFrameTimeRemaining();
+		return fns_IVRCompositor::GetFrameTimeRemaining();
 	}
 
 	WOVR_ENTRY void GetCumulativeStats( Compositor_CumulativeStats *pStats, uint32_t nStatsSizeInBytes )
 	{
-		realImpl->GetCumulativeStats(pStats, nStatsSizeInBytes);
+		fns_IVRCompositor::GetCumulativeStats(pStats, nStatsSizeInBytes);
 		return;
 	}
 
 	WOVR_ENTRY void FadeToColor( float fSeconds, float fRed, float fGreen, float fBlue, float fAlpha, bool bBackground )
 	{
-		realImpl->FadeToColor(fSeconds, fRed, fGreen, fBlue, fAlpha, bBackground);
+		fns_IVRCompositor::FadeToColor(fSeconds, fRed, fGreen, fBlue, fAlpha, bBackground);
 		return;
 	}
 
 	WOVR_ENTRY void GetCurrentFadeColor( HmdColor_t* ret, bool bBackground )
 	{
 		// ERP hack
-		*ret = realImpl->GetCurrentFadeColor(bBackground);
+		*ret = fns_IVRCompositor::GetCurrentFadeColor(bBackground);
 		return;
 	}
 
 	WOVR_ENTRY void FadeGrid( float fSeconds, bool bFadeIn )
 	{
-		realImpl->FadeGrid(fSeconds, bFadeIn);
+		fns_IVRCompositor::FadeGrid(fSeconds, bFadeIn);
 		return;
 	}
 
 	WOVR_ENTRY float GetCurrentGridAlpha()
 	{
-		return realImpl->GetCurrentGridAlpha();
+		return fns_IVRCompositor::GetCurrentGridAlpha();
 	}
 
 	WOVR_ENTRY EVRCompositorError SetSkyboxOverride( VR_ARRAY_COUNT( unTextureCount ) const Texture_t *pTextures, uint32_t unTextureCount )
 	{
-		if(pTextures->eType == TextureType_DirectX || pTextures->eType == TextureType_DirectX12)
-			return D3DProxy()->SetSkyboxOverride(pTextures, unTextureCount);
-		else // Natively supported (OpenGL or Vulkan); pass directly.
-			return realImpl->SetSkyboxOverride(pTextures, unTextureCount);
+		return fns_IVRCompositor::SetSkyboxOverride(pTextures, unTextureCount);
 	}
 
 	WOVR_ENTRY void ClearSkyboxOverride()
 	{
-		realImpl->ClearSkyboxOverride();
+		fns_IVRCompositor::ClearSkyboxOverride();
 		return;
 	}
 
 	WOVR_ENTRY void CompositorBringToFront()
 	{
-		realImpl->CompositorBringToFront();
+		fns_IVRCompositor::CompositorBringToFront();
 		return;
 	}
 
 	WOVR_ENTRY void CompositorGoToBack()
 	{
-		realImpl->CompositorGoToBack();
+		fns_IVRCompositor::CompositorGoToBack();
 		return;
 	}
 
 	WOVR_ENTRY void CompositorQuit()
 	{
-		realImpl->CompositorQuit();
+		fns_IVRCompositor::CompositorQuit();
 		return;
 	}
 
 	WOVR_ENTRY bool IsFullscreen()
 	{
-		return realImpl->IsFullscreen();
+		return fns_IVRCompositor::IsFullscreen();
 	}
 
 	WOVR_ENTRY uint32_t GetCurrentSceneFocusProcess()
 	{
-		return realImpl->GetCurrentSceneFocusProcess();
+		return fns_IVRCompositor::GetCurrentSceneFocusProcess();
 	}
 
 	WOVR_ENTRY uint32_t GetLastFrameRenderer()
 	{
-		return realImpl->GetLastFrameRenderer();
+		return fns_IVRCompositor::GetLastFrameRenderer();
 	}
 
 	WOVR_ENTRY bool CanRenderScene()
 	{
-		return realImpl->CanRenderScene();
+		return fns_IVRCompositor::CanRenderScene();
 	}
 
 	WOVR_ENTRY void ShowMirrorWindow()
 	{
-		realImpl->ShowMirrorWindow();
+		fns_IVRCompositor::ShowMirrorWindow();
 		return;
 	}
 
 	WOVR_ENTRY void HideMirrorWindow()
 	{
-		realImpl->HideMirrorWindow();
+		fns_IVRCompositor::HideMirrorWindow();
 		return;
 	}
 
 	WOVR_ENTRY bool IsMirrorWindowVisible()
 	{
-		return realImpl->IsMirrorWindowVisible();
+		return fns_IVRCompositor::IsMirrorWindowVisible();
 	}
 
 	WOVR_ENTRY void CompositorDumpImages()
 	{
-		realImpl->CompositorDumpImages();
+		fns_IVRCompositor::CompositorDumpImages();
 		return;
 	}
 
 	WOVR_ENTRY bool ShouldAppRenderWithLowResources()
 	{
-		return realImpl->ShouldAppRenderWithLowResources();
+		return fns_IVRCompositor::ShouldAppRenderWithLowResources();
 	}
 
 	WOVR_ENTRY void ForceInterleavedReprojectionOn( bool bOverride )
 	{
-		realImpl->ForceInterleavedReprojectionOn(bOverride);
+		fns_IVRCompositor::ForceInterleavedReprojectionOn(bOverride);
 		return;
 	}
 
 	WOVR_ENTRY void ForceReconnectProcess()
 	{
-		realImpl->ForceReconnectProcess();
+		fns_IVRCompositor::ForceReconnectProcess();
 		return;
 	}
 
 	WOVR_ENTRY void SuspendRendering( bool bSuspend )
 	{
-		realImpl->SuspendRendering(bSuspend);
+		fns_IVRCompositor::SuspendRendering(bSuspend);
 		return;
 	}
 
 	WOVR_ENTRY vr::EVRCompositorError GetMirrorTextureD3D11( vr::EVREye eEye, void *pD3D11DeviceOrResource, void **ppD3D11ShaderResourceView )
 	{
-		return D3DProxy()->GetMirrorTextureD3D11(eEye, pD3D11DeviceOrResource, ppD3D11ShaderResourceView);
+		return fns_IVRCompositor::GetMirrorTextureD3D11(eEye, pD3D11DeviceOrResource, ppD3D11ShaderResourceView);
 	}
 
 	WOVR_ENTRY void ReleaseMirrorTextureD3D11( void *pD3D11ShaderResourceView )
 	{
-		D3DProxy()->ReleaseMirrorTextureD3D11(pD3D11ShaderResourceView);
+		fns_IVRCompositor::ReleaseMirrorTextureD3D11(pD3D11ShaderResourceView);
 		return;
 	}
 
 	WOVR_ENTRY vr::EVRCompositorError GetMirrorTextureGL( vr::EVREye eEye, vr::glUInt_t *pglTextureId, vr::glSharedTextureHandle_t *pglSharedTextureHandle )
 	{
-		return realImpl->GetMirrorTextureGL(eEye, pglTextureId, pglSharedTextureHandle);
+		return fns_IVRCompositor::GetMirrorTextureGL(eEye, pglTextureId, pglSharedTextureHandle);
 	}
 
 	WOVR_ENTRY bool ReleaseSharedGLTexture( vr::glUInt_t glTextureId, vr::glSharedTextureHandle_t glSharedTextureHandle )
 	{
-		return realImpl->ReleaseSharedGLTexture(glTextureId, glSharedTextureHandle);
+		return fns_IVRCompositor::ReleaseSharedGLTexture(glTextureId, glSharedTextureHandle);
 	}
 
 	WOVR_ENTRY void LockGLSharedTextureForAccess( vr::glSharedTextureHandle_t glSharedTextureHandle )
 	{
-		realImpl->LockGLSharedTextureForAccess(glSharedTextureHandle);
+		fns_IVRCompositor::LockGLSharedTextureForAccess(glSharedTextureHandle);
 		return;
 	}
 
 	WOVR_ENTRY void UnlockGLSharedTextureForAccess( vr::glSharedTextureHandle_t glSharedTextureHandle )
 	{
-		realImpl->UnlockGLSharedTextureForAccess(glSharedTextureHandle);
+		fns_IVRCompositor::UnlockGLSharedTextureForAccess(glSharedTextureHandle);
 		return;
 	}
 
 	WOVR_ENTRY uint32_t GetVulkanInstanceExtensionsRequired( VR_OUT_STRING() char *pchValue, uint32_t unBufferSize )
 	{
-		return realImpl->GetVulkanInstanceExtensionsRequired(pchValue, unBufferSize);
+		return fns_IVRCompositor::GetVulkanInstanceExtensionsRequired(pchValue, unBufferSize);
 	}
 
 	WOVR_ENTRY uint32_t GetVulkanDeviceExtensionsRequired( VkPhysicalDevice_T *pPhysicalDevice, VR_OUT_STRING() char *pchValue, uint32_t unBufferSize )
 	{
-		return realImpl->GetVulkanDeviceExtensionsRequired(pPhysicalDevice, pchValue, unBufferSize);
+		return fns_IVRCompositor::GetVulkanDeviceExtensionsRequired(pPhysicalDevice, pchValue, unBufferSize);
 	}
-
-private:
-	IVRCompositor* realImpl;
 };
 
 // Declared in proxy_getters.h
-vr::IVRCompositor* getIVRCompositorProxy (IVRCompositor* real)
+vr::IVRCompositor* getIVRCompositorProxy_020()
 {
-	return (IVRCompositor*) new proxy_IVRCompositor(real);
+	return (IVRCompositor*) new proxy_IVRCompositor_020();
 }
