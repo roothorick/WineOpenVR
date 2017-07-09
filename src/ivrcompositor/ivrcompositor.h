@@ -61,8 +61,10 @@ public:
 	WOVR_ENTRY virtual bool ReleaseSharedGLTexture( vr::glUInt_t glTextureId, vr::glSharedTextureHandle_t glSharedTextureHandle ) = 0;
 	WOVR_ENTRY virtual void LockGLSharedTextureForAccess( vr::glSharedTextureHandle_t glSharedTextureHandle ) = 0;
 	WOVR_ENTRY virtual void UnlockGLSharedTextureForAccess( vr::glSharedTextureHandle_t glSharedTextureHandle ) = 0;
+#if ABIVER >= 19
 	WOVR_ENTRY virtual uint32_t GetVulkanInstanceExtensionsRequired( VR_OUT_STRING() char *pchValue, uint32_t unBufferSize ) = 0;
 	WOVR_ENTRY virtual uint32_t GetVulkanDeviceExtensionsRequired( VkPhysicalDevice_T *pPhysicalDevice, VR_OUT_STRING() char *pchValue, uint32_t unBufferSize ) = 0;
+#endif
 };
 
 class PROXYCLASS : public CLONECLASS
@@ -321,6 +323,7 @@ public:
 		return;
 	}
 
+#if ABIVER >= 19
 	WOVR_ENTRY uint32_t GetVulkanInstanceExtensionsRequired( VR_OUT_STRING() char *pchValue, uint32_t unBufferSize )
 	{
 		return VRCompositor()->GetVulkanInstanceExtensionsRequired(pchValue, unBufferSize);
@@ -330,6 +333,7 @@ public:
 	{
 		return VRCompositor()->GetVulkanDeviceExtensionsRequired(pPhysicalDevice, pchValue, unBufferSize);
 	}
+#endif
 };
 
 // Declared in proxy_getters.h
