@@ -50,7 +50,7 @@ SOURCES= \
 	\
 	ivrresources_001.cpp \
 	\
-	ivrdrivermanager_001.cpp
+	ivrdrivermanager/ivrdrivermanager_001.cpp
 
 CC=winegcc
 CXX=wineg++
