@@ -42,6 +42,7 @@ vr::IVROverlay* getIVROverlayProxy_013();
 vr::IVROverlay* getIVROverlayProxy_014();
 vr::IVROverlay* getIVROverlayProxy_016();
 
+vr::IVRRenderModels* getIVRRenderModelsProxy_004();
 vr::IVRRenderModels* getIVRRenderModelsProxy_005();
 
 vr::IVRTrackedCamera* getIVRTrackedCameraProxy_002();
@@ -123,6 +124,8 @@ WOVR_EXPORT void * WOVR_GetGenericInterface(const char *pchInterfaceVersion, EVR
 	if( strcmp(pchInterfaceVersion, "IVROverlay_016") != 0 )
 		return getIVROverlayProxy_016();
 
+	if( strcmp(pchInterfaceVersion, "IVRRenderModels_004") != 0 )
+		return getIVRRenderModelsProxy_004();
 	if( strcmp(pchInterfaceVersion, "IVRRenderModels_005") != 0 )
 		return getIVRRenderModelsProxy_005();
 

@@ -23,7 +23,9 @@ class CLONECLASS
 	WOVR_ENTRY virtual EVRRenderModelError LoadTexture_Async( TextureID_t textureId, Repacked_RenderModel_TextureMap_t **ppTexture ) = 0; // Struct packing mismatch
 	WOVR_ENTRY virtual void FreeTexture( Repacked_RenderModel_TextureMap_t *pTexture ) = 0; // Struct packing mismatch
 	WOVR_ENTRY virtual EVRRenderModelError LoadTextureD3D11_Async( TextureID_t textureId, void *pD3D11Device, void **ppD3D11Texture2D ) = 0;
+#if ABIVER >= 5
 	WOVR_ENTRY virtual EVRRenderModelError LoadIntoTextureD3D11_Async( TextureID_t textureId, void *pDstTexture ) = 0;
+#endif
 	WOVR_ENTRY virtual void FreeTextureD3D11( void *pD3D11Texture2D ) = 0;
 	WOVR_ENTRY virtual uint32_t GetRenderModelName( uint32_t unRenderModelIndex, VR_OUT_STRING() char *pchRenderModelName, uint32_t unRenderModelNameLen ) = 0;
 	WOVR_ENTRY virtual uint32_t GetRenderModelCount() = 0;
@@ -99,10 +101,12 @@ class PROXYCLASS : public CLONECLASS
 		return D3DProxy()->LoadTextureD3D11_Async(textureId, pD3D11Device, ppD3D11Texture2D);
 	}
 
+#if ABIVER >= 5
 	WOVR_ENTRY EVRRenderModelError LoadIntoTextureD3D11_Async( TextureID_t textureId, void *pDstTexture )
 	{
 		return D3DProxy()->LoadIntoTextureD3D11_Async(textureId, pDstTexture);
 	}
+#endif
 
 	WOVR_ENTRY void FreeTextureD3D11( void *pD3D11Texture2D )
 	{

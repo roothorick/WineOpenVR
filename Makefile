@@ -48,6 +48,7 @@ SOURCES= \
 	ivroverlay/ivroverlay_014.cpp \
 	ivroverlay/ivroverlay_016.cpp \
 	\
+	ivrrendermodels/ivrrendermodels_004.cpp \
 	ivrrendermodels/ivrrendermodels_005.cpp \
 	\
 	ivrextendeddisplay/ivrextendeddisplay_001.cpp \
