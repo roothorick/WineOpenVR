@@ -69,6 +69,21 @@ all: $(DLL_32) $(DLL_64)
 clean:
 	rm -rf $(OBJECTS_32) $(OBJECTS_64) $(DLL_32) $(DLL_64)
 
+$(wildcard bin*/ivrsystem/*.o):          src/ivrsystem/ivrsystem.h
+$(wildcard bin*/ivrapplications/*.o):    src/ivrapplications/ivrapplications.h
+$(wildcard bin*/ivrsettings/*.o):        src/ivrsettings/ivrsettings.h
+$(wildcard bin*/ivrchaperone/*.o):       src/ivrchaperone/ivrchaperone.h
+$(wildcard bin*/ivrchaperonesetup/*.o):  src/ivrchaperonesetup/ivrchaperonesetup.h
+$(wildcard bin*/ivrcompositor/*.o):      src/ivrcompositor/ivrcompositor.h
+$(wildcard bin*/ivrnotifications/*.o):   src/ivrnotifications/ivrnotifications.h
+$(wildcard bin*/ivroverlay/*.o):         src/ivroverlay/ivroverlay.h
+$(wildcard bin*/ivrrendermodels/*.o):    src/ivrrendermodels/ivrrendermodels.h
+$(wildcard bin*/ivrextendeddisplay/*.o): src/ivrextendeddisplay/ivrextendeddisplay.h
+$(wildcard bin*/ivrtrackedcamera/*.o):   src/ivrtrackedcamera/ivrtrackedcamera.h
+$(wildcard bin*/ivrscreenshots/*.o):     src/ivrscreenshots/ivrscreenshots.h
+$(wildcard bin*/ivrresources/*.o):       src/ivrresources/ivrresources.h
+$(wildcard bin*/ivrdrivermanager/*.o):   src/ivrdrivermanager/ivrdrivermanager.h
+
 $(DLL_32): $(OBJECTS_32) $(SPECFILE)
 	$(CXX) $(SPECFILE) -o $@ $(OBJECTS_32) $(LDFLAGS_32)
 
