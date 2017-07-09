@@ -22,8 +22,9 @@ namespace vr
 // These are all defined in their respective ivrxxx_xxx.cpp's
 vr::IVRSystem* getIVRSystemProxy_016();
 
+vr::IVRApplications* getIVRApplicationsProxy_006();
+
 // Not yet converted to ABI-switching system
-vr::IVRApplications*    getIVRApplicationsProxy     (vr::IVRApplications*       real);
 vr::IVRSettings*        getIVRSettingsProxy         (vr::IVRSettings*           real);
 vr::IVRChaperone*       getIVRChaperoneProxy        (vr::IVRChaperone*          real);
 vr::IVRChaperoneSetup*  getIVRChaperoneSetupProxy   (vr::IVRChaperoneSetup*     real);
