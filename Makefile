@@ -22,7 +22,7 @@ SOURCES= \
 	ivrapplications/ivrapplications_005.cpp \
 	ivrapplications/ivrapplications_006.cpp \
 	\
-	ivrsettings_002.cpp \
+	ivrsettings/ivrsettings_002.cpp \
 	\
 	ivrchaperone/ivrchaperone_003.cpp \
 	\
