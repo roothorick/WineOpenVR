@@ -46,7 +46,7 @@ SOURCES= \
 	\
 	ivrtrackedcamera_003.cpp \
 	\
-	ivrscreenshots_001.cpp \
+	ivrscreenshots/ivrscreenshots_001.cpp \
 	\
 	ivrresources/ivrresources_001.cpp \
 	\
