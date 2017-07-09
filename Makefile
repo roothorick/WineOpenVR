@@ -26,7 +26,8 @@ SOURCES= \
 	\
 	ivrcompositor_020.cpp \
 	\
-	ivrnotifications.cpp \
+	ivrnotifications_002.cpp \
+	\
 	ivroverlay.cpp \
 	ivrrendermodels.cpp \
 	ivrextendeddisplay.cpp \
