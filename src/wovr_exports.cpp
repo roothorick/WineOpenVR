@@ -4,7 +4,7 @@
 #ifdef __x86_64__
 #define WOVR_EXPORT extern "C" __attribute__((ms_abi))
 #else
-#define WOVR_EXPORT extern "C"
+#define WOVR_EXPORT extern "C" __attribute__((force_align_arg_pointer))
 #endif
 
 // These are all defined in their respective ivrxxx_xxx.cpp's

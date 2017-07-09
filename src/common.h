@@ -15,5 +15,5 @@ using namespace vr;
 #define WOVR_ENTRY __attribute__((ms_abi))
 #else
 // Thispointer-in-ECX for 32bit
-#define WOVR_ENTRY __attribute__((thiscall))
+#define WOVR_ENTRY __attribute__((force_align_arg_pointer,thiscall))
 #endif
