@@ -13,13 +13,15 @@ WOVR_EXPORT void * WOVR_GetGenericInterface(const char *pchInterfaceVersion, EVR
 {
 	printf("WOVR info: App requested API version %s\n", pchInterfaceVersion);
 
-	void* ntv = VR_GetGenericInterface(pchInterfaceVersion, peError);
-	// XXX: Should we check for error and return early?
-
 	// I'm not terribly worried about leaking proxy objects, as there'll only be a half dozen or so of these ever
 	// created in any sane case.
-	if( strstr(pchInterfaceVersion, "IVRSystem") != 0 )
-		return getIVRSystemProxy( (IVRSystem*) ntv );
+
+	// IVRSystem
+	if( strcmp(pchInterfaceVersion, "IVRSystem_016") != 0 )
+		return getIVRSystemProxy_016();
+
+	// Not yet converted to ABI-switching system
+	void* ntv = VR_GetGenericInterface(pchInterfaceVersion, peError);
 
 	if( strstr(pchInterfaceVersion, "IVRApplications") != 0 )
 		return getIVRApplicationsProxy( (IVRApplications*) ntv );
@@ -63,7 +65,7 @@ WOVR_EXPORT void * WOVR_GetGenericInterface(const char *pchInterfaceVersion, EVR
 	// Passing the native interface directly will cause cryptic crashes due to calling convention differences.
 	// Fail now and give the app a chance to do without.
 	*peError = VRInitError_Init_InvalidInterface;
-	return 0x0;
+	return NULL;
 }
 
 WOVR_EXPORT uint32_t  WOVR_GetInitToken()

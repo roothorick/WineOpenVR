@@ -19,9 +19,10 @@ namespace vr
 	class IVRResources;
 }
 
-// These are defined in their respective ivrxxx_32/64.cpp's
-// Arguments are the same as VR_GetGenericInterface
-vr::IVRSystem*          getIVRSystemProxy           (vr::IVRSystem*             real);
+// These are all defined in their respective ivrxxx_xxx.cpp's
+vr::IVRSystem* getIVRSystemProxy_016();
+
+// Not yet converted to ABI-switching system
 vr::IVRApplications*    getIVRApplicationsProxy     (vr::IVRApplications*       real);
 vr::IVRSettings*        getIVRSettingsProxy         (vr::IVRSettings*           real);
 vr::IVRChaperone*       getIVRChaperoneProxy        (vr::IVRChaperone*          real);
