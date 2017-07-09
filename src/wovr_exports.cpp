@@ -39,11 +39,11 @@ WOVR_EXPORT void * WOVR_GetGenericInterface(const char *pchInterfaceVersion, EVR
 	if( strcmp(pchInterfaceVersion, "IVRNotifications_002") != 0 )
 		return getIVRNotificationsProxy_002();
 
+	if( strcmp(pchInterfaceVersion, "IVROverlay_016") != 0 )
+		return getIVROverlayProxy_016();
+
 	// Not yet converted to ABI-switching system
 	void* ntv = VR_GetGenericInterface(pchInterfaceVersion, peError);
-
-	if( strstr(pchInterfaceVersion, "IVROverlay") != 0 )
-		return getIVROverlayProxy( (IVROverlay*) ntv );
 
 	if( strstr(pchInterfaceVersion, "IVRRenderModels") != 0 )
 		return getIVRRenderModelsProxy( (IVRRenderModels*) ntv );

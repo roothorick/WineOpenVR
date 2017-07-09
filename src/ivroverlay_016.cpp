@@ -1,21 +1,6 @@
-#include "common.h"
-#include "repacked_structs.h"
-#include "d3dproxy.h"
+#include "ivroverlay.h"
 
-/*
-WARNING: openvr.h does not specify packing alignment for these structs:
-
-* VROverlayIntersectionParams_t
-* VROverlayIntersectionResults_t
-* IntersectionMaskRectangle_t
-* IntersectionMaskCircle_t
-* VROverlayIntersectionMaskPrimitive_t
-
-How MSVC packs them is presently unknown; the current code just hopes that it agrees with GCC.
-If you find an overlay app that's crashing in mysterious ways, check these first.
-*/
-
-class clone_IVROverlay
+class clone_IVROverlay_016
 {
 public:
 	WOVR_ENTRY virtual EVROverlayError FindOverlay( const char *pchOverlayKey, VROverlayHandle_t * pOverlayHandle ) = 0;
@@ -100,433 +85,414 @@ public:
 	WOVR_ENTRY virtual EVROverlayError GetOverlayFlags( VROverlayHandle_t ulOverlayHandle, uint32_t *pFlags ) = 0;
 };
 
-class proxy_IVROverlay : public clone_IVROverlay
+class proxy_IVROverlay_016 : public clone_IVROverlay_016
 {
 public:
-	proxy_IVROverlay(IVROverlay* real) { realImpl = real; }
-
 	WOVR_ENTRY EVROverlayError FindOverlay( const char *pchOverlayKey, VROverlayHandle_t * pOverlayHandle )
 	{
-		return realImpl->FindOverlay( pchOverlayKey, pOverlayHandle);
+		return fns_IVROverlay::FindOverlay( pchOverlayKey, pOverlayHandle);
 	}
 
 	WOVR_ENTRY EVROverlayError CreateOverlay( const char *pchOverlayKey, const char *pchOverlayName, VROverlayHandle_t * pOverlayHandle )
 	{
-		return realImpl->CreateOverlay(pchOverlayKey, pchOverlayName, pOverlayHandle);
+		return fns_IVROverlay::CreateOverlay(pchOverlayKey, pchOverlayName, pOverlayHandle);
 	}
 
 	WOVR_ENTRY EVROverlayError DestroyOverlay( VROverlayHandle_t ulOverlayHandle )
 	{
-		return realImpl->DestroyOverlay(ulOverlayHandle);
+		return fns_IVROverlay::DestroyOverlay(ulOverlayHandle);
 	}
 
 	WOVR_ENTRY EVROverlayError SetHighQualityOverlay( VROverlayHandle_t ulOverlayHandle )
 	{
-		return realImpl->SetHighQualityOverlay(ulOverlayHandle);
+		return fns_IVROverlay::SetHighQualityOverlay(ulOverlayHandle);
 	}
 
 	WOVR_ENTRY vr::VROverlayHandle_t GetHighQualityOverlay()
 	{
-		return realImpl->GetHighQualityOverlay();
+		return fns_IVROverlay::GetHighQualityOverlay();
 	}
 
 	WOVR_ENTRY uint32_t GetOverlayKey( VROverlayHandle_t ulOverlayHandle, VR_OUT_STRING() char *pchValue, uint32_t unBufferSize, EVROverlayError *pError )
 	{
-		return realImpl->GetOverlayKey(ulOverlayHandle, pchValue, unBufferSize, pError);
+		return fns_IVROverlay::GetOverlayKey(ulOverlayHandle, pchValue, unBufferSize, pError);
 	}
 
 	WOVR_ENTRY uint32_t GetOverlayName( VROverlayHandle_t ulOverlayHandle, VR_OUT_STRING() char *pchValue, uint32_t unBufferSize, EVROverlayError *pError )
 	{
-		return realImpl->GetOverlayName(ulOverlayHandle, pchValue, unBufferSize, pError);
+		return fns_IVROverlay::GetOverlayName(ulOverlayHandle, pchValue, unBufferSize, pError);
 	}
 
 	WOVR_ENTRY EVROverlayError SetOverlayName( VROverlayHandle_t ulOverlayHandle, const char *pchName )
 	{
-		return realImpl->SetOverlayName(ulOverlayHandle, pchName);
+		return fns_IVROverlay::SetOverlayName(ulOverlayHandle, pchName);
 	}
 
 	WOVR_ENTRY EVROverlayError GetOverlayImageData( VROverlayHandle_t ulOverlayHandle, void *pvBuffer, uint32_t unBufferSize, uint32_t *punWidth, uint32_t *punHeight )
 	{
-		return realImpl->GetOverlayImageData(ulOverlayHandle, pvBuffer, unBufferSize, punWidth, punHeight);
+		return fns_IVROverlay::GetOverlayImageData(ulOverlayHandle, pvBuffer, unBufferSize, punWidth, punHeight);
 	}
 
 	WOVR_ENTRY const char *GetOverlayErrorNameFromEnum( EVROverlayError error )
 	{
-		return realImpl->GetOverlayErrorNameFromEnum(error);
+		return fns_IVROverlay::GetOverlayErrorNameFromEnum(error);
 	}
 
 	WOVR_ENTRY EVROverlayError SetOverlayRenderingPid( VROverlayHandle_t ulOverlayHandle, uint32_t unPID )
 	{
-		return realImpl->SetOverlayRenderingPid(ulOverlayHandle, unPID);
+		return fns_IVROverlay::SetOverlayRenderingPid(ulOverlayHandle, unPID);
 	}
 
 	WOVR_ENTRY uint32_t GetOverlayRenderingPid( VROverlayHandle_t ulOverlayHandle )
 	{
-		return realImpl->GetOverlayRenderingPid(ulOverlayHandle);
+		return fns_IVROverlay::GetOverlayRenderingPid(ulOverlayHandle);
 	}
 
 	WOVR_ENTRY EVROverlayError SetOverlayFlag( VROverlayHandle_t ulOverlayHandle, VROverlayFlags eOverlayFlag, bool bEnabled )
 	{
-		return realImpl->SetOverlayFlag(ulOverlayHandle, eOverlayFlag, bEnabled);
+		return fns_IVROverlay::SetOverlayFlag(ulOverlayHandle, eOverlayFlag, bEnabled);
 	}
 
 	WOVR_ENTRY EVROverlayError GetOverlayFlag( VROverlayHandle_t ulOverlayHandle, VROverlayFlags eOverlayFlag, bool *pbEnabled )
 	{
-		return realImpl->GetOverlayFlag(ulOverlayHandle, eOverlayFlag, pbEnabled);
+		return fns_IVROverlay::GetOverlayFlag(ulOverlayHandle, eOverlayFlag, pbEnabled);
 	}
 
 	WOVR_ENTRY EVROverlayError SetOverlayColor( VROverlayHandle_t ulOverlayHandle, float fRed, float fGreen, float fBlue )
 	{
-		return realImpl->SetOverlayColor(ulOverlayHandle, fRed, fGreen, fBlue);
+		return fns_IVROverlay::SetOverlayColor(ulOverlayHandle, fRed, fGreen, fBlue);
 	}
 
 	WOVR_ENTRY EVROverlayError GetOverlayColor( VROverlayHandle_t ulOverlayHandle, float *pfRed, float *pfGreen, float *pfBlue )
 	{
-		return realImpl->GetOverlayColor(ulOverlayHandle, pfRed, pfGreen, pfBlue);
+		return fns_IVROverlay::GetOverlayColor(ulOverlayHandle, pfRed, pfGreen, pfBlue);
 	}
 
 	WOVR_ENTRY EVROverlayError SetOverlayAlpha( VROverlayHandle_t ulOverlayHandle, float fAlpha )
 	{
-		return realImpl->SetOverlayAlpha(ulOverlayHandle, fAlpha);
+		return fns_IVROverlay::SetOverlayAlpha(ulOverlayHandle, fAlpha);
 	}
 
 	WOVR_ENTRY EVROverlayError GetOverlayAlpha( VROverlayHandle_t ulOverlayHandle, float *pfAlpha )
 	{
-		return realImpl->GetOverlayAlpha(ulOverlayHandle, pfAlpha);
+		return fns_IVROverlay::GetOverlayAlpha(ulOverlayHandle, pfAlpha);
 	}
 
 	WOVR_ENTRY EVROverlayError SetOverlayTexelAspect( VROverlayHandle_t ulOverlayHandle, float fTexelAspect )
 	{
-		return realImpl->SetOverlayTexelAspect(ulOverlayHandle, fTexelAspect);
+		return fns_IVROverlay::SetOverlayTexelAspect(ulOverlayHandle, fTexelAspect);
 	}
 
 	WOVR_ENTRY EVROverlayError GetOverlayTexelAspect( VROverlayHandle_t ulOverlayHandle, float *pfTexelAspect )
 	{
-		return realImpl->GetOverlayTexelAspect(ulOverlayHandle, pfTexelAspect);
+		return fns_IVROverlay::GetOverlayTexelAspect(ulOverlayHandle, pfTexelAspect);
 	}
 
 	WOVR_ENTRY EVROverlayError SetOverlaySortOrder( VROverlayHandle_t ulOverlayHandle, uint32_t unSortOrder )
 	{
-		return realImpl->SetOverlaySortOrder(ulOverlayHandle, unSortOrder);
+		return fns_IVROverlay::SetOverlaySortOrder(ulOverlayHandle, unSortOrder);
 	}
 
 	WOVR_ENTRY EVROverlayError GetOverlaySortOrder( VROverlayHandle_t ulOverlayHandle, uint32_t *punSortOrder )
 	{
-		return realImpl->GetOverlaySortOrder(ulOverlayHandle, punSortOrder);
+		return fns_IVROverlay::GetOverlaySortOrder(ulOverlayHandle, punSortOrder);
 	}
 
 	WOVR_ENTRY EVROverlayError SetOverlayWidthInMeters( VROverlayHandle_t ulOverlayHandle, float fWidthInMeters )
 	{
-		return realImpl->SetOverlayWidthInMeters(ulOverlayHandle, fWidthInMeters);
+		return fns_IVROverlay::SetOverlayWidthInMeters(ulOverlayHandle, fWidthInMeters);
 	}
 
 	WOVR_ENTRY EVROverlayError GetOverlayWidthInMeters( VROverlayHandle_t ulOverlayHandle, float *pfWidthInMeters )
 	{
-		return realImpl->GetOverlayWidthInMeters(ulOverlayHandle, pfWidthInMeters);
+		return fns_IVROverlay::GetOverlayWidthInMeters(ulOverlayHandle, pfWidthInMeters);
 	}
 
 	WOVR_ENTRY EVROverlayError SetOverlayAutoCurveDistanceRangeInMeters( VROverlayHandle_t ulOverlayHandle, float fMinDistanceInMeters, float fMaxDistanceInMeters )
 	{
-		return realImpl->SetOverlayAutoCurveDistanceRangeInMeters(ulOverlayHandle, fMinDistanceInMeters, fMaxDistanceInMeters);
+		return fns_IVROverlay::SetOverlayAutoCurveDistanceRangeInMeters(ulOverlayHandle, fMinDistanceInMeters, fMaxDistanceInMeters);
 	}
 
 	WOVR_ENTRY EVROverlayError GetOverlayAutoCurveDistanceRangeInMeters( VROverlayHandle_t ulOverlayHandle, float *pfMinDistanceInMeters, float *pfMaxDistanceInMeters )
 	{
-		return realImpl->GetOverlayAutoCurveDistanceRangeInMeters(ulOverlayHandle, pfMinDistanceInMeters, pfMaxDistanceInMeters);
+		return fns_IVROverlay::GetOverlayAutoCurveDistanceRangeInMeters(ulOverlayHandle, pfMinDistanceInMeters, pfMaxDistanceInMeters);
 	}
 
 	WOVR_ENTRY EVROverlayError SetOverlayTextureColorSpace( VROverlayHandle_t ulOverlayHandle, EColorSpace eTextureColorSpace )
 	{
-		return realImpl->SetOverlayTextureColorSpace(ulOverlayHandle, eTextureColorSpace);
+		return fns_IVROverlay::SetOverlayTextureColorSpace(ulOverlayHandle, eTextureColorSpace);
 	}
 
 	WOVR_ENTRY EVROverlayError GetOverlayTextureColorSpace( VROverlayHandle_t ulOverlayHandle, EColorSpace *peTextureColorSpace )
 	{
-		return realImpl->GetOverlayTextureColorSpace(ulOverlayHandle, peTextureColorSpace);
+		return fns_IVROverlay::GetOverlayTextureColorSpace(ulOverlayHandle, peTextureColorSpace);
 	}
 
 	WOVR_ENTRY EVROverlayError SetOverlayTextureBounds( VROverlayHandle_t ulOverlayHandle, const VRTextureBounds_t *pOverlayTextureBounds )
 	{
-		return realImpl->SetOverlayTextureBounds(ulOverlayHandle, pOverlayTextureBounds);
+		return fns_IVROverlay::SetOverlayTextureBounds(ulOverlayHandle, pOverlayTextureBounds);
 	}
 
 	WOVR_ENTRY EVROverlayError GetOverlayTextureBounds( VROverlayHandle_t ulOverlayHandle, VRTextureBounds_t *pOverlayTextureBounds )
 	{
-		return realImpl->GetOverlayTextureBounds(ulOverlayHandle, pOverlayTextureBounds);
+		return fns_IVROverlay::GetOverlayTextureBounds(ulOverlayHandle, pOverlayTextureBounds);
 	}
 
 	WOVR_ENTRY uint32_t GetOverlayRenderModel( vr::VROverlayHandle_t ulOverlayHandle, char *pchValue, uint32_t unBufferSize, HmdColor_t *pColor, vr::EVROverlayError *pError )
 	{
-		return realImpl->GetOverlayRenderModel(ulOverlayHandle, pchValue, unBufferSize, pColor, pError);
+		return fns_IVROverlay::GetOverlayRenderModel(ulOverlayHandle, pchValue, unBufferSize, pColor, pError);
 	}
 
 	WOVR_ENTRY vr::EVROverlayError SetOverlayRenderModel( vr::VROverlayHandle_t ulOverlayHandle, const char *pchRenderModel, const HmdColor_t *pColor )
 	{
-		return realImpl->SetOverlayRenderModel(ulOverlayHandle, pchRenderModel, pColor);
+		return fns_IVROverlay::SetOverlayRenderModel(ulOverlayHandle, pchRenderModel, pColor);
 	}
 
 	WOVR_ENTRY EVROverlayError GetOverlayTransformType( VROverlayHandle_t ulOverlayHandle, VROverlayTransformType *peTransformType )
 	{
-		return realImpl->GetOverlayTransformType(ulOverlayHandle, peTransformType);
+		return fns_IVROverlay::GetOverlayTransformType(ulOverlayHandle, peTransformType);
 	}
 
 	WOVR_ENTRY EVROverlayError SetOverlayTransformAbsolute( VROverlayHandle_t ulOverlayHandle, ETrackingUniverseOrigin eTrackingOrigin, const HmdMatrix34_t *pmatTrackingOriginToOverlayTransform )
 	{
-		return realImpl->SetOverlayTransformAbsolute(ulOverlayHandle, eTrackingOrigin, pmatTrackingOriginToOverlayTransform);
+		return fns_IVROverlay::SetOverlayTransformAbsolute(ulOverlayHandle, eTrackingOrigin, pmatTrackingOriginToOverlayTransform);
 	}
 
 	WOVR_ENTRY EVROverlayError GetOverlayTransformAbsolute( VROverlayHandle_t ulOverlayHandle, ETrackingUniverseOrigin *peTrackingOrigin, HmdMatrix34_t *pmatTrackingOriginToOverlayTransform )
 	{
-		return realImpl->GetOverlayTransformAbsolute(ulOverlayHandle, peTrackingOrigin, pmatTrackingOriginToOverlayTransform);
+		return fns_IVROverlay::GetOverlayTransformAbsolute(ulOverlayHandle, peTrackingOrigin, pmatTrackingOriginToOverlayTransform);
 	}
 
 	WOVR_ENTRY EVROverlayError SetOverlayTransformTrackedDeviceRelative( VROverlayHandle_t ulOverlayHandle, TrackedDeviceIndex_t unTrackedDevice, const HmdMatrix34_t *pmatTrackedDeviceToOverlayTransform )
 	{
-		return realImpl->SetOverlayTransformTrackedDeviceRelative(ulOverlayHandle, unTrackedDevice, pmatTrackedDeviceToOverlayTransform);
+		return fns_IVROverlay::SetOverlayTransformTrackedDeviceRelative(ulOverlayHandle, unTrackedDevice, pmatTrackedDeviceToOverlayTransform);
 	}
 
 	WOVR_ENTRY EVROverlayError GetOverlayTransformTrackedDeviceRelative( VROverlayHandle_t ulOverlayHandle, TrackedDeviceIndex_t *punTrackedDevice, HmdMatrix34_t *pmatTrackedDeviceToOverlayTransform )
 	{
-		return realImpl->GetOverlayTransformTrackedDeviceRelative(ulOverlayHandle, punTrackedDevice, pmatTrackedDeviceToOverlayTransform);
+		return fns_IVROverlay::GetOverlayTransformTrackedDeviceRelative(ulOverlayHandle, punTrackedDevice, pmatTrackedDeviceToOverlayTransform);
 	}
 
 	WOVR_ENTRY EVROverlayError SetOverlayTransformTrackedDeviceComponent( VROverlayHandle_t ulOverlayHandle, TrackedDeviceIndex_t unDeviceIndex, const char *pchComponentName )
 	{
-		return realImpl->SetOverlayTransformTrackedDeviceComponent(ulOverlayHandle, unDeviceIndex, pchComponentName);
+		return fns_IVROverlay::SetOverlayTransformTrackedDeviceComponent(ulOverlayHandle, unDeviceIndex, pchComponentName);
 	}
 
 	WOVR_ENTRY EVROverlayError GetOverlayTransformTrackedDeviceComponent( VROverlayHandle_t ulOverlayHandle, TrackedDeviceIndex_t *punDeviceIndex, char *pchComponentName, uint32_t unComponentNameSize )
 	{
-		return realImpl->GetOverlayTransformTrackedDeviceComponent(ulOverlayHandle, punDeviceIndex, pchComponentName, unComponentNameSize);
+		return fns_IVROverlay::GetOverlayTransformTrackedDeviceComponent(ulOverlayHandle, punDeviceIndex, pchComponentName, unComponentNameSize);
 	}
 
 	WOVR_ENTRY vr::EVROverlayError GetOverlayTransformOverlayRelative( VROverlayHandle_t ulOverlayHandle, VROverlayHandle_t *ulOverlayHandleParent, HmdMatrix34_t *pmatParentOverlayToOverlayTransform )
 	{
-		return realImpl->GetOverlayTransformOverlayRelative(ulOverlayHandle, ulOverlayHandleParent, pmatParentOverlayToOverlayTransform);
+		return fns_IVROverlay::GetOverlayTransformOverlayRelative(ulOverlayHandle, ulOverlayHandleParent, pmatParentOverlayToOverlayTransform);
 	}
 
 	WOVR_ENTRY vr::EVROverlayError SetOverlayTransformOverlayRelative( VROverlayHandle_t ulOverlayHandle, VROverlayHandle_t ulOverlayHandleParent, const HmdMatrix34_t *pmatParentOverlayToOverlayTransform )
 	{
-		return realImpl->SetOverlayTransformOverlayRelative(ulOverlayHandle, ulOverlayHandleParent, pmatParentOverlayToOverlayTransform);
+		return fns_IVROverlay::SetOverlayTransformOverlayRelative(ulOverlayHandle, ulOverlayHandleParent, pmatParentOverlayToOverlayTransform);
 	}
 
 	WOVR_ENTRY EVROverlayError ShowOverlay( VROverlayHandle_t ulOverlayHandle )
 	{
-		return realImpl->ShowOverlay(ulOverlayHandle);
+		return fns_IVROverlay::ShowOverlay(ulOverlayHandle);
 	}
 
 	WOVR_ENTRY EVROverlayError HideOverlay( VROverlayHandle_t ulOverlayHandle )
 	{
-		return realImpl->HideOverlay(ulOverlayHandle);
+		return fns_IVROverlay::HideOverlay(ulOverlayHandle);
 	}
 
 	WOVR_ENTRY bool IsOverlayVisible( VROverlayHandle_t ulOverlayHandle )
 	{
-		return realImpl->IsOverlayVisible(ulOverlayHandle);
+		return fns_IVROverlay::IsOverlayVisible(ulOverlayHandle);
 	}
 
 	WOVR_ENTRY EVROverlayError GetTransformForOverlayCoordinates( VROverlayHandle_t ulOverlayHandle, ETrackingUniverseOrigin eTrackingOrigin, HmdVector2_t coordinatesInOverlay, HmdMatrix34_t *pmatTransform )
 	{
-		return realImpl->GetTransformForOverlayCoordinates(ulOverlayHandle, eTrackingOrigin, coordinatesInOverlay, pmatTransform);
+		return fns_IVROverlay::GetTransformForOverlayCoordinates(ulOverlayHandle, eTrackingOrigin, coordinatesInOverlay, pmatTransform);
 	}
 
 	WOVR_ENTRY bool PollNextOverlayEvent( VROverlayHandle_t ulOverlayHandle, Repacked_VREvent_t *pEvent, uint32_t uncbVREvent )
 	{
-		// Mismatched struct packing
-		VREvent_t linpacked;
-
-		// HACK: GCC seems to be interpreting #pragma pack differently from MSVC. We substitute our own value just to
-		// preserve the stack.
-		bool ret = realImpl->PollNextOverlayEvent(ulOverlayHandle, &linpacked, sizeof(VREvent_t));
-
-		repackVREvent(&linpacked, pEvent);
-		return ret;
+		return fns_IVROverlay::PollNextOverlayEvent(ulOverlayHandle, pEvent, uncbVREvent);
 	}
 
 	WOVR_ENTRY EVROverlayError GetOverlayInputMethod( VROverlayHandle_t ulOverlayHandle, VROverlayInputMethod *peInputMethod )
 	{
-		return realImpl->GetOverlayInputMethod(ulOverlayHandle, peInputMethod);
+		return fns_IVROverlay::GetOverlayInputMethod(ulOverlayHandle, peInputMethod);
 	}
 
 	WOVR_ENTRY EVROverlayError SetOverlayInputMethod( VROverlayHandle_t ulOverlayHandle, VROverlayInputMethod eInputMethod )
 	{
-		return realImpl->SetOverlayInputMethod(ulOverlayHandle, eInputMethod);
+		return fns_IVROverlay::SetOverlayInputMethod(ulOverlayHandle, eInputMethod);
 	}
 
 	WOVR_ENTRY EVROverlayError GetOverlayMouseScale( VROverlayHandle_t ulOverlayHandle, HmdVector2_t *pvecMouseScale )
 	{
-		return realImpl->GetOverlayMouseScale(ulOverlayHandle, pvecMouseScale);
+		return fns_IVROverlay::GetOverlayMouseScale(ulOverlayHandle, pvecMouseScale);
 	}
 
 	WOVR_ENTRY EVROverlayError SetOverlayMouseScale( VROverlayHandle_t ulOverlayHandle, const HmdVector2_t *pvecMouseScale )
 	{
-		return realImpl->SetOverlayMouseScale(ulOverlayHandle, pvecMouseScale);
+		return fns_IVROverlay::SetOverlayMouseScale(ulOverlayHandle, pvecMouseScale);
 	}
 
 	WOVR_ENTRY bool ComputeOverlayIntersection( VROverlayHandle_t ulOverlayHandle, const VROverlayIntersectionParams_t *pParams, VROverlayIntersectionResults_t *pResults )
 	{
-		return realImpl->ComputeOverlayIntersection(ulOverlayHandle, pParams, pResults);
+		return fns_IVROverlay::ComputeOverlayIntersection(ulOverlayHandle, pParams, pResults);
 	}
 
 	WOVR_ENTRY bool HandleControllerOverlayInteractionAsMouse( VROverlayHandle_t ulOverlayHandle, TrackedDeviceIndex_t unControllerDeviceIndex )
 	{
-		return realImpl->HandleControllerOverlayInteractionAsMouse(ulOverlayHandle, unControllerDeviceIndex);
+		return fns_IVROverlay::HandleControllerOverlayInteractionAsMouse(ulOverlayHandle, unControllerDeviceIndex);
 	}
 
 	WOVR_ENTRY bool IsHoverTargetOverlay( VROverlayHandle_t ulOverlayHandle )
 	{
-		return realImpl->IsHoverTargetOverlay(ulOverlayHandle);
+		return fns_IVROverlay::IsHoverTargetOverlay(ulOverlayHandle);
 	}
 
 	WOVR_ENTRY vr::VROverlayHandle_t GetGamepadFocusOverlay()
 	{
-		return realImpl->GetGamepadFocusOverlay();
+		return fns_IVROverlay::GetGamepadFocusOverlay();
 	}
 
 	WOVR_ENTRY EVROverlayError SetGamepadFocusOverlay( VROverlayHandle_t ulNewFocusOverlay )
 	{
-		return realImpl->SetGamepadFocusOverlay(ulNewFocusOverlay);
+		return fns_IVROverlay::SetGamepadFocusOverlay(ulNewFocusOverlay);
 	}
 
 	WOVR_ENTRY EVROverlayError SetOverlayNeighbor( EOverlayDirection eDirection, VROverlayHandle_t ulFrom, VROverlayHandle_t ulTo )
 	{
-		return realImpl->SetOverlayNeighbor(eDirection, ulFrom, ulTo);
+		return fns_IVROverlay::SetOverlayNeighbor(eDirection, ulFrom, ulTo);
 	}
 
 	WOVR_ENTRY EVROverlayError MoveGamepadFocusToNeighbor( EOverlayDirection eDirection, VROverlayHandle_t ulFrom )
 	{
-		return realImpl->MoveGamepadFocusToNeighbor(eDirection, ulFrom);
+		return fns_IVROverlay::MoveGamepadFocusToNeighbor(eDirection, ulFrom);
 	}
 
 	WOVR_ENTRY EVROverlayError SetOverlayTexture( VROverlayHandle_t ulOverlayHandle, const Texture_t *pTexture )
 	{
-		if(pTexture->eType == TextureType_DirectX || pTexture->eType == TextureType_DirectX12)
-			return D3DProxy()->SetOverlayTexture(ulOverlayHandle, pTexture);
-		else // Natively supported (OpenGL or Vulkan); pass directly.
-			return realImpl->SetOverlayTexture(ulOverlayHandle, pTexture);
+		return fns_IVROverlay::SetOverlayTexture(ulOverlayHandle, pTexture);
 	}
 
 	WOVR_ENTRY EVROverlayError ClearOverlayTexture( VROverlayHandle_t ulOverlayHandle )
 	{
-		return realImpl->ClearOverlayTexture(ulOverlayHandle);
+		return fns_IVROverlay::ClearOverlayTexture(ulOverlayHandle);
 	}
 
 	WOVR_ENTRY EVROverlayError SetOverlayRaw( VROverlayHandle_t ulOverlayHandle, void *pvBuffer, uint32_t unWidth, uint32_t unHeight, uint32_t unDepth )
 	{
-		return realImpl->SetOverlayRaw(ulOverlayHandle, pvBuffer, unWidth, unHeight, unDepth);
+		return fns_IVROverlay::SetOverlayRaw(ulOverlayHandle, pvBuffer, unWidth, unHeight, unDepth);
 	}
 
 	WOVR_ENTRY EVROverlayError SetOverlayFromFile( VROverlayHandle_t ulOverlayHandle, const char *pchFilePath )
 	{
-		return realImpl->SetOverlayFromFile(ulOverlayHandle, pchFilePath);
+		return fns_IVROverlay::SetOverlayFromFile(ulOverlayHandle, pchFilePath);
 	}
 
 	WOVR_ENTRY EVROverlayError GetOverlayTexture( VROverlayHandle_t ulOverlayHandle, void **pNativeTextureHandle, void *pNativeTextureRef, uint32_t *pWidth, uint32_t *pHeight, uint32_t *pNativeFormat, ETextureType *pAPIType, EColorSpace *pColorSpace, VRTextureBounds_t *pTextureBounds )
 	{
-		if(*pAPIType == TextureType_DirectX || *pAPIType == TextureType_DirectX12)
-			return D3DProxy()->GetOverlayTexture(ulOverlayHandle, pNativeTextureHandle, pNativeTextureRef, pWidth, pHeight, pNativeFormat, pAPIType, pColorSpace, pTextureBounds);
-		else // Natively supported (OpenGL or Vulkan); pass directly.
-			return realImpl->GetOverlayTexture(ulOverlayHandle, pNativeTextureHandle, pNativeTextureRef, pWidth, pHeight, pNativeFormat, pAPIType, pColorSpace, pTextureBounds);
+		return fns_IVROverlay::GetOverlayTexture(ulOverlayHandle, pNativeTextureHandle, pNativeTextureRef, pWidth, pHeight, pNativeFormat, pAPIType, pColorSpace, pTextureBounds);
 	}
 
 	WOVR_ENTRY EVROverlayError ReleaseNativeOverlayHandle( VROverlayHandle_t ulOverlayHandle, void *pNativeTextureHandle )
 	{
-		return realImpl->ReleaseNativeOverlayHandle(ulOverlayHandle, pNativeTextureHandle);
+		return fns_IVROverlay::ReleaseNativeOverlayHandle(ulOverlayHandle, pNativeTextureHandle);
 	}
 
 	WOVR_ENTRY EVROverlayError GetOverlayTextureSize( VROverlayHandle_t ulOverlayHandle, uint32_t *pWidth, uint32_t *pHeight )
 	{
-		return realImpl->GetOverlayTextureSize(ulOverlayHandle, pWidth, pHeight);
+		return fns_IVROverlay::GetOverlayTextureSize(ulOverlayHandle, pWidth, pHeight);
 	}
 
 	WOVR_ENTRY EVROverlayError CreateDashboardOverlay( const char *pchOverlayKey, const char *pchOverlayFriendlyName, VROverlayHandle_t * pMainHandle, VROverlayHandle_t *pThumbnailHandle )
 	{
-		return realImpl->CreateDashboardOverlay(pchOverlayKey, pchOverlayFriendlyName, pMainHandle, pThumbnailHandle);
+		return fns_IVROverlay::CreateDashboardOverlay(pchOverlayKey, pchOverlayFriendlyName, pMainHandle, pThumbnailHandle);
 	}
 
 	WOVR_ENTRY bool IsDashboardVisible()
 	{
-		return realImpl->IsDashboardVisible();
+		return fns_IVROverlay::IsDashboardVisible();
 	}
 
 	WOVR_ENTRY bool IsActiveDashboardOverlay( VROverlayHandle_t ulOverlayHandle )
 	{
-		return realImpl->IsActiveDashboardOverlay(ulOverlayHandle);
+		return fns_IVROverlay::IsActiveDashboardOverlay(ulOverlayHandle);
 	}
 
 	WOVR_ENTRY EVROverlayError SetDashboardOverlaySceneProcess( VROverlayHandle_t ulOverlayHandle, uint32_t unProcessId )
 	{
-		return realImpl->SetDashboardOverlaySceneProcess(ulOverlayHandle, unProcessId);
+		return fns_IVROverlay::SetDashboardOverlaySceneProcess(ulOverlayHandle, unProcessId);
 	}
 
 	WOVR_ENTRY EVROverlayError GetDashboardOverlaySceneProcess( VROverlayHandle_t ulOverlayHandle, uint32_t *punProcessId )
 	{
-		return realImpl->GetDashboardOverlaySceneProcess(ulOverlayHandle, punProcessId);
+		return fns_IVROverlay::GetDashboardOverlaySceneProcess(ulOverlayHandle, punProcessId);
 	}
 
 	WOVR_ENTRY void ShowDashboard( const char *pchOverlayToShow )
 	{
-		return realImpl->ShowDashboard(pchOverlayToShow);
+		return fns_IVROverlay::ShowDashboard(pchOverlayToShow);
 	}
 
 	WOVR_ENTRY vr::TrackedDeviceIndex_t GetPrimaryDashboardDevice()
 	{
-		return realImpl->GetPrimaryDashboardDevice();
+		return fns_IVROverlay::GetPrimaryDashboardDevice();
 	}
 
 	WOVR_ENTRY EVROverlayError ShowKeyboard( EGamepadTextInputMode eInputMode, EGamepadTextInputLineMode eLineInputMode, const char *pchDescription, uint32_t unCharMax, const char *pchExistingText, bool bUseMinimalMode, uint64_t uUserValue )
 	{
-		return realImpl->ShowKeyboard(eInputMode, eLineInputMode, pchDescription, unCharMax, pchExistingText, bUseMinimalMode, uUserValue);
+		return fns_IVROverlay::ShowKeyboard(eInputMode, eLineInputMode, pchDescription, unCharMax, pchExistingText, bUseMinimalMode, uUserValue);
 	}
 
 	WOVR_ENTRY EVROverlayError ShowKeyboardForOverlay( VROverlayHandle_t ulOverlayHandle, EGamepadTextInputMode eInputMode, EGamepadTextInputLineMode eLineInputMode, const char *pchDescription, uint32_t unCharMax, const char *pchExistingText, bool bUseMinimalMode, uint64_t uUserValue )
 	{
-		return realImpl->ShowKeyboardForOverlay(ulOverlayHandle, eInputMode, eLineInputMode, pchDescription, unCharMax, pchExistingText, bUseMinimalMode, uUserValue);
+		return fns_IVROverlay::ShowKeyboardForOverlay(ulOverlayHandle, eInputMode, eLineInputMode, pchDescription, unCharMax, pchExistingText, bUseMinimalMode, uUserValue);
 	}
 
 	WOVR_ENTRY uint32_t GetKeyboardText( VR_OUT_STRING() char *pchText, uint32_t cchText )
 	{
-		return realImpl->GetKeyboardText(pchText, cchText);
+		return fns_IVROverlay::GetKeyboardText(pchText, cchText);
 	}
 
 	WOVR_ENTRY void HideKeyboard()
 	{
-		realImpl->HideKeyboard();
+		fns_IVROverlay::HideKeyboard();
 		return;
 	}
 
 	WOVR_ENTRY void SetKeyboardTransformAbsolute( ETrackingUniverseOrigin eTrackingOrigin, const HmdMatrix34_t *pmatTrackingOriginToKeyboardTransform )
 	{
-		realImpl->SetKeyboardTransformAbsolute(eTrackingOrigin, pmatTrackingOriginToKeyboardTransform);
+		fns_IVROverlay::SetKeyboardTransformAbsolute(eTrackingOrigin, pmatTrackingOriginToKeyboardTransform);
 		return;
 	}
 
 	WOVR_ENTRY void SetKeyboardPositionForOverlay( VROverlayHandle_t ulOverlayHandle, HmdRect2_t avoidRect )
 	{
-		realImpl->SetKeyboardPositionForOverlay(ulOverlayHandle, avoidRect);
+		fns_IVROverlay::SetKeyboardPositionForOverlay(ulOverlayHandle, avoidRect);
 		return;
 	}
 
 	WOVR_ENTRY EVROverlayError SetOverlayIntersectionMask( VROverlayHandle_t ulOverlayHandle, VROverlayIntersectionMaskPrimitive_t *pMaskPrimitives, uint32_t unNumMaskPrimitives, uint32_t unPrimitiveSize )
 	{
-		return realImpl->SetOverlayIntersectionMask(ulOverlayHandle, pMaskPrimitives, unNumMaskPrimitives, unPrimitiveSize);
+		return fns_IVROverlay::SetOverlayIntersectionMask(ulOverlayHandle, pMaskPrimitives, unNumMaskPrimitives, unPrimitiveSize);
 	}
 
 	WOVR_ENTRY VRMessageOverlayResponse ShowMessageOverlay( const char* pchText, const char* pchCaption, const char* pchButton0Text, const char* pchButton1Text, const char* pchButton2Text, const char* pchButton3Text )
 	{
-		return realImpl->ShowMessageOverlay(pchText, pchCaption, pchButton0Text, pchButton1Text, pchButton2Text, pchButton3Text);
+		return fns_IVROverlay::ShowMessageOverlay(pchText, pchCaption, pchButton0Text, pchButton1Text, pchButton2Text, pchButton3Text);
 	}
 
 	WOVR_ENTRY EVROverlayError GetOverlayFlags( VROverlayHandle_t ulOverlayHandle, uint32_t *pFlags )
 	{
-		return realImpl->GetOverlayFlags(ulOverlayHandle, pFlags);
+		return fns_IVROverlay::GetOverlayFlags(ulOverlayHandle, pFlags);
 	}
-
-private:
-	IVROverlay* realImpl;
 };
 
-IVROverlay* getIVROverlayProxy(IVROverlay* real)
+IVROverlay* getIVROverlayProxy_016()
 {
-	return (IVROverlay*) new proxy_IVROverlay(real);
+	return (IVROverlay*) new proxy_IVROverlay_016();
 }

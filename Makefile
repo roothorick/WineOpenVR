@@ -28,7 +28,8 @@ SOURCES= \
 	\
 	ivrnotifications_002.cpp \
 	\
-	ivroverlay.cpp \
+	ivroverlay_016.cpp \
+	\
 	ivrrendermodels.cpp \
 	ivrextendeddisplay.cpp \
 	ivrtrackedcamera.cpp \
