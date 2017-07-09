@@ -1,6 +1,21 @@
-#include "ivrtrackedcamera.h"
+#include "common.h"
+#include "d3dproxy.h"
 
-class clone_IVRTrackedCamera_003
+#ifndef ABIVER
+#error "No ABIVER?"
+#endif
+
+#define CLONECLASS__(abiver_) clone_IVRTrackedCamera_ ## abiver_
+#define CLONECLASS_(abiver) CLONECLASS__(abiver)
+#define CLONECLASS CLONECLASS_(ABIVER)
+#define PROXYCLASS__(abiver_) proxy_IVRTrackedCamera_ ## abiver_
+#define PROXYCLASS_(abiver) PROXYCLASS__(abiver)
+#define PROXYCLASS PROXYCLASS_(ABIVER)
+#define GETTER__(abiver_) getIVRTrackedCameraProxy_ ## abiver_
+#define GETTER_(abiver) GETTER__(abiver)
+#define GETTER GETTER_(ABIVER)
+
+class CLONECLASS
 {
 public:
 	WOVR_ENTRY virtual const char *GetCameraErrorNameFromEnum( vr::EVRTrackedCameraError eCameraError ) = 0;
@@ -17,71 +32,71 @@ public:
 	WOVR_ENTRY virtual vr::EVRTrackedCameraError ReleaseVideoStreamTextureGL( vr::TrackedCameraHandle_t hTrackedCamera, vr::glUInt_t glTextureId ) = 0;
 };
 
-class proxy_IVRTrackedCamera_003 : public clone_IVRTrackedCamera_003
+class PROXYCLASS : public CLONECLASS
 {
 public:
-	WOVR_ENTRY const char *GetCameraErrorNameFromEnum( vr::EVRTrackedCameraError eCameraError )
+    WOVR_ENTRY const char *GetCameraErrorNameFromEnum( vr::EVRTrackedCameraError eCameraError )
 	{
-		return fns_IVRTrackedCamera::GetCameraErrorNameFromEnum(eCameraError);
+		return VRTrackedCamera()->GetCameraErrorNameFromEnum(eCameraError);
 	}
 
 	WOVR_ENTRY vr::EVRTrackedCameraError HasCamera( vr::TrackedDeviceIndex_t nDeviceIndex, bool *pHasCamera )
 	{
-		return fns_IVRTrackedCamera::HasCamera(nDeviceIndex, pHasCamera);
+		return VRTrackedCamera()->HasCamera(nDeviceIndex, pHasCamera);
 	}
 
 	WOVR_ENTRY vr::EVRTrackedCameraError GetCameraFrameSize( vr::TrackedDeviceIndex_t nDeviceIndex, vr::EVRTrackedCameraFrameType eFrameType, uint32_t *pnWidth, uint32_t *pnHeight, uint32_t *pnFrameBufferSize )
 	{
-		return fns_IVRTrackedCamera::GetCameraFrameSize(nDeviceIndex, eFrameType, pnWidth, pnHeight, pnFrameBufferSize);
+		return VRTrackedCamera()->GetCameraFrameSize(nDeviceIndex, eFrameType, pnWidth, pnHeight, pnFrameBufferSize);
 	}
 
 	WOVR_ENTRY vr::EVRTrackedCameraError GetCameraIntrinsics( vr::TrackedDeviceIndex_t nDeviceIndex, vr::EVRTrackedCameraFrameType eFrameType, vr::HmdVector2_t *pFocalLength, vr::HmdVector2_t *pCenter )
 	{
-		return fns_IVRTrackedCamera::GetCameraIntrinsics(nDeviceIndex, eFrameType, pFocalLength, pCenter);
+		return VRTrackedCamera()->GetCameraIntrinsics(nDeviceIndex, eFrameType, pFocalLength, pCenter);
 	}
 
 	WOVR_ENTRY vr::EVRTrackedCameraError GetCameraProjection( vr::TrackedDeviceIndex_t nDeviceIndex, vr::EVRTrackedCameraFrameType eFrameType, float flZNear, float flZFar, vr::HmdMatrix44_t *pProjection )
 	{
-		return fns_IVRTrackedCamera::GetCameraProjection(nDeviceIndex, eFrameType, flZNear, flZFar, pProjection);
+		return VRTrackedCamera()->GetCameraProjection(nDeviceIndex, eFrameType, flZNear, flZFar, pProjection);
 	}
 
 	WOVR_ENTRY vr::EVRTrackedCameraError AcquireVideoStreamingService( vr::TrackedDeviceIndex_t nDeviceIndex, vr::TrackedCameraHandle_t *pHandle )
 	{
-		return fns_IVRTrackedCamera::AcquireVideoStreamingService(nDeviceIndex, pHandle);
+		return VRTrackedCamera()->AcquireVideoStreamingService(nDeviceIndex, pHandle);
 	}
 
 	WOVR_ENTRY vr::EVRTrackedCameraError ReleaseVideoStreamingService( vr::TrackedCameraHandle_t hTrackedCamera )
 	{
-		return fns_IVRTrackedCamera::ReleaseVideoStreamingService(hTrackedCamera);
+		return VRTrackedCamera()->ReleaseVideoStreamingService(hTrackedCamera);
 	}
 
 	WOVR_ENTRY vr::EVRTrackedCameraError GetVideoStreamFrameBuffer( vr::TrackedCameraHandle_t hTrackedCamera, vr::EVRTrackedCameraFrameType eFrameType, void *pFrameBuffer, uint32_t nFrameBufferSize, vr::CameraVideoStreamFrameHeader_t *pFrameHeader, uint32_t nFrameHeaderSize )
 	{
-		return fns_IVRTrackedCamera::GetVideoStreamFrameBuffer(hTrackedCamera, eFrameType, pFrameBuffer, nFrameBufferSize, pFrameHeader, nFrameHeaderSize);
+		return VRTrackedCamera()->GetVideoStreamFrameBuffer(hTrackedCamera, eFrameType, pFrameBuffer, nFrameBufferSize, pFrameHeader, nFrameHeaderSize);
 	}
 
 	WOVR_ENTRY vr::EVRTrackedCameraError GetVideoStreamTextureSize( vr::TrackedDeviceIndex_t nDeviceIndex, vr::EVRTrackedCameraFrameType eFrameType, vr::VRTextureBounds_t *pTextureBounds, uint32_t *pnWidth, uint32_t *pnHeight )
 	{
-		return fns_IVRTrackedCamera::GetVideoStreamTextureSize(nDeviceIndex, eFrameType, pTextureBounds, pnWidth, pnHeight);
+		return VRTrackedCamera()->GetVideoStreamTextureSize(nDeviceIndex, eFrameType, pTextureBounds, pnWidth, pnHeight);
 	}
 
 	WOVR_ENTRY vr::EVRTrackedCameraError GetVideoStreamTextureD3D11( vr::TrackedCameraHandle_t hTrackedCamera, vr::EVRTrackedCameraFrameType eFrameType, void *pD3D11DeviceOrResource, void **ppD3D11ShaderResourceView, vr::CameraVideoStreamFrameHeader_t *pFrameHeader, uint32_t nFrameHeaderSize )
 	{
-		return fns_IVRTrackedCamera::GetVideoStreamTextureD3D11(hTrackedCamera, eFrameType, pD3D11DeviceOrResource, ppD3D11ShaderResourceView, pFrameHeader, nFrameHeaderSize);
+		return D3DProxy()->GetVideoStreamTextureD3D11(hTrackedCamera, eFrameType, pD3D11DeviceOrResource, ppD3D11ShaderResourceView, pFrameHeader, nFrameHeaderSize);
 	}
 
 	WOVR_ENTRY vr::EVRTrackedCameraError GetVideoStreamTextureGL( vr::TrackedCameraHandle_t hTrackedCamera, vr::EVRTrackedCameraFrameType eFrameType, vr::glUInt_t *pglTextureId, vr::CameraVideoStreamFrameHeader_t *pFrameHeader, uint32_t nFrameHeaderSize )
 	{
-		return fns_IVRTrackedCamera::GetVideoStreamTextureGL(hTrackedCamera, eFrameType, pglTextureId, pFrameHeader, nFrameHeaderSize);
+		return VRTrackedCamera()->GetVideoStreamTextureGL(hTrackedCamera, eFrameType, pglTextureId, pFrameHeader, nFrameHeaderSize);
 	}
 
 	WOVR_ENTRY vr::EVRTrackedCameraError ReleaseVideoStreamTextureGL( vr::TrackedCameraHandle_t hTrackedCamera, vr::glUInt_t glTextureId )
 	{
-		return fns_IVRTrackedCamera::ReleaseVideoStreamTextureGL(hTrackedCamera, glTextureId);
+		return VRTrackedCamera()->ReleaseVideoStreamTextureGL(hTrackedCamera, glTextureId);
 	}
 };
 
-IVRTrackedCamera* getIVRTrackedCameraProxy_003()
+IVRTrackedCamera* GETTER ()
 {
-	return (IVRTrackedCamera*) new proxy_IVRTrackedCamera_003();
+	return (IVRTrackedCamera*) new PROXYCLASS ();
 }
