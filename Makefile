@@ -51,6 +51,7 @@ SOURCES= \
 	ivroverlay/ivroverlay_014.cpp \
 	ivroverlay/ivroverlay_016.cpp \
 	\
+	ivrrendermodels/ivrrendermodels_002.cpp \
 	ivrrendermodels/ivrrendermodels_004.cpp \
 	ivrrendermodels/ivrrendermodels_005.cpp \
 	\
