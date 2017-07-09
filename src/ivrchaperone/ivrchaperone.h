@@ -4,15 +4,15 @@
 #error "No ABIVER?"
 #endif
 
-#define CLONECLASS__(abiver_) clone_IVRChaperone_ ## abiver_
-#define CLONECLASS_(abiver) CLONECLASS__(abiver)
-#define CLONECLASS CLONECLASS_(ABIVER)
-#define PROXYCLASS__(abiver_) proxy_IVRChaperone_ ## abiver_
-#define PROXYCLASS_(abiver) PROXYCLASS__(abiver)
-#define PROXYCLASS PROXYCLASS_(ABIVER)
-#define GETTER__(abiver_) getIVRChaperoneProxy_ ## abiver_
-#define GETTER_(abiver) GETTER__(abiver)
-#define GETTER GETTER_(ABIVER)
+#define CLONECLASS__(token_) clone_IVRChaperone_ ## token_
+#define CLONECLASS_(token) CLONECLASS__(token)
+#define CLONECLASS CLONECLASS_(ABITOKEN)
+#define PROXYCLASS__(token_) proxy_IVRChaperone_ ## token_
+#define PROXYCLASS_(token) PROXYCLASS__(token)
+#define PROXYCLASS PROXYCLASS_(ABITOKEN)
+#define GETTER__(token_) getIVRChaperoneProxy_ ## token_
+#define GETTER_(token) GETTER__(token)
+#define GETTER GETTER_(ABITOKEN)
 
 class CLONECLASS
 {

@@ -6,15 +6,15 @@
 #error "No ABIVER?"
 #endif
 
-#define CLONECLASS__(abiver_) clone_IVRSystem_ ## abiver_
-#define CLONECLASS_(abiver) CLONECLASS__(abiver)
-#define CLONECLASS CLONECLASS_(ABIVER)
-#define PROXYCLASS__(abiver_) proxy_IVRSystem_ ## abiver_
-#define PROXYCLASS_(abiver) PROXYCLASS__(abiver)
-#define PROXYCLASS PROXYCLASS_(ABIVER)
-#define GETTER__(abiver_) getIVRSystemProxy_ ## abiver_
-#define GETTER_(abiver) GETTER__(abiver)
-#define GETTER GETTER_(ABIVER)
+#define CLONECLASS__(token_) clone_IVRSystem_ ## token_
+#define CLONECLASS_(token) CLONECLASS__(token)
+#define CLONECLASS CLONECLASS_(ABITOKEN)
+#define PROXYCLASS__(token_) proxy_IVRSystem_ ## token_
+#define PROXYCLASS_(token) PROXYCLASS__(token)
+#define PROXYCLASS PROXYCLASS_(ABITOKEN)
+#define GETTER__(token_) getIVRSystemProxy_ ## token_
+#define GETTER_(token) GETTER__(token)
+#define GETTER GETTER_(ABITOKEN)
 
 class CLONECLASS
 {
@@ -27,7 +27,7 @@ public:
 	WOVR_ENTRY virtual bool GetTimeSinceLastVsync( float *pfSecondsSinceLastVsync, uint64_t *pulFrameCounter ) = 0;
 	WOVR_ENTRY virtual int32_t GetD3D9AdapterIndex() = 0;
 	WOVR_ENTRY virtual void GetDXGIOutputInfo( int32_t *pnAdapterIndex ) = 0;
-#if ABIVER <= 016
+#if ABIVER <= 16
 	WOVR_ENTRY virtual void GetOutputDevice( uint64_t *pnDevice, ETextureType textureType ) = 0;
 #endif
 	WOVR_ENTRY virtual bool IsDisplayOnDesktop() = 0;
@@ -117,7 +117,7 @@ public:
 		return;
 	}
 
-#if ABIVER <= 016
+#if ABIVER <= 16
 	WOVR_ENTRY void GetOutputDevice( uint64_t *pnDevice, ETextureType textureType )
 	{
 		if(textureType == TextureType_DirectX || textureType == TextureType_DirectX12)

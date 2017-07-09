@@ -1,2 +1,3 @@
-#define ABIVER 002
+#define ABIVER 2
+#define ABITOKEN 002
 #include "ivrsettings.h"

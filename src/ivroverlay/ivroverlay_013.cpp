@@ -1,2 +1,3 @@
-#define ABIVER 013
+#define ABIVER 13
+#define ABITOKEN 013
 #include "ivroverlay.h"

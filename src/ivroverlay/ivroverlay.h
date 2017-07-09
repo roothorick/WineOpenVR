@@ -6,15 +6,15 @@
 #error "No ABIVER?"
 #endif
 
-#define CLONECLASS__(abiver_) clone_IVROverlay_ ## abiver_
-#define CLONECLASS_(abiver) CLONECLASS__(abiver)
-#define CLONECLASS CLONECLASS_(ABIVER)
-#define PROXYCLASS__(abiver_) proxy_IVROverlay_ ## abiver_
-#define PROXYCLASS_(abiver) PROXYCLASS__(abiver)
-#define PROXYCLASS PROXYCLASS_(ABIVER)
-#define GETTER__(abiver_) getIVROverlayProxy_ ## abiver_
-#define GETTER_(abiver) GETTER__(abiver)
-#define GETTER GETTER_(ABIVER)
+#define CLONECLASS__(token_) clone_IVROverlay_ ## token_
+#define CLONECLASS_(token) CLONECLASS__(token)
+#define CLONECLASS CLONECLASS_(ABITOKEN)
+#define PROXYCLASS__(token_) proxy_IVROverlay_ ## token_
+#define PROXYCLASS_(token) PROXYCLASS__(token)
+#define PROXYCLASS PROXYCLASS_(ABITOKEN)
+#define GETTER__(token_) getIVROverlayProxy_ ## token_
+#define GETTER_(token) GETTER__(token)
+#define GETTER GETTER_(ABITOKEN)
 
 /*
 WARNING: openvr.h does not specify packing alignment for these structs:
@@ -39,7 +39,7 @@ public:
 	WOVR_ENTRY virtual vr::VROverlayHandle_t GetHighQualityOverlay() = 0;
 	WOVR_ENTRY virtual uint32_t GetOverlayKey( VROverlayHandle_t ulOverlayHandle, VR_OUT_STRING() char *pchValue, uint32_t unBufferSize, EVROverlayError *pError ) = 0;
 	WOVR_ENTRY virtual uint32_t GetOverlayName( VROverlayHandle_t ulOverlayHandle, VR_OUT_STRING() char *pchValue, uint32_t unBufferSize, EVROverlayError *pError ) = 0;
-#if ABIVER <= 016
+#if ABIVER <= 16
 	WOVR_ENTRY virtual EVROverlayError SetOverlayName( VROverlayHandle_t ulOverlayHandle, const char *pchName ) = 0;
 #endif
 	WOVR_ENTRY virtual EVROverlayError GetOverlayImageData( VROverlayHandle_t ulOverlayHandle, void *pvBuffer, uint32_t unBufferSize, uint32_t *punWidth, uint32_t *punHeight ) = 0;
@@ -64,7 +64,7 @@ public:
 	WOVR_ENTRY virtual EVROverlayError GetOverlayTextureColorSpace( VROverlayHandle_t ulOverlayHandle, EColorSpace *peTextureColorSpace ) = 0;
 	WOVR_ENTRY virtual EVROverlayError SetOverlayTextureBounds( VROverlayHandle_t ulOverlayHandle, const VRTextureBounds_t *pOverlayTextureBounds ) = 0;
 	WOVR_ENTRY virtual EVROverlayError GetOverlayTextureBounds( VROverlayHandle_t ulOverlayHandle, VRTextureBounds_t *pOverlayTextureBounds ) = 0;
-#if ABIVER <= 016
+#if ABIVER <= 16
 	WOVR_ENTRY virtual uint32_t GetOverlayRenderModel( vr::VROverlayHandle_t ulOverlayHandle, char *pchValue, uint32_t unBufferSize, HmdColor_t *pColor, vr::EVROverlayError *pError ) = 0;
 	WOVR_ENTRY virtual vr::EVROverlayError SetOverlayRenderModel( vr::VROverlayHandle_t ulOverlayHandle, const char *pchRenderModel, const HmdColor_t *pColor ) = 0;
 #endif
@@ -75,7 +75,7 @@ public:
 	WOVR_ENTRY virtual EVROverlayError GetOverlayTransformTrackedDeviceRelative( VROverlayHandle_t ulOverlayHandle, TrackedDeviceIndex_t *punTrackedDevice, HmdMatrix34_t *pmatTrackedDeviceToOverlayTransform ) = 0;
 	WOVR_ENTRY virtual EVROverlayError SetOverlayTransformTrackedDeviceComponent( VROverlayHandle_t ulOverlayHandle, TrackedDeviceIndex_t unDeviceIndex, const char *pchComponentName ) = 0;
 	WOVR_ENTRY virtual EVROverlayError GetOverlayTransformTrackedDeviceComponent( VROverlayHandle_t ulOverlayHandle, TrackedDeviceIndex_t *punDeviceIndex, char *pchComponentName, uint32_t unComponentNameSize ) = 0;
-#if ABIVER <= 016
+#if ABIVER <= 16
 	WOVR_ENTRY virtual vr::EVROverlayError GetOverlayTransformOverlayRelative( VROverlayHandle_t ulOverlayHandle, VROverlayHandle_t *ulOverlayHandleParent, HmdMatrix34_t *pmatParentOverlayToOverlayTransform ) = 0;
 	WOVR_ENTRY virtual vr::EVROverlayError SetOverlayTransformOverlayRelative( VROverlayHandle_t ulOverlayHandle, VROverlayHandle_t ulOverlayHandleParent, const HmdMatrix34_t *pmatParentOverlayToOverlayTransform ) = 0;
 #endif

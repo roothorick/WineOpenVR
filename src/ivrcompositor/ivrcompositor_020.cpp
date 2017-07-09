@@ -1,2 +1,3 @@
-#define ABIVER 020
+#define ABIVER 20
+#define ABITOKEN 020
 #include "ivrcompositor.h"
