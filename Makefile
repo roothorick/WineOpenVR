@@ -34,7 +34,7 @@ SOURCES= \
 	ivrcompositor/ivrcompositor_019.cpp \
 	ivrcompositor/ivrcompositor_020.cpp \
 	\
-	ivrnotifications_002.cpp \
+	ivrnotifications/ivrnotifications_002.cpp \
 	\
 	ivroverlay_013.cpp \
 	ivroverlay_014.cpp \
