@@ -54,7 +54,9 @@ public:
 	WOVR_ENTRY virtual bool IsMirrorWindowVisible() = 0;
 	WOVR_ENTRY virtual void CompositorDumpImages() = 0;
 	WOVR_ENTRY virtual bool ShouldAppRenderWithLowResources() = 0;
+#if ABIVER >= 13
 	WOVR_ENTRY virtual void ForceInterleavedReprojectionOn( bool bOverride ) = 0;
+#endif
 #if ABIVER >= 14
 	WOVR_ENTRY virtual void ForceReconnectProcess() = 0;
 	WOVR_ENTRY virtual void SuspendRendering( bool bSuspend ) = 0;
@@ -286,11 +288,13 @@ public:
 		return VRCompositor()->ShouldAppRenderWithLowResources();
 	}
 
+#if ABIVER >= 13
 	WOVR_ENTRY void ForceInterleavedReprojectionOn( bool bOverride )
 	{
 		VRCompositor()->ForceInterleavedReprojectionOn(bOverride);
 		return;
 	}
+#endif
 
 #if ABIVER >= 14
 	WOVR_ENTRY void ForceReconnectProcess()

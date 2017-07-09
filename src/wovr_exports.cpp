@@ -25,6 +25,7 @@ vr::IVRChaperone* getIVRChaperoneProxy_003();
 
 vr::IVRChaperoneSetup* getIVRChaperoneSetupProxy_005();
 
+vr::IVRCompositor* getIVRCompositorProxy_012();
 vr::IVRCompositor* getIVRCompositorProxy_013();
 vr::IVRCompositor* getIVRCompositorProxy_014();
 vr::IVRCompositor* getIVRCompositorProxy_015();
@@ -93,6 +94,8 @@ WOVR_EXPORT void * WOVR_GetGenericInterface(const char *pchInterfaceVersion, EVR
 	if( strcmp(pchInterfaceVersion, "IVRChaperoneSetup_005") != 0)
 		return getIVRChaperoneSetupProxy_005();
 
+	if( strcmp(pchInterfaceVersion, "IVRCompositor_012") != 0 )
+		return getIVRCompositorProxy_012();
 	if( strcmp(pchInterfaceVersion, "IVRCompositor_013") != 0 )
 		return getIVRCompositorProxy_013();
 	if( strcmp(pchInterfaceVersion, "IVRCompositor_014") != 0 )
