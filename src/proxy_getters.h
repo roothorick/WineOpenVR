@@ -32,6 +32,7 @@ vr::IVRChaperone* getIVRChaperoneProxy_003();
 
 vr::IVRChaperoneSetup* getIVRChaperoneSetupProxy_005();
 
+vr::IVRCompositor* getIVRCompositorProxy_018();
 vr::IVRCompositor* getIVRCompositorProxy_019();
 vr::IVRCompositor* getIVRCompositorProxy_020();
 
