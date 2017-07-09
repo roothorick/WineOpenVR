@@ -145,6 +145,7 @@ public:
 					printf("WOVR error: IVRCompositor::Submit: Unknown texture type!\n");
 					return VRCompositorError_InvalidTexture;
 			}
+			bReportedTextureType = true;
 		}
 
 		if(pTexture->eType == TextureType_DirectX || pTexture->eType == TextureType_DirectX12)
