@@ -55,8 +55,10 @@ public:
 	WOVR_ENTRY virtual uint32_t GetSortedTrackedDeviceIndicesOfClass( ETrackedDeviceClass eTrackedDeviceClass, VR_ARRAY_COUNT(unTrackedDeviceIndexArrayCount) vr::TrackedDeviceIndex_t *punTrackedDeviceIndexArray, uint32_t unTrackedDeviceIndexArrayCount, vr::TrackedDeviceIndex_t unRelativeToTrackedDeviceIndex ) = 0;
 	WOVR_ENTRY virtual EDeviceActivityLevel GetTrackedDeviceActivityLevel( vr::TrackedDeviceIndex_t unDeviceId ) = 0;
 	WOVR_ENTRY virtual void ApplyTransform( TrackedDevicePose_t *pOutputPose, const TrackedDevicePose_t *pTrackedDevicePose, const HmdMatrix34_t *pTransform ) = 0;
+#if ABIVER >= 10
 	WOVR_ENTRY virtual vr::TrackedDeviceIndex_t GetTrackedDeviceIndexForControllerRole( vr::ETrackedControllerRole unDeviceType ) = 0;
 	WOVR_ENTRY virtual vr::ETrackedControllerRole GetControllerRoleForTrackedDeviceIndex( vr::TrackedDeviceIndex_t unDeviceIndex ) = 0;
+#endif
 	WOVR_ENTRY virtual ETrackedDeviceClass GetTrackedDeviceClass( vr::TrackedDeviceIndex_t unDeviceIndex ) = 0;
 	WOVR_ENTRY virtual bool IsTrackedDeviceConnected( vr::TrackedDeviceIndex_t unDeviceIndex ) = 0;
 	WOVR_ENTRY virtual bool GetBoolTrackedDeviceProperty( vr::TrackedDeviceIndex_t unDeviceIndex, ETrackedDeviceProperty prop, ETrackedPropertyError *pError ) = 0;
@@ -94,7 +96,7 @@ public:
 	WOVR_ENTRY virtual void AcknowledgeQuit_Exiting() = 0;
 	WOVR_ENTRY virtual void AcknowledgeQuit_UserPrompt() = 0;
 #if ABIVER < 12
-	// Added in 0.9.14 without an ABI version bump (was 010)
+	// These two were added in 0.9.14 without an ABI version bump (was 010)
 	WOVR_ENTRY virtual void PerformanceTestEnableCapture( bool bEnable ) = 0;
 	WOVR_ENTRY virtual void PerformanceTestReportFidelityLevelChange( int nFidelityLevel ) = 0;
 #endif
@@ -228,6 +230,7 @@ public:
 		return;
 	}
 
+#if ABIVER >= 10
 	WOVR_ENTRY vr::TrackedDeviceIndex_t GetTrackedDeviceIndexForControllerRole( vr::ETrackedControllerRole unDeviceType )
 	{
 		return VRSystem()->GetTrackedDeviceIndexForControllerRole(unDeviceType);
@@ -237,6 +240,7 @@ public:
 	{
 		return VRSystem()->GetControllerRoleForTrackedDeviceIndex(unDeviceIndex);
 	}
+#endif
 
 	WOVR_ENTRY ETrackedDeviceClass GetTrackedDeviceClass( vr::TrackedDeviceIndex_t unDeviceIndex )
 	{

@@ -8,6 +8,7 @@
 #endif
 
 // These are all defined in their respective ivrxxx_xxx.cpp's
+vr::IVRSystem* getIVRSystemProxy_009();
 vr::IVRSystem* getIVRSystemProxy_010();
 vr::IVRSystem* getIVRSystemProxy_011();
 vr::IVRSystem* getIVRSystemProxy_012();
@@ -72,6 +73,8 @@ WOVR_EXPORT void * WOVR_GetGenericInterface(const char *pchInterfaceVersion, EVR
 	// I'm not terribly worried about leaking proxy objects, as there'll only be a half dozen or so of these ever
 	// created in any sane case.
 
+	if( strcmp(pchInterfaceVersion, "IVRSystem_009") != 0 )
+		return getIVRSystemProxy_009();
 	if( strcmp(pchInterfaceVersion, "IVRSystem_010") != 0 )
 		return getIVRSystemProxy_010();
 	if( strcmp(pchInterfaceVersion, "IVRSystem_011") != 0 )
