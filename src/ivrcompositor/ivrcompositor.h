@@ -53,6 +53,10 @@ public:
 	WOVR_ENTRY virtual void ForceInterleavedReprojectionOn( bool bOverride ) = 0;
 	WOVR_ENTRY virtual void ForceReconnectProcess() = 0;
 	WOVR_ENTRY virtual void SuspendRendering( bool bSuspend ) = 0;
+#if ABIVER < 16
+	WOVR_ENTRY virtual vr::EVRCompositorError RequestScreenshot( vr::EVRScreenshotType type, const char *pchDestinationFileName, const char *pchVRDestinationFileName ) = 0;
+	WOVR_ENTRY virtual vr::EVRScreenshotType GetCurrentScreenshotType() = 0;
+#endif
 	WOVR_ENTRY virtual vr::EVRCompositorError GetMirrorTextureD3D11( vr::EVREye eEye, void *pD3D11DeviceOrResource, void **ppD3D11ShaderResourceView ) = 0;
 #if ABIVER >= 20
 	WOVR_ENTRY virtual void ReleaseMirrorTextureD3D11( void *pD3D11ShaderResourceView ) = 0;
@@ -287,6 +291,20 @@ public:
 		VRCompositor()->SuspendRendering(bSuspend);
 		return;
 	}
+
+#if ABIVER < 16
+	WOVR_ENTRY vr::EVRCompositorError RequestScreenshot( vr::EVRScreenshotType type, const char *pchDestinationFileName, const char *pchVRDestinationFileName )
+	{
+		printf("WOVR fixme: IVRCompositor::RequestScreenshot stub!\n");
+		return VRCompositorError_RequestFailed;
+	}
+
+	WOVR_ENTRY vr::EVRScreenshotType GetCurrentScreenshotType()
+	{
+		printf("WOVR fixme: IVRCompositor::GetCurrentScreenshotType: stub!\n");
+		return VRScreenshotType_None;
+	}
+#endif
 
 	WOVR_ENTRY vr::EVRCompositorError GetMirrorTextureD3D11( vr::EVREye eEye, void *pD3D11DeviceOrResource, void **ppD3D11ShaderResourceView )
 	{
