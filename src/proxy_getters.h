@@ -38,6 +38,7 @@ vr::IVRCompositor* getIVRCompositorProxy_020();
 
 vr::IVRNotifications* getIVRNotificationsProxy_002();
 
+vr::IVROverlay* getIVROverlayProxy_013();
 vr::IVROverlay* getIVROverlayProxy_014();
 vr::IVROverlay* getIVROverlayProxy_016();
 

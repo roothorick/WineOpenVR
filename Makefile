@@ -32,6 +32,7 @@ SOURCES= \
 	\
 	ivrnotifications_002.cpp \
 	\
+	ivroverlay_013.cpp \
 	ivroverlay_014.cpp \
 	ivroverlay_016.cpp \
 	\

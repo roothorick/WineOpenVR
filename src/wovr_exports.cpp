@@ -47,6 +47,8 @@ WOVR_EXPORT void * WOVR_GetGenericInterface(const char *pchInterfaceVersion, EVR
 	if( strcmp(pchInterfaceVersion, "IVRNotifications_002") != 0 )
 		return getIVRNotificationsProxy_002();
 
+	if( strcmp(pchInterfaceVersion, "IVROverlay_013") != 0 )
+		return getIVROverlayProxy_013();
 	if( strcmp(pchInterfaceVersion, "IVROverlay_014") != 0 )
 		return getIVROverlayProxy_014();
 	if( strcmp(pchInterfaceVersion, "IVROverlay_016") != 0 )
