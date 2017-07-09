@@ -48,11 +48,11 @@ WOVR_EXPORT void * WOVR_GetGenericInterface(const char *pchInterfaceVersion, EVR
 	if( strcmp(pchInterfaceVersion, "IVRTrackedCamera_003") != 0 )
 		return getIVRTrackedCameraProxy_003();
 
+	if( strcmp(pchInterfaceVersion, "IVRExtendedDisplay_001") != 0 )
+		return getIVRExtendedDisplayProxy_001();
+
 	// Not yet converted to ABI-switching system
 	void* ntv = VR_GetGenericInterface(pchInterfaceVersion, peError);
-
-	if( strstr(pchInterfaceVersion, "IVRExtendedDisplay") != 0 )
-		return getIVRExtendedDisplayProxy( (IVRExtendedDisplay*) ntv );
 
 	if( strstr(pchInterfaceVersion, "IVRScreenshots") != 0 )
 		return getIVRScreenshotsProxy( (IVRScreenshots*) ntv );
