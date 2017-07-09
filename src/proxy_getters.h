@@ -45,3 +45,5 @@ vr::IVRExtendedDisplay* getIVRExtendedDisplayProxy_001();
 vr::IVRScreenshots* getIVRScreenshotsProxy_001();
 
 vr::IVRResources* getIVRResourcesProxy_001();
+
+vr::IVRDriverManager* getIVRDriverManagerProxy_001();

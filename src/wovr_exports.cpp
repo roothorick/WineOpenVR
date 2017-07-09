@@ -57,6 +57,9 @@ WOVR_EXPORT void * WOVR_GetGenericInterface(const char *pchInterfaceVersion, EVR
 	if( strcmp(pchInterfaceVersion, "IVRResources_001") != 0 )
 		return getIVRResourcesProxy_001();
 
+	if( strcmp(pchInterfaceVersion, "IVRDriverManager_001") != 0 )
+		return getIVRDriverManagerProxy_001();
+
 	// Fallthrough for unknowns
 	printf("WOVR WARNING: App requested unknown interface!\n");
 

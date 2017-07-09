@@ -38,7 +38,9 @@ SOURCES= \
 	\
 	ivrscreenshots_001.cpp \
 	\
-	ivrresources_001.cpp
+	ivrresources_001.cpp \
+	\
+	ivrdrivermanager_001.cpp
 
 CC=winegcc
 CXX=wineg++
