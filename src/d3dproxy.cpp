@@ -218,7 +218,11 @@ void D3DProxy_Shutdown()
 
 ID3DProxy* D3DProxy()
 {
-	if(!Init()) return NULL;
+	if(!initted)
+	{
+		if(!Init()) return NULL;
+		initted = true;
+	}
 	static ID3DProxy ret;
 	return &ret;
 }
