@@ -8,6 +8,7 @@
 #endif
 
 // These are all defined in their respective ivrxxx_xxx.cpp's
+vr::IVRSystem* getIVRSystemProxy_011();
 vr::IVRSystem* getIVRSystemProxy_012();
 vr::IVRSystem* getIVRSystemProxy_014();
 vr::IVRSystem* getIVRSystemProxy_015();
@@ -16,12 +17,15 @@ vr::IVRSystem* getIVRSystemProxy_016();
 vr::IVRApplications* getIVRApplicationsProxy_005();
 vr::IVRApplications* getIVRApplicationsProxy_006();
 
+vr::IVRSettings* getIVRSettingsProxy_001();
 vr::IVRSettings* getIVRSettingsProxy_002();
 
 vr::IVRChaperone* getIVRChaperoneProxy_003();
 
 vr::IVRChaperoneSetup* getIVRChaperoneSetupProxy_005();
 
+vr::IVRCompositor* getIVRCompositorProxy_013();
+vr::IVRCompositor* getIVRCompositorProxy_014();
 vr::IVRCompositor* getIVRCompositorProxy_015();
 vr::IVRCompositor* getIVRCompositorProxy_016();
 vr::IVRCompositor* getIVRCompositorProxy_018();
@@ -30,12 +34,15 @@ vr::IVRCompositor* getIVRCompositorProxy_020();
 
 vr::IVRNotifications* getIVRNotificationsProxy_002();
 
+vr::IVROverlay* getIVROverlayProxy_011();
+vr::IVROverlay* getIVROverlayProxy_012();
 vr::IVROverlay* getIVROverlayProxy_013();
 vr::IVROverlay* getIVROverlayProxy_014();
 vr::IVROverlay* getIVROverlayProxy_016();
 
 vr::IVRRenderModels* getIVRRenderModelsProxy_005();
 
+vr::IVRTrackedCamera* getIVRTrackedCameraProxy_002();
 vr::IVRTrackedCamera* getIVRTrackedCameraProxy_003();
 
 vr::IVRExtendedDisplay* getIVRExtendedDisplayProxy_001();
@@ -54,7 +61,8 @@ WOVR_EXPORT void * WOVR_GetGenericInterface(const char *pchInterfaceVersion, EVR
 	// I'm not terribly worried about leaking proxy objects, as there'll only be a half dozen or so of these ever
 	// created in any sane case.
 
-	// IVRSystem
+	if( strcmp(pchInterfaceVersion, "IVRSystem_011") != 0 )
+		return getIVRSystemProxy_011();
 	if( strcmp(pchInterfaceVersion, "IVRSystem_012") != 0 )
 		return getIVRSystemProxy_012();
 	if( strcmp(pchInterfaceVersion, "IVRSystem_014") != 0 )
@@ -64,12 +72,13 @@ WOVR_EXPORT void * WOVR_GetGenericInterface(const char *pchInterfaceVersion, EVR
 	if( strcmp(pchInterfaceVersion, "IVRSystem_016") != 0 )
 		return getIVRSystemProxy_016();
 
-	// IVRApplications
 	if( strcmp(pchInterfaceVersion, "IVRApplications_005") != 0)
 		return getIVRApplicationsProxy_005();
 	if( strcmp(pchInterfaceVersion, "IVRApplications_006") != 0)
 		return getIVRApplicationsProxy_006();
 
+	if( strcmp(pchInterfaceVersion, "IVRSettings_001") != 0)
+		return getIVRSettingsProxy_001();
 	if( strcmp(pchInterfaceVersion, "IVRSettings_002") != 0)
 		return getIVRSettingsProxy_002();
 
@@ -79,6 +88,10 @@ WOVR_EXPORT void * WOVR_GetGenericInterface(const char *pchInterfaceVersion, EVR
 	if( strcmp(pchInterfaceVersion, "IVRChaperoneSetup_005") != 0)
 		return getIVRChaperoneSetupProxy_005();
 
+	if( strcmp(pchInterfaceVersion, "IVRCompositor_013") != 0 )
+		return getIVRCompositorProxy_013();
+	if( strcmp(pchInterfaceVersion, "IVRCompositor_014") != 0 )
+		return getIVRCompositorProxy_014();
 	if( strcmp(pchInterfaceVersion, "IVRCompositor_015") != 0 )
 		return getIVRCompositorProxy_015();
 	if( strcmp(pchInterfaceVersion, "IVRCompositor_016") != 0 )
@@ -93,6 +106,10 @@ WOVR_EXPORT void * WOVR_GetGenericInterface(const char *pchInterfaceVersion, EVR
 	if( strcmp(pchInterfaceVersion, "IVRNotifications_002") != 0 )
 		return getIVRNotificationsProxy_002();
 
+	if( strcmp(pchInterfaceVersion, "IVROverlay_011") != 0 )
+		return getIVROverlayProxy_011();
+	if( strcmp(pchInterfaceVersion, "IVROverlay_012") != 0 )
+		return getIVROverlayProxy_012();
 	if( strcmp(pchInterfaceVersion, "IVROverlay_013") != 0 )
 		return getIVROverlayProxy_013();
 	if( strcmp(pchInterfaceVersion, "IVROverlay_014") != 0 )
@@ -103,11 +120,13 @@ WOVR_EXPORT void * WOVR_GetGenericInterface(const char *pchInterfaceVersion, EVR
 	if( strcmp(pchInterfaceVersion, "IVRRenderModels_005") != 0 )
 		return getIVRRenderModelsProxy_005();
 
-	if( strcmp(pchInterfaceVersion, "IVRTrackedCamera_003") != 0 )
-		return getIVRTrackedCameraProxy_003();
-
 	if( strcmp(pchInterfaceVersion, "IVRExtendedDisplay_001") != 0 )
 		return getIVRExtendedDisplayProxy_001();
+
+	if( strcmp(pchInterfaceVersion, "IVRTrackedCamera_002") != 0 )
+		return getIVRTrackedCameraProxy_002();
+	if( strcmp(pchInterfaceVersion, "IVRTrackedCamera_003") != 0 )
+		return getIVRTrackedCameraProxy_003();
 
 	if( strcmp(pchInterfaceVersion, "IVRScreenshots_001") != 0 )
 		return getIVRScreenshotsProxy_001();
