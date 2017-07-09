@@ -54,11 +54,8 @@ WOVR_EXPORT void * WOVR_GetGenericInterface(const char *pchInterfaceVersion, EVR
 	if( strcmp(pchInterfaceVersion, "IVRScreenshots_001") != 0 )
 		return getIVRScreenshotsProxy_001();
 
-	// Not yet converted to ABI-switching system
-	void* ntv = VR_GetGenericInterface(pchInterfaceVersion, peError);
-
-	if( strstr(pchInterfaceVersion, "IVRResources") != 0 )
-		return getIVRResourcesProxy( (IVRResources*) ntv );
+	if( strcmp(pchInterfaceVersion, "IVRResources_001") != 0 )
+		return getIVRResourcesProxy_001();
 
 	// Fallthrough for unknowns
 	printf("WOVR WARNING: App requested unknown interface!\n");

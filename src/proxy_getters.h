@@ -44,5 +44,4 @@ vr::IVRExtendedDisplay* getIVRExtendedDisplayProxy_001();
 
 vr::IVRScreenshots* getIVRScreenshotsProxy_001();
 
-// Not yet converted to ABI-switching system
-vr::IVRResources*       getIVRResourcesProxy        (vr::IVRResources*          real);
+vr::IVRResources* getIVRResourcesProxy_001();
