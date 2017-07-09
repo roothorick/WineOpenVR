@@ -1,6 +1,6 @@
-#include "common.h"
+#include "ivrchaperonesetup.h"
 
-class clone_IVRChaperoneSetup
+class clone_IVRChaperoneSetup_005
 {
 public:
 	WOVR_ENTRY virtual bool CommitWorkingCopy( EChaperoneConfigFile configFile ) = 0;
@@ -25,123 +25,118 @@ public:
 	WOVR_ENTRY virtual bool ImportFromBufferToWorking( const char *pBuffer, uint32_t nImportFlags ) = 0;
 };
 
-class proxy_IVRChaperoneSetup : public clone_IVRChaperoneSetup
+class proxy_IVRChaperoneSetup_005 : public clone_IVRChaperoneSetup_005
 {
 public:
-	proxy_IVRChaperoneSetup(IVRChaperoneSetup* real) { realImpl = real; }
-
 	WOVR_ENTRY bool CommitWorkingCopy( EChaperoneConfigFile configFile )
 	{
-		return realImpl->CommitWorkingCopy(configFile);
+		return fns_IVRChaperoneSetup::CommitWorkingCopy(configFile);
 	}
 
 	WOVR_ENTRY void RevertWorkingCopy()
 	{
-		realImpl->RevertWorkingCopy();
+		fns_IVRChaperoneSetup::RevertWorkingCopy();
 		return;
 	}
 
 	WOVR_ENTRY bool GetWorkingPlayAreaSize( float *pSizeX, float *pSizeZ )
 	{
-		return realImpl->GetWorkingPlayAreaSize(pSizeX, pSizeZ);
+		return fns_IVRChaperoneSetup::GetWorkingPlayAreaSize(pSizeX, pSizeZ);
 	}
 
 	WOVR_ENTRY bool GetWorkingPlayAreaRect( HmdQuad_t *rect )
 	{
-		return realImpl->GetWorkingPlayAreaRect(rect);
+		return fns_IVRChaperoneSetup::GetWorkingPlayAreaRect(rect);
 	}
 
 	WOVR_ENTRY bool GetWorkingCollisionBoundsInfo( VR_OUT_ARRAY_COUNT(punQuadsCount) HmdQuad_t *pQuadsBuffer, uint32_t* punQuadsCount )
 	{
-		return realImpl->GetWorkingCollisionBoundsInfo(pQuadsBuffer, punQuadsCount);
+		return fns_IVRChaperoneSetup::GetWorkingCollisionBoundsInfo(pQuadsBuffer, punQuadsCount);
 	}
 
 	WOVR_ENTRY bool GetLiveCollisionBoundsInfo( VR_OUT_ARRAY_COUNT(punQuadsCount) HmdQuad_t *pQuadsBuffer, uint32_t* punQuadsCount )
 	{
-		return realImpl->GetLiveCollisionBoundsInfo(pQuadsBuffer, punQuadsCount);
+		return fns_IVRChaperoneSetup::GetLiveCollisionBoundsInfo(pQuadsBuffer, punQuadsCount);
 	}
 
 	WOVR_ENTRY bool GetWorkingSeatedZeroPoseToRawTrackingPose( HmdMatrix34_t *pmatSeatedZeroPoseToRawTrackingPose )
 	{
-		return realImpl->GetWorkingSeatedZeroPoseToRawTrackingPose(pmatSeatedZeroPoseToRawTrackingPose);
+		return fns_IVRChaperoneSetup::GetWorkingSeatedZeroPoseToRawTrackingPose(pmatSeatedZeroPoseToRawTrackingPose);
 	}
 
 	WOVR_ENTRY bool GetWorkingStandingZeroPoseToRawTrackingPose( HmdMatrix34_t *pmatStandingZeroPoseToRawTrackingPose )
 	{
-		return realImpl->GetWorkingStandingZeroPoseToRawTrackingPose(pmatStandingZeroPoseToRawTrackingPose);
+		return fns_IVRChaperoneSetup::GetWorkingStandingZeroPoseToRawTrackingPose(pmatStandingZeroPoseToRawTrackingPose);
 	}
 
 	WOVR_ENTRY void SetWorkingPlayAreaSize( float sizeX, float sizeZ )
 	{
-		realImpl->SetWorkingPlayAreaSize(sizeX, sizeZ);
+		fns_IVRChaperoneSetup::SetWorkingPlayAreaSize(sizeX, sizeZ);
 		return;
 	}
 
 	WOVR_ENTRY void SetWorkingCollisionBoundsInfo( VR_ARRAY_COUNT(unQuadsCount) HmdQuad_t *pQuadsBuffer, uint32_t unQuadsCount )
 	{
-		realImpl->SetWorkingCollisionBoundsInfo(pQuadsBuffer, unQuadsCount);
+		fns_IVRChaperoneSetup::SetWorkingCollisionBoundsInfo(pQuadsBuffer, unQuadsCount);
 		return;
 	}
 
 	WOVR_ENTRY void SetWorkingSeatedZeroPoseToRawTrackingPose( const HmdMatrix34_t *pMatSeatedZeroPoseToRawTrackingPose )
 	{
-		realImpl->SetWorkingSeatedZeroPoseToRawTrackingPose(pMatSeatedZeroPoseToRawTrackingPose);
+		fns_IVRChaperoneSetup::SetWorkingSeatedZeroPoseToRawTrackingPose(pMatSeatedZeroPoseToRawTrackingPose);
 		return;
 	}
 
 	WOVR_ENTRY void SetWorkingStandingZeroPoseToRawTrackingPose( const HmdMatrix34_t *pMatStandingZeroPoseToRawTrackingPose )
 	{
-		realImpl->SetWorkingStandingZeroPoseToRawTrackingPose(pMatStandingZeroPoseToRawTrackingPose);
+		fns_IVRChaperoneSetup::SetWorkingStandingZeroPoseToRawTrackingPose(pMatStandingZeroPoseToRawTrackingPose);
 		return;
 	}
 
 	WOVR_ENTRY void ReloadFromDisk( EChaperoneConfigFile configFile )
 	{
-		realImpl->ReloadFromDisk(configFile);
+		fns_IVRChaperoneSetup::ReloadFromDisk(configFile);
 		return;
 	}
 
 	WOVR_ENTRY bool GetLiveSeatedZeroPoseToRawTrackingPose( HmdMatrix34_t *pmatSeatedZeroPoseToRawTrackingPose )
 	{
-		return realImpl->GetLiveSeatedZeroPoseToRawTrackingPose(pmatSeatedZeroPoseToRawTrackingPose);
+		return fns_IVRChaperoneSetup::GetLiveSeatedZeroPoseToRawTrackingPose(pmatSeatedZeroPoseToRawTrackingPose);
 	}
 
 	WOVR_ENTRY void SetWorkingCollisionBoundsTagsInfo( VR_ARRAY_COUNT(unTagCount) uint8_t *pTagsBuffer, uint32_t unTagCount )
 	{
-		realImpl->SetWorkingCollisionBoundsTagsInfo(pTagsBuffer, unTagCount);
+		fns_IVRChaperoneSetup::SetWorkingCollisionBoundsTagsInfo(pTagsBuffer, unTagCount);
 		return;
 	}
 
 	WOVR_ENTRY bool GetLiveCollisionBoundsTagsInfo( VR_OUT_ARRAY_COUNT(punTagCount) uint8_t *pTagsBuffer, uint32_t *punTagCount )
 	{
-		return realImpl->GetLiveCollisionBoundsTagsInfo(pTagsBuffer, punTagCount);
+		return fns_IVRChaperoneSetup::GetLiveCollisionBoundsTagsInfo(pTagsBuffer, punTagCount);
 	}
 
 	WOVR_ENTRY bool SetWorkingPhysicalBoundsInfo( VR_ARRAY_COUNT(unQuadsCount) HmdQuad_t *pQuadsBuffer, uint32_t unQuadsCount )
 	{
-		return realImpl->SetWorkingPhysicalBoundsInfo(pQuadsBuffer, unQuadsCount);
+		return fns_IVRChaperoneSetup::SetWorkingPhysicalBoundsInfo(pQuadsBuffer, unQuadsCount);
 	}
 
 	WOVR_ENTRY bool GetLivePhysicalBoundsInfo( VR_OUT_ARRAY_COUNT(punQuadsCount) HmdQuad_t *pQuadsBuffer, uint32_t* punQuadsCount )
 	{
-		return realImpl->GetLivePhysicalBoundsInfo(pQuadsBuffer, punQuadsCount);
+		return fns_IVRChaperoneSetup::GetLivePhysicalBoundsInfo(pQuadsBuffer, punQuadsCount);
 	}
 
 	WOVR_ENTRY bool ExportLiveToBuffer( VR_OUT_STRING() char *pBuffer, uint32_t *pnBufferLength )
 	{
-		return realImpl->ExportLiveToBuffer(pBuffer, pnBufferLength);
+		return fns_IVRChaperoneSetup::ExportLiveToBuffer(pBuffer, pnBufferLength);
 	}
 
 	WOVR_ENTRY bool ImportFromBufferToWorking( const char *pBuffer, uint32_t nImportFlags )
 	{
-		return realImpl->ImportFromBufferToWorking(pBuffer, nImportFlags);
+		return fns_IVRChaperoneSetup::ImportFromBufferToWorking(pBuffer, nImportFlags);
 	}
-
-private:
-	IVRChaperoneSetup* realImpl;
 };
 
-IVRChaperoneSetup* getIVRChaperoneSetupProxy(IVRChaperoneSetup* real)
+IVRChaperoneSetup* getIVRChaperoneSetupProxy_005()
 {
-	return (IVRChaperoneSetup*) new proxy_IVRChaperoneSetup(real);
+	return (IVRChaperoneSetup*) new proxy_IVRChaperoneSetup_005();
 }

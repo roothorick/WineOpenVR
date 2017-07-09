@@ -22,7 +22,8 @@ SOURCES= \
 	\
 	ivrchaperone_003.cpp \
 	\
-	ivrchaperonesetup.cpp \
+	ivrchaperonesetup_005.cpp \
+	\
 	ivrcompositor.cpp \
 	ivrnotifications.cpp \
 	ivroverlay.cpp \

@@ -28,8 +28,9 @@ vr::IVRSettings* getIVRSettingsProxy_002();
 
 vr::IVRChaperone* getIVRChaperoneProxy_003();
 
+vr::IVRChaperoneSetup* getIVRChaperoneSetupProxy_005();
+
 // Not yet converted to ABI-switching system
-vr::IVRChaperoneSetup*  getIVRChaperoneSetupProxy   (vr::IVRChaperoneSetup*     real);
 vr::IVRCompositor*      getIVRCompositorProxy       (vr::IVRCompositor*         real);
 vr::IVRNotifications*   getIVRNotificationsProxy    (vr::IVRNotifications*      real);
 vr::IVROverlay*         getIVROverlayProxy          (vr::IVROverlay*            real);
