@@ -1,6 +1,6 @@
-#include "common.h"
+#include "ivrchaperone.h"
 
-class clone_IVRChaperone
+class clone_IVRChaperone_003
 {
 public:
 	WOVR_ENTRY virtual ChaperoneCalibrationState GetCalibrationState() = 0;
@@ -13,60 +13,55 @@ public:
 	WOVR_ENTRY virtual void ForceBoundsVisible( bool bForce ) = 0;
 };
 
-class proxy_IVRChaperone : public clone_IVRChaperone
+class proxy_IVRChaperone_003 : public clone_IVRChaperone_003
 {
 public:
-	proxy_IVRChaperone(IVRChaperone* real) { realImpl = real; }
-
 	WOVR_ENTRY ChaperoneCalibrationState GetCalibrationState()
 	{
-		return realImpl->GetCalibrationState();
+		return fns_IVRChaperone::GetCalibrationState();
 	}
 
 	WOVR_ENTRY bool GetPlayAreaSize( float *pSizeX, float *pSizeZ )
 	{
-		return realImpl->GetPlayAreaSize(pSizeX, pSizeZ);
+		return fns_IVRChaperone::GetPlayAreaSize(pSizeX, pSizeZ);
 	}
 
 	WOVR_ENTRY bool GetPlayAreaRect( HmdQuad_t *rect )
 	{
-		return realImpl->GetPlayAreaRect(rect);
+		return fns_IVRChaperone::GetPlayAreaRect(rect);
 	}
 
 	WOVR_ENTRY void ReloadInfo( void )
 	{
-		realImpl->ReloadInfo();
+		fns_IVRChaperone::ReloadInfo();
 		return;
 	}
 
 	WOVR_ENTRY void SetSceneColor( HmdColor_t color )
 	{
-		realImpl->SetSceneColor(color);
+		fns_IVRChaperone::SetSceneColor(color);
 		return;
 	}
 
 	WOVR_ENTRY void GetBoundsColor( HmdColor_t *pOutputColorArray, int nNumOutputColors, float flCollisionBoundsFadeDistance, HmdColor_t *pOutputCameraColor )
 	{
-		realImpl->GetBoundsColor(pOutputColorArray, nNumOutputColors, flCollisionBoundsFadeDistance, pOutputCameraColor);
+		fns_IVRChaperone::GetBoundsColor(pOutputColorArray, nNumOutputColors, flCollisionBoundsFadeDistance, pOutputCameraColor);
 		return;
 	}
 
 	WOVR_ENTRY bool AreBoundsVisible()
 	{
-		return realImpl->AreBoundsVisible();
+		return fns_IVRChaperone::AreBoundsVisible();
 	}
 
 	WOVR_ENTRY void ForceBoundsVisible( bool bForce )
 	{
-		realImpl->ForceBoundsVisible(bForce);
+		fns_IVRChaperone::ForceBoundsVisible(bForce);
 		return;
 	}
-
-private:
-	IVRChaperone* realImpl;
 };
 
-IVRChaperone* getIVRChaperoneProxy (IVRChaperone* real)
+IVRChaperone* getIVRChaperoneProxy_003()
 {
-	return (IVRChaperone*) new proxy_IVRChaperone(real);
+	return (IVRChaperone*) new proxy_IVRChaperone_003();
 }
