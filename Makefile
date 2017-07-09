@@ -14,6 +14,7 @@ SOURCES= \
 	wovr_exports.cpp \
 	d3dproxy.cpp \
 	\
+	ivrsystem_012.cpp \
 	ivrsystem_014.cpp \
 	ivrsystem_015.cpp \
 	ivrsystem_016.cpp \
