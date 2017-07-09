@@ -27,7 +27,9 @@ public:
 	WOVR_ENTRY virtual EVRApplicationError GetApplicationKeyByIndex( uint32_t unApplicationIndex, VR_OUT_STRING() char *pchAppKeyBuffer, uint32_t unAppKeyBufferLen ) = 0;
 	WOVR_ENTRY virtual EVRApplicationError GetApplicationKeyByProcessId( uint32_t unProcessId, char *pchAppKeyBuffer, uint32_t unAppKeyBufferLen ) = 0;
 	WOVR_ENTRY virtual EVRApplicationError LaunchApplication( const char *pchAppKey ) = 0;
+#if ABIVER >= 5
 	WOVR_ENTRY virtual EVRApplicationError LaunchTemplateApplication( const char *pchTemplateAppKey, const char *pchNewAppKey, VR_ARRAY_COUNT( unKeys ) const AppOverrideKeys_t *pKeys, uint32_t unKeys ) = 0;
+#endif
 #if ABIVER >= 6
 	WOVR_ENTRY virtual vr::EVRApplicationError LaunchApplicationFromMimeType( const char *pchMimeType, const char *pchArgs ) = 0;
 #endif
@@ -95,10 +97,12 @@ public:
 		return VRApplications()->LaunchApplication(pchAppKey);
 	}
 
+#if ABIVER >= 5
 	WOVR_ENTRY EVRApplicationError LaunchTemplateApplication( const char *pchTemplateAppKey, const char *pchNewAppKey, VR_ARRAY_COUNT( unKeys ) const AppOverrideKeys_t *pKeys, uint32_t unKeys )
 	{
 		return VRApplications()->LaunchTemplateApplication(pchTemplateAppKey, pchNewAppKey, pKeys, unKeys);
 	}
+#endif
 
 #if ABIVER >= 6
 	WOVR_ENTRY vr::EVRApplicationError LaunchApplicationFromMimeType( const char *pchMimeType, const char *pchArgs )
