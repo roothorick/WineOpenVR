@@ -66,8 +66,13 @@ public:
 	WOVR_ENTRY virtual void GetMatrix34TrackedDeviceProperty(HmdMatrix34_t* ret, vr::TrackedDeviceIndex_t unDeviceIndex, ETrackedDeviceProperty prop, ETrackedPropertyError *pError ) = 0; // ERP hack
 	WOVR_ENTRY virtual uint32_t GetStringTrackedDeviceProperty( vr::TrackedDeviceIndex_t unDeviceIndex, ETrackedDeviceProperty prop, VR_OUT_STRING() char *pchValue, uint32_t unBufferSize, ETrackedPropertyError *pError ) = 0;
 	WOVR_ENTRY virtual const char *GetPropErrorNameFromEnum( ETrackedPropertyError error ) = 0;
+#if ABIVER < 11
+	WOVR_ENTRY virtual bool PollNextEvent( Repacked_VREvent_t *pEvent ) = 0; // Struct packing mismatch
+	WOVR_ENTRY virtual bool PollNextEventWithPose( ETrackingUniverseOrigin eOrigin, Repacked_VREvent_t *pEvent, vr::TrackedDevicePose_t *pTrackedDevicePose ) = 0; // Struct packing mismatch
+#else // >= 11
 	WOVR_ENTRY virtual bool PollNextEvent( Repacked_VREvent_t *pEvent, uint32_t uncbVREvent ) = 0; // Struct packing mismatch
 	WOVR_ENTRY virtual bool PollNextEventWithPose( ETrackingUniverseOrigin eOrigin, Repacked_VREvent_t *pEvent, uint32_t uncbVREvent, vr::TrackedDevicePose_t *pTrackedDevicePose ) = 0; // Struct packing mismatch
+#endif
 	WOVR_ENTRY virtual const char *GetEventTypeNameFromEnum( EVREventType eType ) = 0;
 #if ABIVER < 14
 	WOVR_ENTRY virtual void GetHiddenAreaMesh(HiddenAreaMesh_t* ret, EVREye eEye ) = 0; // ERP hack
@@ -279,7 +284,11 @@ public:
 		return VRSystem()->GetPropErrorNameFromEnum(error);
 	}
 
+#if ABIVER < 11
+	WOVR_ENTRY bool PollNextEvent( Repacked_VREvent_t *pEvent )
+#else
 	WOVR_ENTRY bool PollNextEvent( Repacked_VREvent_t *pEvent, uint32_t uncbVREvent )
+#endif
 	{
 		// Struct packing mismatch
 		VREvent_t linpacked;
@@ -292,7 +301,11 @@ public:
 		return ret;
 	}
 
+#if ABIVER < 11
+	WOVR_ENTRY bool PollNextEventWithPose( ETrackingUniverseOrigin eOrigin, Repacked_VREvent_t *pEvent, vr::TrackedDevicePose_t *pTrackedDevicePose )
+#else
 	WOVR_ENTRY bool PollNextEventWithPose( ETrackingUniverseOrigin eOrigin, Repacked_VREvent_t *pEvent, uint32_t uncbVREvent, vr::TrackedDevicePose_t *pTrackedDevicePose )
+#endif
 	{
 		// Struct packing mismatch
 		VREvent_t linpacked;
