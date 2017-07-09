@@ -24,7 +24,9 @@ public:
 		VR_ARRAY_COUNT(unGamePoseArrayCount) TrackedDevicePose_t* pGamePoseArray, uint32_t unGamePoseArrayCount ) = 0;
 	WOVR_ENTRY virtual EVRCompositorError GetLastPoses( VR_ARRAY_COUNT( unRenderPoseArrayCount ) TrackedDevicePose_t* pRenderPoseArray, uint32_t unRenderPoseArrayCount,
 		VR_ARRAY_COUNT( unGamePoseArrayCount ) TrackedDevicePose_t* pGamePoseArray, uint32_t unGamePoseArrayCount ) = 0;
+#if ABIVER >= 12
 	WOVR_ENTRY virtual EVRCompositorError GetLastPoseForTrackedDeviceIndex( TrackedDeviceIndex_t unDeviceIndex, TrackedDevicePose_t *pOutputPose, TrackedDevicePose_t *pOutputGamePose ) = 0;
+#endif
 	WOVR_ENTRY virtual EVRCompositorError Submit( EVREye eEye, const Texture_t *pTexture, const VRTextureBounds_t* pBounds = 0, EVRSubmitFlags nSubmitFlags = Submit_Default ) = 0;
 	WOVR_ENTRY virtual void ClearLastSubmittedFrame() = 0;
 	WOVR_ENTRY virtual void PostPresentHandoff() = 0;
@@ -53,7 +55,9 @@ public:
 	WOVR_ENTRY virtual void HideMirrorWindow() = 0;
 	WOVR_ENTRY virtual bool IsMirrorWindowVisible() = 0;
 	WOVR_ENTRY virtual void CompositorDumpImages() = 0;
+#if ABIVER >= 12
 	WOVR_ENTRY virtual bool ShouldAppRenderWithLowResources() = 0;
+#endif
 #if ABIVER >= 13
 	WOVR_ENTRY virtual void ForceInterleavedReprojectionOn( bool bOverride ) = 0;
 #endif
@@ -107,10 +111,12 @@ public:
 		return VRCompositor()->GetLastPoses(pRenderPoseArray, unRenderPoseArrayCount, pGamePoseArray, unGamePoseArrayCount);
 	}
 
+#if ABIVER >= 12
 	WOVR_ENTRY EVRCompositorError GetLastPoseForTrackedDeviceIndex( TrackedDeviceIndex_t unDeviceIndex, TrackedDevicePose_t *pOutputPose, TrackedDevicePose_t *pOutputGamePose )
 	{
 		return VRCompositor()->GetLastPoseForTrackedDeviceIndex(unDeviceIndex, pOutputPose, pOutputGamePose);
 	}
+#endif
 
 	WOVR_ENTRY EVRCompositorError Submit( EVREye eEye, const Texture_t *pTexture, const VRTextureBounds_t* pBounds, EVRSubmitFlags nSubmitFlags )
 	{
@@ -283,10 +289,12 @@ public:
 		return;
 	}
 
+#if ABIVER >= 12
 	WOVR_ENTRY bool ShouldAppRenderWithLowResources()
 	{
 		return VRCompositor()->ShouldAppRenderWithLowResources();
 	}
+#endif
 
 #if ABIVER >= 13
 	WOVR_ENTRY void ForceInterleavedReprojectionOn( bool bOverride )
