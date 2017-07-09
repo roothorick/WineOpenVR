@@ -70,6 +70,10 @@ WOVR_EXPORT void * WOVR_GetGenericInterface(const char *pchInterfaceVersion, EVR
 {
 	printf("WOVR info: App requested API version %s\n", pchInterfaceVersion);
 
+	// Some apps are prefixing their IVRSystem requests with FnTable: for whatever reason.
+	if( strstr(pchInterfaceVersion, "FnTable:") != NULL)
+		pchInterfaceVersion += strlen("FnTable:");
+
 	// I'm not terribly worried about leaking proxy objects, as there'll only be a half dozen or so of these ever
 	// created in any sane case.
 
