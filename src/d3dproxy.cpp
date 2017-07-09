@@ -115,6 +115,8 @@ static VKAPI_ATTR VkBool32 VKAPI_CALL printVkError( VkDebugReportFlagsEXT flags,
     return VK_FALSE;
 }
 
+VkDebugReportCallbackEXT validationCallback;
+
 bool Init()
 {
     printf("WOVR info: D3DProxy Init: setting up Vulkan\n");
@@ -184,6 +186,23 @@ bool Init()
         }
     }
 
+    // ====================== Setup Debug Callback
+    {
+    	VkDebugReportCallbackCreateInfoEXT cbInfo = {};
+    	cbInfo.sType = VK_STRUCTURE_TYPE_DEBUG_REPORT_CALLBACK_CREATE_INFO_EXT;
+    	cbInfo.flags =  VK_DEBUG_REPORT_ERROR_BIT_EXT |
+    					VK_DEBUG_REPORT_WARNING_BIT_EXT |
+    					VK_DEBUG_REPORT_PERFORMANCE_WARNING_BIT_EXT |
+    					VK_DEBUG_REPORT_INFORMATION_BIT_EXT |
+    					VK_DEBUG_REPORT_DEBUG_BIT_EXT;
+    	cbInfo.pfnCallback = printVkError;
+
+    	if(vkCreateDebugReportCallbackEXT(instance, &cbInfo, NULL, &validationCallback) != VK_SUCCESS)
+    	{
+    		printf("WOVR warning: D3DProxy Init: Failed to register validation report callback!\n");
+			return false;
+		}
+	}
 
     return true;
 }
