@@ -209,12 +209,12 @@ bool Init()
 
 // In case we ever find an application that'll shutdown VR but continue with something else, or even start VR multiple
 // times.
-/*
 void D3DProxy_Shutdown()
 {
+	vkDestroyDebugReportCallbackEXT(&instance, &validationCallback, NULL);
 	vkDestroyInstance(&instance, NULL);
 }
-*/
+
 
 ID3DProxy* D3DProxy()
 {
