@@ -32,6 +32,7 @@ SOURCES= \
 	\
 	ivrchaperone/ivrchaperone_003.cpp \
 	\
+	ivrchaperonesetup/ivrchaperonesetup_004.cpp \
 	ivrchaperonesetup/ivrchaperonesetup_005.cpp \
 	\
 	ivrcompositor/ivrcompositor_011.cpp \

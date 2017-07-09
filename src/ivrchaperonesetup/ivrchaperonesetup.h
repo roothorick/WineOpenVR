@@ -31,12 +31,17 @@ public:
 	WOVR_ENTRY virtual void SetWorkingStandingZeroPoseToRawTrackingPose( const HmdMatrix34_t *pMatStandingZeroPoseToRawTrackingPose ) = 0;
 	WOVR_ENTRY virtual void ReloadFromDisk( EChaperoneConfigFile configFile ) = 0;
 	WOVR_ENTRY virtual bool GetLiveSeatedZeroPoseToRawTrackingPose( HmdMatrix34_t *pmatSeatedZeroPoseToRawTrackingPose ) = 0;
+#if ABIVER < 5
+	WOVR_ENTRY virtual void SetWorkingWallTagInfo( VR_ARRAY_COUNT(unTagCount) uint8_t *pTagsBuffer, uint32_t unTagCount ) = 0;
+	WOVR_ENTRY virtual bool GetLiveWallTagInfo( VR_OUT_ARRAY_COUNT(punTagCount) uint8_t *pTagsBuffer, uint32_t *punTagCount ) = 0;
+#else // >= 5
 	WOVR_ENTRY virtual void SetWorkingCollisionBoundsTagsInfo( VR_ARRAY_COUNT(unTagCount) uint8_t *pTagsBuffer, uint32_t unTagCount ) = 0;
 	WOVR_ENTRY virtual bool GetLiveCollisionBoundsTagsInfo( VR_OUT_ARRAY_COUNT(punTagCount) uint8_t *pTagsBuffer, uint32_t *punTagCount ) = 0;
 	WOVR_ENTRY virtual bool SetWorkingPhysicalBoundsInfo( VR_ARRAY_COUNT(unQuadsCount) HmdQuad_t *pQuadsBuffer, uint32_t unQuadsCount ) = 0;
 	WOVR_ENTRY virtual bool GetLivePhysicalBoundsInfo( VR_OUT_ARRAY_COUNT(punQuadsCount) HmdQuad_t *pQuadsBuffer, uint32_t* punQuadsCount ) = 0;
 	WOVR_ENTRY virtual bool ExportLiveToBuffer( VR_OUT_STRING() char *pBuffer, uint32_t *pnBufferLength ) = 0;
 	WOVR_ENTRY virtual bool ImportFromBufferToWorking( const char *pBuffer, uint32_t nImportFlags ) = 0;
+#endif
 };
 
 class PROXYCLASS : public CLONECLASS
@@ -118,13 +123,22 @@ public:
 		return VRChaperoneSetup()->GetLiveSeatedZeroPoseToRawTrackingPose(pmatSeatedZeroPoseToRawTrackingPose);
 	}
 
+// XXX: I'm not certain these are actually equivalent, but it's what makes the most sense.
+#if ABIVER < 5
+	WOVR_ENTRY void SetWorkingWallTagInfo( VR_ARRAY_COUNT(unTagCount) uint8_t *pTagsBuffer, uint32_t unTagCount )
+#else // >= 5
 	WOVR_ENTRY void SetWorkingCollisionBoundsTagsInfo( VR_ARRAY_COUNT(unTagCount) uint8_t *pTagsBuffer, uint32_t unTagCount )
+#endif
 	{
 		VRChaperoneSetup()->SetWorkingCollisionBoundsTagsInfo(pTagsBuffer, unTagCount);
 		return;
 	}
 
+#if ABIVER < 5
+	WOVR_ENTRY bool GetLiveWallTagInfo( VR_OUT_ARRAY_COUNT(punTagCount) uint8_t *pTagsBuffer, uint32_t *punTagCount )
+#else
 	WOVR_ENTRY bool GetLiveCollisionBoundsTagsInfo( VR_OUT_ARRAY_COUNT(punTagCount) uint8_t *pTagsBuffer, uint32_t *punTagCount )
+#endif
 	{
 		return VRChaperoneSetup()->GetLiveCollisionBoundsTagsInfo(pTagsBuffer, punTagCount);
 	}
