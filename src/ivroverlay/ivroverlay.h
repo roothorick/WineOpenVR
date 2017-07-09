@@ -52,10 +52,12 @@ public:
 	WOVR_ENTRY virtual EVROverlayError GetOverlayColor( VROverlayHandle_t ulOverlayHandle, float *pfRed, float *pfGreen, float *pfBlue ) = 0;
 	WOVR_ENTRY virtual EVROverlayError SetOverlayAlpha( VROverlayHandle_t ulOverlayHandle, float fAlpha ) = 0;
 	WOVR_ENTRY virtual EVROverlayError GetOverlayAlpha( VROverlayHandle_t ulOverlayHandle, float *pfAlpha ) = 0;
+#if ABIVER < 13
 	WOVR_ENTRY virtual EVROverlayError SetOverlayTexelAspect( VROverlayHandle_t ulOverlayHandle, float fTexelAspect ) = 0;
 	WOVR_ENTRY virtual EVROverlayError GetOverlayTexelAspect( VROverlayHandle_t ulOverlayHandle, float *pfTexelAspect ) = 0;
 	WOVR_ENTRY virtual EVROverlayError SetOverlaySortOrder( VROverlayHandle_t ulOverlayHandle, uint32_t unSortOrder ) = 0;
 	WOVR_ENTRY virtual EVROverlayError GetOverlaySortOrder( VROverlayHandle_t ulOverlayHandle, uint32_t *punSortOrder ) = 0;
+#endif
 	WOVR_ENTRY virtual EVROverlayError SetOverlayWidthInMeters( VROverlayHandle_t ulOverlayHandle, float fWidthInMeters ) = 0;
 	WOVR_ENTRY virtual EVROverlayError GetOverlayWidthInMeters( VROverlayHandle_t ulOverlayHandle, float *pfWidthInMeters ) = 0;
 	WOVR_ENTRY virtual EVROverlayError SetOverlayAutoCurveDistanceRangeInMeters( VROverlayHandle_t ulOverlayHandle, float fMinDistanceInMeters, float fMaxDistanceInMeters ) = 0;
@@ -217,6 +219,7 @@ public:
 		return VROverlay()->GetOverlayAlpha(ulOverlayHandle, pfAlpha);
 	}
 
+#if ABIVER < 13
 	WOVR_ENTRY EVROverlayError SetOverlayTexelAspect( VROverlayHandle_t ulOverlayHandle, float fTexelAspect )
 	{
 		return VROverlay()->SetOverlayTexelAspect(ulOverlayHandle, fTexelAspect);
@@ -236,6 +239,7 @@ public:
 	{
 		return VROverlay()->GetOverlaySortOrder(ulOverlayHandle, punSortOrder);
 	}
+#endif
 
 	WOVR_ENTRY EVROverlayError SetOverlayWidthInMeters( VROverlayHandle_t ulOverlayHandle, float fWidthInMeters )
 	{
