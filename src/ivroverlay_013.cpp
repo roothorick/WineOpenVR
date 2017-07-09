@@ -441,6 +441,8 @@ public:
 		return;
 	}
 
+	// DANGER: In 1.0.4 this method was added... without incrementing the ABI version token!
+	// Only reason things work at all is because it's at the bottom of the class.
 	WOVR_ENTRY EVROverlayError SetOverlayIntersectionMask( VROverlayHandle_t ulOverlayHandle, VROverlayIntersectionMaskPrimitive_t *pMaskPrimitives, uint32_t unNumMaskPrimitives, uint32_t unPrimitiveSize )
 	{
 		return fns_IVROverlay::SetOverlayIntersectionMask(ulOverlayHandle, pMaskPrimitives, unNumMaskPrimitives, unPrimitiveSize);
