@@ -30,8 +30,8 @@ public:
 	WOVR_ENTRY virtual bool GetBool( const char *pchSection, const char *pchSettingsKey, EVRSettingsError *peError ) = 0;
 	WOVR_ENTRY virtual int32_t GetInt32( const char *pchSection, const char *pchSettingsKey, EVRSettingsError *peError ) = 0;
 	WOVR_ENTRY virtual float GetFloat( const char *pchSection, const char *pchSettingsKey, EVRSettingsError *peError ) = 0;
-	WOVR_ENTRY virtual void RemoveSection( const char *pchSection, EVRSettingsError *peError ) = 0;
 	WOVR_ENTRY virtual void GetString( const char *pchSection, const char *pchSettingsKey, VR_OUT_STRING() char *pchValue, uint32_t unValueLen, EVRSettingsError *peError ) = 0;
+	WOVR_ENTRY virtual void RemoveSection( const char *pchSection, EVRSettingsError *peError ) = 0;
 	WOVR_ENTRY virtual void RemoveKeyInSection( const char *pchSection, const char *pchSettingsKey, EVRSettingsError *peError ) = 0;
 };
 
