@@ -94,6 +94,7 @@ public:
 	WOVR_ENTRY virtual void AcknowledgeQuit_Exiting() = 0;
 	WOVR_ENTRY virtual void AcknowledgeQuit_UserPrompt() = 0;
 #if ABIVER < 12
+	// Added in 0.9.14 without an ABI version bump (was 010)
 	WOVR_ENTRY virtual void PerformanceTestEnableCapture( bool bEnable ) = 0;
 	WOVR_ENTRY virtual void PerformanceTestReportFidelityLevelChange( int nFidelityLevel ) = 0;
 #endif
