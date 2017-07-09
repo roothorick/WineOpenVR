@@ -44,8 +44,10 @@ public:
 #endif
 	WOVR_ENTRY virtual EVROverlayError GetOverlayImageData( VROverlayHandle_t ulOverlayHandle, void *pvBuffer, uint32_t unBufferSize, uint32_t *punWidth, uint32_t *punHeight ) = 0;
 	WOVR_ENTRY virtual const char *GetOverlayErrorNameFromEnum( EVROverlayError error ) = 0;
+#if ABIVER >= 11
 	WOVR_ENTRY virtual EVROverlayError SetOverlayRenderingPid( VROverlayHandle_t ulOverlayHandle, uint32_t unPID ) = 0;
 	WOVR_ENTRY virtual uint32_t GetOverlayRenderingPid( VROverlayHandle_t ulOverlayHandle ) = 0;
+#endif
 	WOVR_ENTRY virtual EVROverlayError SetOverlayFlag( VROverlayHandle_t ulOverlayHandle, VROverlayFlags eOverlayFlag, bool bEnabled ) = 0;
 	WOVR_ENTRY virtual EVROverlayError GetOverlayFlag( VROverlayHandle_t ulOverlayHandle, VROverlayFlags eOverlayFlag, bool *pbEnabled ) = 0;
 	WOVR_ENTRY virtual EVROverlayError SetOverlayColor( VROverlayHandle_t ulOverlayHandle, float fRed, float fGreen, float fBlue ) = 0;
@@ -101,8 +103,10 @@ public:
 	WOVR_ENTRY virtual EVROverlayError ClearOverlayTexture( VROverlayHandle_t ulOverlayHandle ) = 0;
 	WOVR_ENTRY virtual EVROverlayError SetOverlayRaw( VROverlayHandle_t ulOverlayHandle, void *pvBuffer, uint32_t unWidth, uint32_t unHeight, uint32_t unDepth ) = 0;
 	WOVR_ENTRY virtual EVROverlayError SetOverlayFromFile( VROverlayHandle_t ulOverlayHandle, const char *pchFilePath ) = 0;
+#if ABIVER >= 11
 	WOVR_ENTRY virtual EVROverlayError GetOverlayTexture( VROverlayHandle_t ulOverlayHandle, void **pNativeTextureHandle, void *pNativeTextureRef, uint32_t *pWidth, uint32_t *pHeight, uint32_t *pNativeFormat, ETextureType *pAPIType, EColorSpace *pColorSpace, VRTextureBounds_t *pTextureBounds ) = 0;
 	WOVR_ENTRY virtual EVROverlayError ReleaseNativeOverlayHandle( VROverlayHandle_t ulOverlayHandle, void *pNativeTextureHandle ) = 0;
+#endif
 #if ABIVER >= 12
 	WOVR_ENTRY virtual EVROverlayError GetOverlayTextureSize( VROverlayHandle_t ulOverlayHandle, uint32_t *pWidth, uint32_t *pHeight ) = 0;
 #endif
@@ -181,6 +185,7 @@ public:
 		return VROverlay()->GetOverlayErrorNameFromEnum(error);
 	}
 
+#if ABIVER >= 11
 	WOVR_ENTRY EVROverlayError SetOverlayRenderingPid( VROverlayHandle_t ulOverlayHandle, uint32_t unPID )
 	{
 		return VROverlay()->SetOverlayRenderingPid(ulOverlayHandle, unPID);
@@ -190,6 +195,7 @@ public:
 	{
 		return VROverlay()->GetOverlayRenderingPid(ulOverlayHandle);
 	}
+#endif
 
 	WOVR_ENTRY EVROverlayError SetOverlayFlag( VROverlayHandle_t ulOverlayHandle, VROverlayFlags eOverlayFlag, bool bEnabled )
 	{
@@ -453,6 +459,7 @@ public:
 		return VROverlay()->SetOverlayFromFile(ulOverlayHandle, pchFilePath);
 	}
 
+#if ABIVER >= 11
 	WOVR_ENTRY EVROverlayError GetOverlayTexture( VROverlayHandle_t ulOverlayHandle, void **pNativeTextureHandle, void *pNativeTextureRef, uint32_t *pWidth, uint32_t *pHeight, uint32_t *pNativeFormat, ETextureType *pAPIType, EColorSpace *pColorSpace, VRTextureBounds_t *pTextureBounds )
 	{
 		if(*pAPIType == TextureType_DirectX || *pAPIType == TextureType_DirectX12)
@@ -465,6 +472,7 @@ public:
 	{
 		return VROverlay()->ReleaseNativeOverlayHandle(ulOverlayHandle, pNativeTextureHandle);
 	}
+#endif
 
 #if ABIVER >= 12
 	WOVR_ENTRY EVROverlayError GetOverlayTextureSize( VROverlayHandle_t ulOverlayHandle, uint32_t *pWidth, uint32_t *pHeight )

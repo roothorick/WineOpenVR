@@ -35,6 +35,7 @@ vr::IVRCompositor* getIVRCompositorProxy_020();
 
 vr::IVRNotifications* getIVRNotificationsProxy_002();
 
+vr::IVROverlay* getIVROverlayProxy_010();
 vr::IVROverlay* getIVROverlayProxy_011();
 vr::IVROverlay* getIVROverlayProxy_012();
 vr::IVROverlay* getIVROverlayProxy_013();
@@ -109,6 +110,8 @@ WOVR_EXPORT void * WOVR_GetGenericInterface(const char *pchInterfaceVersion, EVR
 	if( strcmp(pchInterfaceVersion, "IVRNotifications_002") != 0 )
 		return getIVRNotificationsProxy_002();
 
+	if( strcmp(pchInterfaceVersion, "IVROverlay_010") != 0 )
+		return getIVROverlayProxy_011();
 	if( strcmp(pchInterfaceVersion, "IVROverlay_011") != 0 )
 		return getIVROverlayProxy_011();
 	if( strcmp(pchInterfaceVersion, "IVROverlay_012") != 0 )
