@@ -42,7 +42,7 @@ SOURCES= \
 	\
 	ivrrendermodels_005.cpp \
 	\
-	ivrextendeddisplay_001.cpp \
+	ivrextendeddisplay/ivrextendeddisplay_001.cpp \
 	\
 	ivrtrackedcamera_003.cpp \
 	\
