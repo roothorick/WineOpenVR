@@ -88,6 +88,10 @@ public:
 	WOVR_ENTRY virtual vr::EVRFirmwareError PerformFirmwareUpdate( vr::TrackedDeviceIndex_t unDeviceIndex ) = 0;
 	WOVR_ENTRY virtual void AcknowledgeQuit_Exiting() = 0;
 	WOVR_ENTRY virtual void AcknowledgeQuit_UserPrompt() = 0;
+#if ABIVER < 12
+	WOVR_ENTRY virtual void PerformanceTestEnableCapture( bool bEnable ) = 0;
+	WOVR_ENTRY virtual void PerformanceTestReportFidelityLevelChange( int nFidelityLevel ) = 0;
+#endif
 };
 
 class PROXYCLASS : public CLONECLASS
@@ -401,6 +405,19 @@ public:
 		VRSystem()->AcknowledgeQuit_UserPrompt();
 		return;
 	}
+
+#if ABIVER < 12
+	WOVR_ENTRY virtual void PerformanceTestEnableCapture( bool bEnable )
+	{
+		printf("WOVR fixme: IVRSystem::PerformanceTestEnableCapture stub!\n");
+		return;
+	}
+
+	WOVR_ENTRY virtual void PerformanceTestReportFidelityLevelChange( int nFidelityLevel )
+	{
+		printf("WOVR fixme: IVRSystem::PerformanceTestReportFidelityLevelChange stub!\n");
+	}
+#endif
 };
 
 IVRSystem* GETTER ()
