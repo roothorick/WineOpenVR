@@ -29,7 +29,9 @@ public:
 	WOVR_ENTRY virtual void ClearLastSubmittedFrame() = 0;
 	WOVR_ENTRY virtual void PostPresentHandoff() = 0;
 	WOVR_ENTRY virtual bool GetFrameTiming( Compositor_FrameTiming *pTiming, uint32_t unFramesAgo = 0 ) = 0;
+#if ABIVER >= 18
 	WOVR_ENTRY virtual uint32_t GetFrameTimings( Compositor_FrameTiming *pTiming, uint32_t nFrames ) = 0;
+#endif
 	WOVR_ENTRY virtual float GetFrameTimeRemaining() = 0;
 #if ABIVER >= 15
 	WOVR_ENTRY virtual void GetCumulativeStats( Compositor_CumulativeStats *pStats, uint32_t nStatsSizeInBytes ) = 0;
@@ -158,10 +160,12 @@ public:
 		return VRCompositor()->GetFrameTiming(pTiming, unFramesAgo);
 	}
 
+#if ABIVER >= 18
 	WOVR_ENTRY uint32_t GetFrameTimings( Compositor_FrameTiming *pTiming, uint32_t nFrames )
 	{
 		return VRCompositor()->GetFrameTimings(pTiming, nFrames);
 	}
+#endif
 
 	WOVR_ENTRY float GetFrameTimeRemaining()
 	{
