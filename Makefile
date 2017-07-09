@@ -48,7 +48,7 @@ SOURCES= \
 	\
 	ivrscreenshots_001.cpp \
 	\
-	ivrresources_001.cpp \
+	ivrresources/ivrresources_001.cpp \
 	\
 	ivrdrivermanager/ivrdrivermanager_001.cpp
 
