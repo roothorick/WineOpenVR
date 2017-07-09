@@ -27,7 +27,7 @@ public:
 	WOVR_ENTRY virtual bool GetTimeSinceLastVsync( float *pfSecondsSinceLastVsync, uint64_t *pulFrameCounter ) = 0;
 	WOVR_ENTRY virtual int32_t GetD3D9AdapterIndex() = 0;
 	WOVR_ENTRY virtual void GetDXGIOutputInfo( int32_t *pnAdapterIndex ) = 0;
-#if ABIVER <= 16
+#if ABIVER >= 16
 	WOVR_ENTRY virtual void GetOutputDevice( uint64_t *pnDevice, ETextureType textureType ) = 0;
 #endif
 	WOVR_ENTRY virtual bool IsDisplayOnDesktop() = 0;
@@ -117,7 +117,7 @@ public:
 		return;
 	}
 
-#if ABIVER <= 16
+#if ABIVER >= 16
 	WOVR_ENTRY void GetOutputDevice( uint64_t *pnDevice, ETextureType textureType )
 	{
 		if(textureType == TextureType_DirectX || textureType == TextureType_DirectX12)

@@ -28,7 +28,7 @@ public:
 	WOVR_ENTRY virtual EVRApplicationError GetApplicationKeyByProcessId( uint32_t unProcessId, char *pchAppKeyBuffer, uint32_t unAppKeyBufferLen ) = 0;
 	WOVR_ENTRY virtual EVRApplicationError LaunchApplication( const char *pchAppKey ) = 0;
 	WOVR_ENTRY virtual EVRApplicationError LaunchTemplateApplication( const char *pchTemplateAppKey, const char *pchNewAppKey, VR_ARRAY_COUNT( unKeys ) const AppOverrideKeys_t *pKeys, uint32_t unKeys ) = 0;
-#if ABIVER <= 6
+#if ABIVER >= 6
 	WOVR_ENTRY virtual vr::EVRApplicationError LaunchApplicationFromMimeType( const char *pchMimeType, const char *pchArgs ) = 0;
 #endif
 	WOVR_ENTRY virtual EVRApplicationError LaunchDashboardOverlay( const char *pchAppKey ) = 0;
@@ -41,7 +41,7 @@ public:
 	WOVR_ENTRY virtual uint64_t GetApplicationPropertyUint64( const char *pchAppKey, EVRApplicationProperty eProperty, EVRApplicationError *peError ) = 0;
 	WOVR_ENTRY virtual EVRApplicationError SetApplicationAutoLaunch( const char *pchAppKey, bool bAutoLaunch ) = 0;
 	WOVR_ENTRY virtual bool GetApplicationAutoLaunch( const char *pchAppKey ) = 0;
-#if ABIVER <= 6
+#if ABIVER >= 6
 	WOVR_ENTRY virtual EVRApplicationError SetDefaultApplicationForMimeType( const char *pchAppKey, const char *pchMimeType ) = 0;
 	WOVR_ENTRY virtual bool GetDefaultApplicationForMimeType( const char *pchMimeType, char *pchAppKeyBuffer, uint32_t unAppKeyBufferLen ) = 0;
 	WOVR_ENTRY virtual bool GetApplicationSupportedMimeTypes( const char *pchAppKey, char *pchMimeTypesBuffer, uint32_t unMimeTypesBuffer ) = 0;
@@ -100,7 +100,7 @@ public:
 		return VRApplications()->LaunchTemplateApplication(pchTemplateAppKey, pchNewAppKey, pKeys, unKeys);
 	}
 
-#if ABIVER <= 6
+#if ABIVER >= 6
 	WOVR_ENTRY vr::EVRApplicationError LaunchApplicationFromMimeType( const char *pchMimeType, const char *pchArgs )
 	{
 		return VRApplications()->LaunchApplicationFromMimeType(pchMimeType, pchArgs);
@@ -157,7 +157,7 @@ public:
 		return VRApplications()->GetApplicationAutoLaunch(pchAppKey);
 	}
 
-#if ABIVER <= 6
+#if ABIVER >= 6
 	WOVR_ENTRY EVRApplicationError SetDefaultApplicationForMimeType( const char *pchAppKey, const char *pchMimeType )
 	{
 		return VRApplications()->SetDefaultApplicationForMimeType(pchAppKey, pchMimeType);

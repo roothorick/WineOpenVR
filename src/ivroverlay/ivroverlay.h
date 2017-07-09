@@ -39,7 +39,7 @@ public:
 	WOVR_ENTRY virtual vr::VROverlayHandle_t GetHighQualityOverlay() = 0;
 	WOVR_ENTRY virtual uint32_t GetOverlayKey( VROverlayHandle_t ulOverlayHandle, VR_OUT_STRING() char *pchValue, uint32_t unBufferSize, EVROverlayError *pError ) = 0;
 	WOVR_ENTRY virtual uint32_t GetOverlayName( VROverlayHandle_t ulOverlayHandle, VR_OUT_STRING() char *pchValue, uint32_t unBufferSize, EVROverlayError *pError ) = 0;
-#if ABIVER <= 16
+#if ABIVER >= 16
 	WOVR_ENTRY virtual EVROverlayError SetOverlayName( VROverlayHandle_t ulOverlayHandle, const char *pchName ) = 0;
 #endif
 	WOVR_ENTRY virtual EVROverlayError GetOverlayImageData( VROverlayHandle_t ulOverlayHandle, void *pvBuffer, uint32_t unBufferSize, uint32_t *punWidth, uint32_t *punHeight ) = 0;
@@ -64,7 +64,7 @@ public:
 	WOVR_ENTRY virtual EVROverlayError GetOverlayTextureColorSpace( VROverlayHandle_t ulOverlayHandle, EColorSpace *peTextureColorSpace ) = 0;
 	WOVR_ENTRY virtual EVROverlayError SetOverlayTextureBounds( VROverlayHandle_t ulOverlayHandle, const VRTextureBounds_t *pOverlayTextureBounds ) = 0;
 	WOVR_ENTRY virtual EVROverlayError GetOverlayTextureBounds( VROverlayHandle_t ulOverlayHandle, VRTextureBounds_t *pOverlayTextureBounds ) = 0;
-#if ABIVER <= 16
+#if ABIVER >= 16
 	WOVR_ENTRY virtual uint32_t GetOverlayRenderModel( vr::VROverlayHandle_t ulOverlayHandle, char *pchValue, uint32_t unBufferSize, HmdColor_t *pColor, vr::EVROverlayError *pError ) = 0;
 	WOVR_ENTRY virtual vr::EVROverlayError SetOverlayRenderModel( vr::VROverlayHandle_t ulOverlayHandle, const char *pchRenderModel, const HmdColor_t *pColor ) = 0;
 #endif
@@ -75,7 +75,7 @@ public:
 	WOVR_ENTRY virtual EVROverlayError GetOverlayTransformTrackedDeviceRelative( VROverlayHandle_t ulOverlayHandle, TrackedDeviceIndex_t *punTrackedDevice, HmdMatrix34_t *pmatTrackedDeviceToOverlayTransform ) = 0;
 	WOVR_ENTRY virtual EVROverlayError SetOverlayTransformTrackedDeviceComponent( VROverlayHandle_t ulOverlayHandle, TrackedDeviceIndex_t unDeviceIndex, const char *pchComponentName ) = 0;
 	WOVR_ENTRY virtual EVROverlayError GetOverlayTransformTrackedDeviceComponent( VROverlayHandle_t ulOverlayHandle, TrackedDeviceIndex_t *punDeviceIndex, char *pchComponentName, uint32_t unComponentNameSize ) = 0;
-#if ABIVER <= 16
+#if ABIVER >= 16
 	WOVR_ENTRY virtual vr::EVROverlayError GetOverlayTransformOverlayRelative( VROverlayHandle_t ulOverlayHandle, VROverlayHandle_t *ulOverlayHandleParent, HmdMatrix34_t *pmatParentOverlayToOverlayTransform ) = 0;
 	WOVR_ENTRY virtual vr::EVROverlayError SetOverlayTransformOverlayRelative( VROverlayHandle_t ulOverlayHandle, VROverlayHandle_t ulOverlayHandleParent, const HmdMatrix34_t *pmatParentOverlayToOverlayTransform ) = 0;
 #endif
@@ -158,10 +158,12 @@ public:
 		return VROverlay()->GetOverlayName(ulOverlayHandle, pchValue, unBufferSize, pError);
 	}
 
+#if ABIVER >= 16
 	WOVR_ENTRY EVROverlayError SetOverlayName( VROverlayHandle_t ulOverlayHandle, const char *pchName )
 	{
 		return VROverlay()->SetOverlayName(ulOverlayHandle, pchName);
 	}
+#endif
 
 	WOVR_ENTRY EVROverlayError GetOverlayImageData( VROverlayHandle_t ulOverlayHandle, void *pvBuffer, uint32_t unBufferSize, uint32_t *punWidth, uint32_t *punHeight )
 	{
@@ -273,6 +275,7 @@ public:
 		return VROverlay()->GetOverlayTextureBounds(ulOverlayHandle, pOverlayTextureBounds);
 	}
 
+#if ABIVER >= 16
 	WOVR_ENTRY uint32_t GetOverlayRenderModel( vr::VROverlayHandle_t ulOverlayHandle, char *pchValue, uint32_t unBufferSize, HmdColor_t *pColor, vr::EVROverlayError *pError )
 	{
 		return VROverlay()->GetOverlayRenderModel(ulOverlayHandle, pchValue, unBufferSize, pColor, pError);
@@ -282,6 +285,7 @@ public:
 	{
 		return VROverlay()->SetOverlayRenderModel(ulOverlayHandle, pchRenderModel, pColor);
 	}
+#endif
 
 	WOVR_ENTRY EVROverlayError GetOverlayTransformType( VROverlayHandle_t ulOverlayHandle, VROverlayTransformType *peTransformType )
 	{
@@ -318,6 +322,7 @@ public:
 		return VROverlay()->GetOverlayTransformTrackedDeviceComponent(ulOverlayHandle, punDeviceIndex, pchComponentName, unComponentNameSize);
 	}
 
+#if ABIVER >= 16
 	WOVR_ENTRY vr::EVROverlayError GetOverlayTransformOverlayRelative( VROverlayHandle_t ulOverlayHandle, VROverlayHandle_t *ulOverlayHandleParent, HmdMatrix34_t *pmatParentOverlayToOverlayTransform )
 	{
 		return VROverlay()->GetOverlayTransformOverlayRelative(ulOverlayHandle, ulOverlayHandleParent, pmatParentOverlayToOverlayTransform);
@@ -327,6 +332,7 @@ public:
 	{
 		return VROverlay()->SetOverlayTransformOverlayRelative(ulOverlayHandle, ulOverlayHandleParent, pmatParentOverlayToOverlayTransform);
 	}
+#endif
 
 	WOVR_ENTRY EVROverlayError ShowOverlay( VROverlayHandle_t ulOverlayHandle )
 	{
