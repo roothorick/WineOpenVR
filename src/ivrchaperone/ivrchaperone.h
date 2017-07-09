@@ -1,6 +1,20 @@
-#include "ivrchaperone.h"
+#include "common.h"
 
-class clone_IVRChaperone_003
+#ifndef ABIVER
+#error "No ABIVER?"
+#endif
+
+#define CLONECLASS__(abiver_) clone_IVRChaperone_ ## abiver_
+#define CLONECLASS_(abiver) CLONECLASS__(abiver)
+#define CLONECLASS CLONECLASS_(ABIVER)
+#define PROXYCLASS__(abiver_) proxy_IVRChaperone_ ## abiver_
+#define PROXYCLASS_(abiver) PROXYCLASS__(abiver)
+#define PROXYCLASS PROXYCLASS_(ABIVER)
+#define GETTER__(abiver_) getIVRChaperoneProxy_ ## abiver_
+#define GETTER_(abiver) GETTER__(abiver)
+#define GETTER GETTER_(ABIVER)
+
+class CLONECLASS
 {
 public:
 	WOVR_ENTRY virtual ChaperoneCalibrationState GetCalibrationState() = 0;
@@ -13,55 +27,55 @@ public:
 	WOVR_ENTRY virtual void ForceBoundsVisible( bool bForce ) = 0;
 };
 
-class proxy_IVRChaperone_003 : public clone_IVRChaperone_003
+class PROXYCLASS : public CLONECLASS
 {
 public:
-	WOVR_ENTRY ChaperoneCalibrationState GetCalibrationState()
+    WOVR_ENTRY ChaperoneCalibrationState GetCalibrationState()
 	{
-		return fns_IVRChaperone::GetCalibrationState();
+		return VRChaperone()->GetCalibrationState();
 	}
 
 	WOVR_ENTRY bool GetPlayAreaSize( float *pSizeX, float *pSizeZ )
 	{
-		return fns_IVRChaperone::GetPlayAreaSize(pSizeX, pSizeZ);
+		return VRChaperone()->GetPlayAreaSize(pSizeX, pSizeZ);
 	}
 
 	WOVR_ENTRY bool GetPlayAreaRect( HmdQuad_t *rect )
 	{
-		return fns_IVRChaperone::GetPlayAreaRect(rect);
+		return VRChaperone()->GetPlayAreaRect(rect);
 	}
 
 	WOVR_ENTRY void ReloadInfo( void )
 	{
-		fns_IVRChaperone::ReloadInfo();
+		VRChaperone()->ReloadInfo();
 		return;
 	}
 
 	WOVR_ENTRY void SetSceneColor( HmdColor_t color )
 	{
-		fns_IVRChaperone::SetSceneColor(color);
+		VRChaperone()->SetSceneColor(color);
 		return;
 	}
 
 	WOVR_ENTRY void GetBoundsColor( HmdColor_t *pOutputColorArray, int nNumOutputColors, float flCollisionBoundsFadeDistance, HmdColor_t *pOutputCameraColor )
 	{
-		fns_IVRChaperone::GetBoundsColor(pOutputColorArray, nNumOutputColors, flCollisionBoundsFadeDistance, pOutputCameraColor);
+		VRChaperone()->GetBoundsColor(pOutputColorArray, nNumOutputColors, flCollisionBoundsFadeDistance, pOutputCameraColor);
 		return;
 	}
 
 	WOVR_ENTRY bool AreBoundsVisible()
 	{
-		return fns_IVRChaperone::AreBoundsVisible();
+		return VRChaperone()->AreBoundsVisible();
 	}
 
 	WOVR_ENTRY void ForceBoundsVisible( bool bForce )
 	{
-		fns_IVRChaperone::ForceBoundsVisible(bForce);
+		VRChaperone()->ForceBoundsVisible(bForce);
 		return;
 	}
 };
 
-IVRChaperone* getIVRChaperoneProxy_003()
+IVRChaperone* GETTER ()
 {
-	return (IVRChaperone*) new proxy_IVRChaperone_003();
+	return (IVRChaperone*) new PROXYCLASS ();
 }
