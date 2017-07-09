@@ -54,7 +54,9 @@ public:
 	WOVR_ENTRY virtual void ForceReconnectProcess() = 0;
 	WOVR_ENTRY virtual void SuspendRendering( bool bSuspend ) = 0;
 	WOVR_ENTRY virtual vr::EVRCompositorError GetMirrorTextureD3D11( vr::EVREye eEye, void *pD3D11DeviceOrResource, void **ppD3D11ShaderResourceView ) = 0;
+#if ABIVER >= 20
 	WOVR_ENTRY virtual void ReleaseMirrorTextureD3D11( void *pD3D11ShaderResourceView ) = 0;
+#endif
 	WOVR_ENTRY virtual vr::EVRCompositorError GetMirrorTextureGL( vr::EVREye eEye, vr::glUInt_t *pglTextureId, vr::glSharedTextureHandle_t *pglSharedTextureHandle ) = 0;
 	WOVR_ENTRY virtual bool ReleaseSharedGLTexture( vr::glUInt_t glTextureId, vr::glSharedTextureHandle_t glSharedTextureHandle ) = 0;
 	WOVR_ENTRY virtual void LockGLSharedTextureForAccess( vr::glSharedTextureHandle_t glSharedTextureHandle ) = 0;
@@ -289,11 +291,13 @@ public:
 		return D3DProxy()->GetMirrorTextureD3D11(eEye, pD3D11DeviceOrResource, ppD3D11ShaderResourceView);
 	}
 
+#if ABIVER >= 20
 	WOVR_ENTRY void ReleaseMirrorTextureD3D11( void *pD3D11ShaderResourceView )
 	{
 		D3DProxy()->ReleaseMirrorTextureD3D11(pD3D11ShaderResourceView);
 		return;
 	}
+#endif
 
 	WOVR_ENTRY vr::EVRCompositorError GetMirrorTextureGL( vr::EVREye eEye, vr::glUInt_t *pglTextureId, vr::glSharedTextureHandle_t *pglSharedTextureHandle )
 	{
