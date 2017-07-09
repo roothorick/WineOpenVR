@@ -25,10 +25,12 @@ SOURCES= \
 	\
 	ivrchaperonesetup_005.cpp \
 	\
+	ivrcompositor_019.cpp \
 	ivrcompositor_020.cpp \
 	\
 	ivrnotifications_002.cpp \
 	\
+	ivroverlay_014.cpp \
 	ivroverlay_016.cpp \
 	\
 	ivrrendermodels_005.cpp \
