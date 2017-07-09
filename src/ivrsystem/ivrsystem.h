@@ -2,6 +2,10 @@
 #include "d3dproxy.h"
 #include "repacked_structs.h"
 
+#if ABIVER < 15
+typedef ETextureType EGraphicsAPIConvention; // Renamed in 1.0.5
+#endif
+
 #ifndef ABIVER
 #error "No ABIVER?"
 #endif
@@ -20,7 +24,11 @@ class CLONECLASS
 {
 public:
 	WOVR_ENTRY virtual void GetRecommendedRenderTargetSize( uint32_t *pnWidth, uint32_t *pnHeight ) = 0;
+#if ABIVER < 15
+	WOVR_ENTRY virtual void GetProjectionMatrix(HmdMatrix44_t* ret, EVREye eEye, float fNearZ, float fFarZ, EGraphicsAPIConvention eProjType ) = 0; // ERP hack
+#else
 	WOVR_ENTRY virtual void GetProjectionMatrix(HmdMatrix44_t* ret, EVREye eEye, float fNearZ, float fFarZ ) = 0; // ERP hack
+#endif
 	WOVR_ENTRY virtual void GetProjectionRaw( EVREye eEye, float *pfLeft, float *pfRight, float *pfTop, float *pfBottom ) = 0;
 	WOVR_ENTRY virtual bool ComputeDistortion( EVREye eEye, float fU, float fV, DistortionCoordinates_t *pDistortionCoordinates ) = 0;
 	WOVR_ENTRY virtual void GetEyeToHeadTransform(HmdMatrix34_t* ret, EVREye eEye ) = 0; // ERP hack
@@ -77,7 +85,11 @@ public:
 		return;
 	}
 
+#if ABIVER < 15
+	WOVR_ENTRY  void GetProjectionMatrix(HmdMatrix44_t* ret, EVREye eEye, float fNearZ, float fFarZ, EGraphicsAPIConvention eProjType )
+#else
 	WOVR_ENTRY void GetProjectionMatrix( HmdMatrix44_t* ret, EVREye eEye, float fNearZ, float fFarZ )
+#endif
 	{
 		// ERP hack
 		*ret = VRSystem()->GetProjectionMatrix(eEye, fNearZ, fFarZ);
