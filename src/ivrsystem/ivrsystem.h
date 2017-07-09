@@ -2,6 +2,10 @@
 #include "d3dproxy.h"
 #include "repacked_structs.h"
 
+#if ABIVER < 14
+#include <cmath> // NAN
+#endif
+
 #if ABIVER < 15
 typedef ETextureType EGraphicsAPIConvention; // Renamed in 1.0.5
 #endif
@@ -30,7 +34,11 @@ public:
 	WOVR_ENTRY virtual void GetProjectionMatrix(HmdMatrix44_t* ret, EVREye eEye, float fNearZ, float fFarZ ) = 0; // ERP hack
 #endif
 	WOVR_ENTRY virtual void GetProjectionRaw( EVREye eEye, float *pfLeft, float *pfRight, float *pfTop, float *pfBottom ) = 0;
+#if ABIVER < 14
+	WOVR_ENTRY virtual void ComputeDistortion( DistortionCoordinates_t* ret, EVREye eEye, float fU, float fV ) = 0; // ERP hack
+#else
 	WOVR_ENTRY virtual bool ComputeDistortion( EVREye eEye, float fU, float fV, DistortionCoordinates_t *pDistortionCoordinates ) = 0;
+#endif
 	WOVR_ENTRY virtual void GetEyeToHeadTransform(HmdMatrix34_t* ret, EVREye eEye ) = 0; // ERP hack
 	WOVR_ENTRY virtual bool GetTimeSinceLastVsync( float *pfSecondsSinceLastVsync, uint64_t *pulFrameCounter ) = 0;
 	WOVR_ENTRY virtual int32_t GetD3D9AdapterIndex() = 0;
@@ -61,9 +69,15 @@ public:
 	WOVR_ENTRY virtual bool PollNextEvent( Repacked_VREvent_t *pEvent, uint32_t uncbVREvent ) = 0; // Struct packing mismatch
 	WOVR_ENTRY virtual bool PollNextEventWithPose( ETrackingUniverseOrigin eOrigin, Repacked_VREvent_t *pEvent, uint32_t uncbVREvent, vr::TrackedDevicePose_t *pTrackedDevicePose ) = 0; // Struct packing mismatch
 	WOVR_ENTRY virtual const char *GetEventTypeNameFromEnum( EVREventType eType ) = 0;
+#if ABIVER < 14
+	WOVR_ENTRY virtual void GetHiddenAreaMesh(HiddenAreaMesh_t* ret, EVREye eEye ) = 0; // ERP hack
+	WOVR_ENTRY virtual bool GetControllerState( vr::TrackedDeviceIndex_t unControllerDeviceIndex, Repacked_VRControllerState_t *pControllerState  ) = 0; // Struct packing mismatch
+	WOVR_ENTRY virtual bool GetControllerStateWithPose( ETrackingUniverseOrigin eOrigin, vr::TrackedDeviceIndex_t unControllerDeviceIndex, Repacked_VRControllerState_t *pControllerState, TrackedDevicePose_t *pTrackedDevicePose ) = 0; // Struct packing mismatch
+#else
 	WOVR_ENTRY virtual void GetHiddenAreaMesh(HiddenAreaMesh_t* ret, EVREye eEye, EHiddenAreaMeshType type = k_eHiddenAreaMesh_Standard ) = 0; // ERP hack
 	WOVR_ENTRY virtual bool GetControllerState( vr::TrackedDeviceIndex_t unControllerDeviceIndex, Repacked_VRControllerState_t *pControllerState, uint32_t unControllerStateSize ) = 0; // Struct packing mismatch
 	WOVR_ENTRY virtual bool GetControllerStateWithPose( ETrackingUniverseOrigin eOrigin, vr::TrackedDeviceIndex_t unControllerDeviceIndex, Repacked_VRControllerState_t *pControllerState, uint32_t unControllerStateSize, TrackedDevicePose_t *pTrackedDevicePose ) = 0; // Struct packing mismatch
+#endif
 	WOVR_ENTRY virtual void TriggerHapticPulse( vr::TrackedDeviceIndex_t unControllerDeviceIndex, uint32_t unAxisId, unsigned short usDurationMicroSec ) = 0;
 	WOVR_ENTRY virtual const char *GetButtonIdNameFromEnum( EVRButtonId eButtonId ) = 0;
 	WOVR_ENTRY virtual const char *GetControllerAxisTypeNameFromEnum( EVRControllerAxisType eAxisType ) = 0;
@@ -102,10 +116,22 @@ public:
 		return;
 	}
 
+#if ABIVER < 14
+	WOVR_ENTRY void ComputeDistortion( DistortionCoordinates_t* ret, EVREye eEye, float fU, float fV )
+	{
+		// ERP hack
+		const DistortionCoordinates_t nanret = { NAN, NAN, NAN, NAN, NAN, NAN };
+		if(!VRSystem()->ComputeDistortion(eEye, fU, fV, ret))
+			*ret = nanret;
+
+		return;
+	}
+#else
 	WOVR_ENTRY bool ComputeDistortion( EVREye eEye, float fU, float fV, DistortionCoordinates_t *pDistortionCoordinates )
 	{
 		return VRSystem()->ComputeDistortion(eEye, fU, fV, pDistortionCoordinates);
 	}
+#endif
 
 	WOVR_ENTRY void GetEyeToHeadTransform( HmdMatrix34_t* ret, EVREye eEye )
 	{
@@ -277,14 +303,27 @@ public:
 		return VRSystem()->GetEventTypeNameFromEnum(eType);
 	}
 
+#if ABIVER < 14
+	WOVR_ENTRY void GetHiddenAreaMesh( HiddenAreaMesh_t* ret, EVREye eEye )
+	{
+		// ERP hack
+		*ret = VRSystem()->GetHiddenAreaMesh(eEye, k_eHiddenAreaMesh_Standard);
+		return;
+	}
+#else
 	WOVR_ENTRY void GetHiddenAreaMesh( HiddenAreaMesh_t* ret, EVREye eEye, EHiddenAreaMeshType type )
 	{
 		// ERP hack
 		*ret = VRSystem()->GetHiddenAreaMesh(eEye, type);
 		return;
 	}
+#endif
 
+#if ABIVER < 14
+	WOVR_ENTRY bool GetControllerState( vr::TrackedDeviceIndex_t unControllerDeviceIndex, Repacked_VRControllerState_t *pControllerState )
+#else
 	WOVR_ENTRY bool GetControllerState( vr::TrackedDeviceIndex_t unControllerDeviceIndex, Repacked_VRControllerState_t *pControllerState, uint32_t unControllerStateSize )
+#endif
 	{
 		// Struct packing mismatch
 		VRControllerState_t linpacked;
@@ -295,7 +334,11 @@ public:
 		return ret;
 	}
 
+#if ABIVER < 14
+	WOVR_ENTRY bool GetControllerStateWithPose( ETrackingUniverseOrigin eOrigin, vr::TrackedDeviceIndex_t unControllerDeviceIndex, Repacked_VRControllerState_t *pControllerState, TrackedDevicePose_t *pTrackedDevicePose )
+#else
 	WOVR_ENTRY bool GetControllerStateWithPose( ETrackingUniverseOrigin eOrigin, vr::TrackedDeviceIndex_t unControllerDeviceIndex, Repacked_VRControllerState_t *pControllerState, uint32_t unControllerStateSize, TrackedDevicePose_t *pTrackedDevicePose )
+#endif
 	{
 		// Struct packing mismatch
 		VRControllerState_t linpacked;
