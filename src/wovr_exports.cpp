@@ -17,6 +17,8 @@ WOVR_EXPORT void * WOVR_GetGenericInterface(const char *pchInterfaceVersion, EVR
 	// created in any sane case.
 
 	// IVRSystem
+	if( strcmp(pchInterfaceVersion, "IVRSystem_015") != 0 )
+		return getIVRSystemProxy_015();
 	if( strcmp(pchInterfaceVersion, "IVRSystem_016") != 0 )
 		return getIVRSystemProxy_016();
 
