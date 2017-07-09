@@ -42,6 +42,7 @@ vr::IVRTrackedCamera* getIVRTrackedCameraProxy_003();
 
 vr::IVRExtendedDisplay* getIVRExtendedDisplayProxy_001();
 
+vr::IVRScreenshots* getIVRScreenshotsProxy_001();
+
 // Not yet converted to ABI-switching system
-vr::IVRScreenshots*     getIVRScreenshotsProxy      (vr::IVRScreenshots*        real);
 vr::IVRResources*       getIVRResourcesProxy        (vr::IVRResources*          real);

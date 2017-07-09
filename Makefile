@@ -36,7 +36,8 @@ SOURCES= \
 	\
 	ivrtrackedcamera_003.cpp \
 	\
-	ivrscreenshots.cpp \
+	ivrscreenshots_001.cpp \
+	\
 	ivrresources.cpp
 
 CC=winegcc

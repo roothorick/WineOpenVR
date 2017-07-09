@@ -51,11 +51,11 @@ WOVR_EXPORT void * WOVR_GetGenericInterface(const char *pchInterfaceVersion, EVR
 	if( strcmp(pchInterfaceVersion, "IVRExtendedDisplay_001") != 0 )
 		return getIVRExtendedDisplayProxy_001();
 
+	if( strcmp(pchInterfaceVersion, "IVRScreenshots_001") != 0 )
+		return getIVRScreenshotsProxy_001();
+
 	// Not yet converted to ABI-switching system
 	void* ntv = VR_GetGenericInterface(pchInterfaceVersion, peError);
-
-	if( strstr(pchInterfaceVersion, "IVRScreenshots") != 0 )
-		return getIVRScreenshotsProxy( (IVRScreenshots*) ntv );
 
 	if( strstr(pchInterfaceVersion, "IVRResources") != 0 )
 		return getIVRResourcesProxy( (IVRResources*) ntv );
