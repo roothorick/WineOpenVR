@@ -532,20 +532,20 @@ PFN_vkVoidFunction vkelGetProcAddr(const char *name)
 PFN_vkVoidFunction vkelGetInstanceProcAddr(VkInstance instance, const char *pName)
 {
 	PFN_vkVoidFunction proc = (PFN_vkVoidFunction) vkGetInstanceProcAddr(instance, pName);
-	
+
 	if (!proc)
 		proc = (PFN_vkVoidFunction) vkelGetProcAddr(pName);
-	
+
 	return proc;
 }
 
 PFN_vkVoidFunction vkelGetDeviceProcAddr(VkDevice device, const char *pName)
 {
 	PFN_vkVoidFunction proc = (PFN_vkVoidFunction) vkGetDeviceProcAddr(device, pName);
-	
+
 	if (!proc)
 		proc = (PFN_vkVoidFunction) vkelGetInstanceProcAddr(NULL, pName);
-	
+
 	return proc;
 }
 
@@ -571,7 +571,7 @@ void vkelDeleteNames(uint32_t nameCount, char **names)
 	// assert(names);
 	if (!names)
 		return;
-	
+
 	uint32_t nameIndex = 0;
 	for (nameIndex = 0; nameIndex < nameCount; nameIndex++)
 	{
@@ -605,7 +605,7 @@ char** vkelGetInstanceExtensionNames(const char *pLayerName, uint32_t *extension
 
 
 	char **extensionNames = (char**) calloc(extPropertyCount, sizeof(char*));
-	
+
 	uint32_t extensionNameIndex = 0;
 	for (extensionNameIndex = 0; extensionNameIndex < extPropertyCount; extensionNameIndex++)
 	{
@@ -619,7 +619,7 @@ char** vkelGetInstanceExtensionNames(const char *pLayerName, uint32_t *extension
 
 	err = vkEnumerateInstanceExtensionProperties(pLayerName, &extPropertyCount, extProperties);
 	assert(!err);
-	
+
 	uint32_t extPropertyIndex = 0;
 	for (extPropertyIndex = 0; extPropertyIndex < extPropertyCount; extPropertyIndex++)
 	{
@@ -654,7 +654,7 @@ char** vkelGetInstanceLayerNames(uint32_t *layerNameCount)
 
 
 	char **layerNames = (char**) calloc(layerPropertyCount, sizeof(char*));
-	
+
 	uint32_t layerNameIndex = 0;
 	for (layerNameIndex = 0; layerNameIndex < layerPropertyCount; layerNameIndex++)
 	{
@@ -667,7 +667,7 @@ char** vkelGetInstanceLayerNames(uint32_t *layerNameCount)
 
 	err = vkEnumerateInstanceLayerProperties(&layerPropertyCount, layerProperties);
 	assert(!err);
-	
+
 	uint32_t layerPropertyIndex = 0;
 	for (layerPropertyIndex = 0; layerPropertyIndex < layerPropertyCount; layerPropertyIndex++)
 	{
@@ -703,7 +703,7 @@ char** vkelGetDeviceExtensionNames(VkPhysicalDevice physicalDevice, const char *
 
 
 	char **extensionNames = (char**) calloc(extPropertyCount, sizeof(char*));
-	
+
 	uint32_t extensionNameIndex = 0;
 	for (extensionNameIndex = 0; extensionNameIndex < extPropertyCount; extensionNameIndex++)
 	{
@@ -717,7 +717,7 @@ char** vkelGetDeviceExtensionNames(VkPhysicalDevice physicalDevice, const char *
 
 	err = vkEnumerateDeviceExtensionProperties(physicalDevice, pLayerName, &extPropertyCount, extProperties);
 	assert(!err);
-	
+
 	uint32_t extPropertyIndex = 0;
 	for (extPropertyIndex = 0; extPropertyIndex < extPropertyCount; extPropertyIndex++)
 	{
@@ -752,7 +752,7 @@ char** vkelGetDeviceLayerNames(VkPhysicalDevice physicalDevice, uint32_t *layerN
 
 
 	char **layerNames = (char**) calloc(layerPropertyCount, sizeof(char*));
-	
+
 	uint32_t layerNameIndex = 0;
 	for (layerNameIndex = 0; layerNameIndex < layerPropertyCount; layerNameIndex++)
 	{
@@ -765,7 +765,7 @@ char** vkelGetDeviceLayerNames(VkPhysicalDevice physicalDevice, uint32_t *layerN
 
 	err = vkEnumerateDeviceLayerProperties(physicalDevice, &layerPropertyCount, layerProperties);
 	assert(!err);
-	
+
 	uint32_t layerPropertyIndex = 0;
 	for (layerPropertyIndex = 0; layerPropertyIndex < layerPropertyCount; layerPropertyIndex++)
 	{
@@ -786,7 +786,7 @@ VkBool32 vkelIsInstanceLayerSupported(const char *pLayerName)
 {
 	uint32_t layerNameCount = 0;
 	char **layerNames = vkelGetInstanceLayerNames(&layerNameCount);
-	
+
 	uint32_t layerNameIndex = 0;
 	for (layerNameIndex = 0; layerNameIndex < layerNameCount; layerNameIndex++)
 	{
@@ -807,7 +807,7 @@ VkBool32 vkelIsInstanceExtensionSupported(const char *pLayerName, const char *pE
 {
 	uint32_t extensionNameCount = 0;
 	char **extensionNames = vkelGetInstanceExtensionNames(pLayerName, &extensionNameCount);
-	
+
 	uint32_t extensionNameIndex = 0;
 	for (extensionNameIndex = 0; extensionNameIndex < extensionNameCount; extensionNameIndex++)
 	{
@@ -829,7 +829,7 @@ VkBool32 vkelIsDeviceLayerSupported(VkPhysicalDevice physicalDevice, const char 
 {
 	uint32_t layerNameCount = 0;
 	char **layerNames = vkelGetDeviceLayerNames(physicalDevice, &layerNameCount);
-	
+
 	uint32_t layerNameIndex = 0;
 	for (layerNameIndex = 0; layerNameIndex < layerNameCount; layerNameIndex++)
 	{
@@ -850,7 +850,7 @@ VkBool32 vkelIsDeviceExtensionSupported(VkPhysicalDevice physicalDevice, const c
 {
 	uint32_t extensionNameCount = 0;
 	char **extensionNames = vkelGetDeviceExtensionNames(physicalDevice, pLayerName, &extensionNameCount);
-	
+
 	uint32_t extensionNameIndex = 0;
 	for (extensionNameIndex = 0; extensionNameIndex < extensionNameCount; extensionNameIndex++)
 	{
@@ -871,19 +871,19 @@ VkBool32 vkelIsDeviceExtensionSupported(VkPhysicalDevice physicalDevice, const c
 VkBool32 vkelInit(void)
 {
 	vkelUninit();
-	
+
 #ifdef VK_USE_PLATFORM_WIN32_KHR
 	const char *name = "vulkan-1.dll";
 #else
 	const char *name = "libvulkan.so.1";
 #endif
-	
+
 	vkelVkLibHandle = vkelPlatformOpenLibrary(name);
-	
+
 	if (!vkelVkLibHandle)
 		return VK_FALSE;
-	
-	
+
+
 	__vkAcquireNextImage2KHX = (PFN_vkAcquireNextImage2KHX) vkelGetProcAddr("vkAcquireNextImage2KHX");
 	__vkAcquireNextImageKHR = (PFN_vkAcquireNextImageKHR) vkelGetProcAddr("vkAcquireNextImageKHR");
 	__vkAllocateCommandBuffers = (PFN_vkAllocateCommandBuffers) vkelGetProcAddr("vkAllocateCommandBuffers");
@@ -1258,16 +1258,16 @@ VkBool32 vkelInit(void)
 	VKEL_LAYER_LUNARG_threading = vkelIsInstanceLayerSupported("VK_LAYER_LUNARG_threading");
 	VKEL_LAYER_LUNARG_vktrace = vkelIsInstanceLayerSupported("VK_LAYER_LUNARG_vktrace");
 
-	
+
 	return VK_TRUE;
 }
-	
+
 VkBool32 vkelInstanceInit(VkInstance instance)
 {
 	if (!vkelVkLibHandle && !vkelInit())
 		return VK_FALSE;
-	
-	
+
+
 	__vkAcquireNextImage2KHX = (PFN_vkAcquireNextImage2KHX) vkelGetInstanceProcAddr(instance, "vkAcquireNextImage2KHX");
 	__vkAcquireNextImageKHR = (PFN_vkAcquireNextImageKHR) vkelGetInstanceProcAddr(instance, "vkAcquireNextImageKHR");
 	__vkAllocateCommandBuffers = (PFN_vkAllocateCommandBuffers) vkelGetInstanceProcAddr(instance, "vkAllocateCommandBuffers");
@@ -1642,16 +1642,16 @@ VkBool32 vkelInstanceInit(VkInstance instance)
 	VKEL_LAYER_LUNARG_threading = vkelIsInstanceLayerSupported("VK_LAYER_LUNARG_threading");
 	VKEL_LAYER_LUNARG_vktrace = vkelIsInstanceLayerSupported("VK_LAYER_LUNARG_vktrace");
 
-	
+
 	return VK_TRUE;
 }
-	
+
 VkBool32 vkelDeviceInit(VkPhysicalDevice physicalDevice, VkDevice device)
 {
 	if (!vkelVkLibHandle && !vkelInit())
 		return VK_FALSE;
-	
-	
+
+
 	__vkAcquireNextImage2KHX = (PFN_vkAcquireNextImage2KHX) vkelGetDeviceProcAddr(device, "vkAcquireNextImage2KHX");
 	__vkAcquireNextImageKHR = (PFN_vkAcquireNextImageKHR) vkelGetDeviceProcAddr(device, "vkAcquireNextImageKHR");
 	__vkAllocateCommandBuffers = (PFN_vkAllocateCommandBuffers) vkelGetDeviceProcAddr(device, "vkAllocateCommandBuffers");
@@ -2026,10 +2026,10 @@ VkBool32 vkelDeviceInit(VkPhysicalDevice physicalDevice, VkDevice device)
 	VKEL_LAYER_LUNARG_threading = vkelIsDeviceLayerSupported(physicalDevice, "VK_LAYER_LUNARG_threading");
 	VKEL_LAYER_LUNARG_vktrace = vkelIsDeviceLayerSupported(physicalDevice, "VK_LAYER_LUNARG_vktrace");
 
-	
+
 	return VK_TRUE;
 }
-	
+
 void vkelUninit(void)
 {
 	if (vkelVkLibHandle)
@@ -2038,7 +2038,7 @@ void vkelUninit(void)
 		vkelVkLibHandle = NULL;
 	}
 }
-	
+
 
 #ifdef __cplusplus
 }
