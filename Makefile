@@ -28,11 +28,11 @@ SOURCES= \
 	\
 	ivrchaperonesetup/ivrchaperonesetup_005.cpp \
 	\
-	ivrcompositor_015.cpp \
-	ivrcompositor_016.cpp \
-	ivrcompositor_018.cpp \
-	ivrcompositor_019.cpp \
-	ivrcompositor_020.cpp \
+	ivrcompositor/ivrcompositor_015.cpp \
+	ivrcompositor/ivrcompositor_016.cpp \
+	ivrcompositor/ivrcompositor_018.cpp \
+	ivrcompositor/ivrcompositor_019.cpp \
+	ivrcompositor/ivrcompositor_020.cpp \
 	\
 	ivrnotifications_002.cpp \
 	\
