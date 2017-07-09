@@ -73,104 +73,104 @@ WOVR_EXPORT void * WOVR_GetGenericInterface(const char *pchInterfaceVersion, EVR
 	// I'm not terribly worried about leaking proxy objects, as there'll only be a half dozen or so of these ever
 	// created in any sane case.
 
-	if( strcmp(pchInterfaceVersion, "IVRSystem_009") != 0 )
+	if( strcmp(pchInterfaceVersion, "IVRSystem_009") == 0 )
 		return getIVRSystemProxy_009();
-	if( strcmp(pchInterfaceVersion, "IVRSystem_010") != 0 )
+	if( strcmp(pchInterfaceVersion, "IVRSystem_010") == 0 )
 		return getIVRSystemProxy_010();
-	if( strcmp(pchInterfaceVersion, "IVRSystem_011") != 0 )
+	if( strcmp(pchInterfaceVersion, "IVRSystem_011") == 0 )
 		return getIVRSystemProxy_011();
-	if( strcmp(pchInterfaceVersion, "IVRSystem_012") != 0 )
+	if( strcmp(pchInterfaceVersion, "IVRSystem_012") == 0 )
 		return getIVRSystemProxy_012();
-	if( strcmp(pchInterfaceVersion, "IVRSystem_014") != 0 )
+	if( strcmp(pchInterfaceVersion, "IVRSystem_014") == 0 )
 		return getIVRSystemProxy_014();
-	if( strcmp(pchInterfaceVersion, "IVRSystem_015") != 0 )
+	if( strcmp(pchInterfaceVersion, "IVRSystem_015") == 0 )
 		return getIVRSystemProxy_015();
-	if( strcmp(pchInterfaceVersion, "IVRSystem_016") != 0 )
+	if( strcmp(pchInterfaceVersion, "IVRSystem_016") == 0 )
 		return getIVRSystemProxy_016();
 
-	if( strcmp(pchInterfaceVersion, "IVRApplications_002") != 0)
+	if( strcmp(pchInterfaceVersion, "IVRApplications_002") == 0)
 		return getIVRApplicationsProxy_002();
-	if( strcmp(pchInterfaceVersion, "IVRApplications_003") != 0)
+	if( strcmp(pchInterfaceVersion, "IVRApplications_003") == 0)
 		return getIVRApplicationsProxy_003();
-	if( strcmp(pchInterfaceVersion, "IVRApplications_004") != 0)
+	if( strcmp(pchInterfaceVersion, "IVRApplications_004") == 0)
 		return getIVRApplicationsProxy_004();
-	if( strcmp(pchInterfaceVersion, "IVRApplications_005") != 0)
+	if( strcmp(pchInterfaceVersion, "IVRApplications_005") == 0)
 		return getIVRApplicationsProxy_005();
-	if( strcmp(pchInterfaceVersion, "IVRApplications_006") != 0)
+	if( strcmp(pchInterfaceVersion, "IVRApplications_006") == 0)
 		return getIVRApplicationsProxy_006();
 
-	if( strcmp(pchInterfaceVersion, "IVRSettings_001") != 0)
+	if( strcmp(pchInterfaceVersion, "IVRSettings_001") == 0)
 		return getIVRSettingsProxy_001();
-	if( strcmp(pchInterfaceVersion, "IVRSettings_002") != 0)
+	if( strcmp(pchInterfaceVersion, "IVRSettings_002") == 0)
 		return getIVRSettingsProxy_002();
 
-	if( strcmp(pchInterfaceVersion, "IVRChaperone_003") != 0)
+	if( strcmp(pchInterfaceVersion, "IVRChaperone_003") == 0)
 		return getIVRChaperoneProxy_003();
 
-	if( strcmp(pchInterfaceVersion, "IVRChaperoneSetup_004") != 0)
+	if( strcmp(pchInterfaceVersion, "IVRChaperoneSetup_004") == 0)
 		return getIVRChaperoneSetupProxy_004();
-	if( strcmp(pchInterfaceVersion, "IVRChaperoneSetup_005") != 0)
+	if( strcmp(pchInterfaceVersion, "IVRChaperoneSetup_005") == 0)
 		return getIVRChaperoneSetupProxy_005();
 
-	if( strcmp(pchInterfaceVersion, "IVRCompositor_011") != 0 )
+	if( strcmp(pchInterfaceVersion, "IVRCompositor_011") == 0 )
 		return getIVRCompositorProxy_011();
-	if( strcmp(pchInterfaceVersion, "IVRCompositor_012") != 0 )
+	if( strcmp(pchInterfaceVersion, "IVRCompositor_012") == 0 )
 		return getIVRCompositorProxy_012();
-	if( strcmp(pchInterfaceVersion, "IVRCompositor_013") != 0 )
+	if( strcmp(pchInterfaceVersion, "IVRCompositor_013") == 0 )
 		return getIVRCompositorProxy_013();
-	if( strcmp(pchInterfaceVersion, "IVRCompositor_014") != 0 )
+	if( strcmp(pchInterfaceVersion, "IVRCompositor_014") == 0 )
 		return getIVRCompositorProxy_014();
-	if( strcmp(pchInterfaceVersion, "IVRCompositor_015") != 0 )
+	if( strcmp(pchInterfaceVersion, "IVRCompositor_015") == 0 )
 		return getIVRCompositorProxy_015();
-	if( strcmp(pchInterfaceVersion, "IVRCompositor_016") != 0 )
+	if( strcmp(pchInterfaceVersion, "IVRCompositor_016") == 0 )
 		return getIVRCompositorProxy_016();
-	if( strcmp(pchInterfaceVersion, "IVRCompositor_018") != 0 )
+	if( strcmp(pchInterfaceVersion, "IVRCompositor_018") == 0 )
 		return getIVRCompositorProxy_018();
-	if( strcmp(pchInterfaceVersion, "IVRCompositor_019") != 0 )
+	if( strcmp(pchInterfaceVersion, "IVRCompositor_019") == 0 )
 		return getIVRCompositorProxy_019();
-	if( strcmp(pchInterfaceVersion, "IVRCompositor_020") != 0 )
+	if( strcmp(pchInterfaceVersion, "IVRCompositor_020") == 0 )
 		return getIVRCompositorProxy_020();
 
-	if( strcmp(pchInterfaceVersion, "IVRNotifications_002") != 0 )
+	if( strcmp(pchInterfaceVersion, "IVRNotifications_002") == 0 )
 		return getIVRNotificationsProxy_002();
 
-	if( strcmp(pchInterfaceVersion, "IVROverlay_008") != 0 )
+	if( strcmp(pchInterfaceVersion, "IVROverlay_008") == 0 )
 		return getIVROverlayProxy_008();
-	if( strcmp(pchInterfaceVersion, "IVROverlay_010") != 0 )
+	if( strcmp(pchInterfaceVersion, "IVROverlay_010") == 0 )
 		return getIVROverlayProxy_010();
-	if( strcmp(pchInterfaceVersion, "IVROverlay_011") != 0 )
+	if( strcmp(pchInterfaceVersion, "IVROverlay_011") == 0 )
 		return getIVROverlayProxy_011();
-	if( strcmp(pchInterfaceVersion, "IVROverlay_012") != 0 )
+	if( strcmp(pchInterfaceVersion, "IVROverlay_012") == 0 )
 		return getIVROverlayProxy_012();
-	if( strcmp(pchInterfaceVersion, "IVROverlay_013") != 0 )
+	if( strcmp(pchInterfaceVersion, "IVROverlay_013") == 0 )
 		return getIVROverlayProxy_013();
-	if( strcmp(pchInterfaceVersion, "IVROverlay_014") != 0 )
+	if( strcmp(pchInterfaceVersion, "IVROverlay_014") == 0 )
 		return getIVROverlayProxy_014();
-	if( strcmp(pchInterfaceVersion, "IVROverlay_016") != 0 )
+	if( strcmp(pchInterfaceVersion, "IVROverlay_016") == 0 )
 		return getIVROverlayProxy_016();
 
-	if( strcmp(pchInterfaceVersion, "IVRRenderModels_002") != 0 )
+	if( strcmp(pchInterfaceVersion, "IVRRenderModels_002") == 0 )
 		return getIVRRenderModelsProxy_002();
-	if( strcmp(pchInterfaceVersion, "IVRRenderModels_004") != 0 )
+	if( strcmp(pchInterfaceVersion, "IVRRenderModels_004") == 0 )
 		return getIVRRenderModelsProxy_004();
-	if( strcmp(pchInterfaceVersion, "IVRRenderModels_005") != 0 )
+	if( strcmp(pchInterfaceVersion, "IVRRenderModels_005") == 0 )
 		return getIVRRenderModelsProxy_005();
 
-	if( strcmp(pchInterfaceVersion, "IVRExtendedDisplay_001") != 0 )
+	if( strcmp(pchInterfaceVersion, "IVRExtendedDisplay_001") == 0 )
 		return getIVRExtendedDisplayProxy_001();
 
-	if( strcmp(pchInterfaceVersion, "IVRTrackedCamera_002") != 0 )
+	if( strcmp(pchInterfaceVersion, "IVRTrackedCamera_002") == 0 )
 		return getIVRTrackedCameraProxy_002();
-	if( strcmp(pchInterfaceVersion, "IVRTrackedCamera_003") != 0 )
+	if( strcmp(pchInterfaceVersion, "IVRTrackedCamera_003") == 0 )
 		return getIVRTrackedCameraProxy_003();
 
-	if( strcmp(pchInterfaceVersion, "IVRScreenshots_001") != 0 )
+	if( strcmp(pchInterfaceVersion, "IVRScreenshots_001") == 0 )
 		return getIVRScreenshotsProxy_001();
 
-	if( strcmp(pchInterfaceVersion, "IVRResources_001") != 0 )
+	if( strcmp(pchInterfaceVersion, "IVRResources_001") == 0 )
 		return getIVRResourcesProxy_001();
 
-	if( strcmp(pchInterfaceVersion, "IVRDriverManager_001") != 0 )
+	if( strcmp(pchInterfaceVersion, "IVRDriverManager_001") == 0 )
 		return getIVRDriverManagerProxy_001();
 
 	// Fallthrough for unknowns
