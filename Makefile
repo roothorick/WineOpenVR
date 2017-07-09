@@ -28,6 +28,7 @@ SOURCES= \
 	\
 	ivrchaperonesetup_005.cpp \
 	\
+	ivrcompositor_015.cpp \
 	ivrcompositor_016.cpp \
 	ivrcompositor_018.cpp \
 	ivrcompositor_019.cpp \
