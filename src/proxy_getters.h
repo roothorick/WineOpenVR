@@ -20,6 +20,7 @@ namespace vr
 }
 
 // These are all defined in their respective ivrxxx_xxx.cpp's
+vr::IVRSystem* getIVRSystemProxy_014();
 vr::IVRSystem* getIVRSystemProxy_015();
 vr::IVRSystem* getIVRSystemProxy_016();
 
