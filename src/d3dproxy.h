@@ -8,6 +8,7 @@ struct ID3DProxy
     // IVRSystem
     int32_t GetD3D9AdapterIndex();
     void GetDXGIOutputInfo( int32_t *pnAdapterIndex );
+    void GetOutputDevice( uint64_t *pnDevice, ETextureType textureType );
 
     // IVRCompositor
     EVRCompositorError Submit( EVREye eEye, const Texture_t *pTexture, const VRTextureBounds_t* pBounds = 0, EVRSubmitFlags nSubmitFlags = Submit_Default );
