@@ -216,8 +216,8 @@ bool Init()
 // times.
 void D3DProxy_Shutdown()
 {
-	vkDestroyDebugReportCallbackEXT(&instance, &validationCallback, NULL);
-	vkDestroyInstance(&instance, NULL);
+	vkDestroyDebugReportCallbackEXT(instance, validationCallback, NULL);
+	vkDestroyInstance(instance, NULL);
 }
 
 
