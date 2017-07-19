@@ -12,6 +12,8 @@
 bool initted = false;
 
 VkInstance instance;
+VkPhysicalDevice physDev;
+VkDevice logDev;
 
 int32_t ID3DProxy::GetD3D9AdapterIndex()
 {
@@ -159,9 +161,6 @@ bool Init()
 		}
 		else printf ("WOVR warning: D3DProxy Init: No instance extensions needed?\n");
 
-		// Needed for texture sharing with D3D (which is the whole point!)
-		out_exts.push_back(VK_KHX_EXTERNAL_MEMORY_WIN32_EXTENSION_NAME);
-
 		// Needed to print messages from validation layers.
 		// We COULD do without...technically. But we REALLY don't want to.
 		// Besides, what are the odds it's not available?
@@ -205,6 +204,62 @@ bool Init()
 		if(vkCreateDebugReportCallbackEXT(instance, &cbInfo, NULL, &validationCallback) != VK_SUCCESS)
 		{
 			printf("WOVR warning: D3DProxy Init: Failed to register validation report callback!\n");
+			return false;
+		}
+	}
+
+	// ========================= Logical Device Creation
+	{
+		physDev = VK_NULL_HANDLE;
+
+		// SteamVR wants us to use a specific physical device (presumably the one directly driving the HMD)
+		VRSystem()->GetOutputDevice( (uint64_t*) &physDev, TextureType_Vulkan);
+
+		if(physDev == VK_NULL_HANDLE)
+		{
+			printf("WOVR error: D3DProxy Init: Physical device query failed.\n");
+			return false;
+		}
+
+		// We only need to do one very specific thing. No point in more than one queue.
+		VkDeviceQueueCreateInfo queueCI = {};
+		queueCI.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+		queueCI.queueCount = 1;
+		float qp = 1.0f;
+		queueCI.pQueuePriorities = &qp;
+
+		// Compile the list of needed extensions.
+		char* in_exts;
+		std::vector<const char*> out_exts;
+		int len;
+
+		len = VRCompositor()->GetVulkanDeviceExtensionsRequired(physDev, NULL, 0);
+		if(len > 0)
+		{
+			in_exts = new char[len];
+			VRCompositor()->GetVulkanDeviceExtensionsRequired(physDev, in_exts, len);
+			arrayizeStr(in_exts, out_exts, len);
+			delete[] in_exts;
+		}
+		else printf ("WOVR warning: D3DProxy Init: No device extensions needed?\n");
+
+		// Needed for texture sharing with D3D (which is the whole point!)
+		out_exts.push_back(VK_KHX_EXTERNAL_MEMORY_WIN32_EXTENSION_NAME);
+
+		VkPhysicalDeviceFeatures neededFeats = {};
+
+		VkDeviceCreateInfo deviceCI = {};
+		deviceCI.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+		deviceCI.pQueueCreateInfos = &queueCI;
+		deviceCI.queueCreateInfoCount = 1;
+		deviceCI.pEnabledFeatures = &neededFeats;
+
+		VkResult res = vkCreateDevice(physDev, &deviceCI, NULL, &logDev);
+		if(res != VK_SUCCESS)
+		{
+			printf("WOVR error: D3DProxy Init: Failed to create logical device!\n");
+			printf("WOVR error: This is usually caused by graphics drivers or Wine being too old or incompatible.\n");
+			printf("WOVR error: Verify your system meets the requirements.\n");
 			return false;
 		}
 	}
