@@ -221,6 +221,35 @@ bool Init()
 			return false;
 		}
 
+		// We don't need the queue ourselves, but SteamVR wants one.
+		uint32_t nQueueFams = 0;
+		vkGetPhysicalDeviceQueueFamilyProperties(physDev, &nQueueFams, 0);
+		if(nQueueFams < 1)
+		{
+			printf("WOVR error: D3DProxy Init: Physical device apparently has no queue families?\n");
+			return false;
+		}
+		VkQueueFamilyProperties* queueFams = new VkQueueFamilyProperties[nQueueFams];
+
+		vkGetPhysicalDeviceQueueFamilyProperties(physDev, &nQueueFams, queueFams);
+		uint32_t ourQueueFam = -1;
+		for(int i=0; i<nQueueFams; i++)
+		{
+			// XXX: OpenVR API does not specify the needed queue family features. Graphics is a reasonable assumption.
+			if(queueFams[i].queueFlags & VK_QUEUE_GRAPHICS_BIT)
+			{
+				ourQueueFam = i;
+				break;
+			}
+		}
+		if(ourQueueFam == -1)
+		{
+			printf("WOVR error: D3DProxy Init: No suitable queue families!\n");
+			return false;
+		}
+
+		delete [] queueFams;
+
 		// We only need to do one very specific thing. No point in more than one queue.
 		VkDeviceQueueCreateInfo queueCI = {};
 		queueCI.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
