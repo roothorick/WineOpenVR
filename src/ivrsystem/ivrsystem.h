@@ -398,7 +398,7 @@ public:
 	WOVR_ENTRY bool GetControllerStateWithPose( ETrackingUniverseOrigin eOrigin, vr::TrackedDeviceIndex_t unControllerDeviceIndex, Repacked_VRControllerState_t *pControllerState, uint32_t unControllerStateSize, TrackedDevicePose_t *pTrackedDevicePose )
 #endif
 	{
-		TRACE("");
+		TRACEHOT("");
 		// Struct packing mismatch
 		VRControllerState_t linpacked;
 		// HACK: GCC seems to be interpreting #pragma pack differently from MSVC. We substitute our own value just to
