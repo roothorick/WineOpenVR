@@ -44,61 +44,73 @@ class PROXYCLASS : public CLONECLASS
 public:
     WOVR_ENTRY const char *GetCameraErrorNameFromEnum( vr::EVRTrackedCameraError eCameraError )
 	{
+		TRACE("");
 		return VRTrackedCamera()->GetCameraErrorNameFromEnum(eCameraError);
 	}
 
 	WOVR_ENTRY vr::EVRTrackedCameraError HasCamera( vr::TrackedDeviceIndex_t nDeviceIndex, bool *pHasCamera )
 	{
+		TRACE("");
 		return VRTrackedCamera()->HasCamera(nDeviceIndex, pHasCamera);
 	}
 
 	WOVR_ENTRY vr::EVRTrackedCameraError GetCameraFrameSize( vr::TrackedDeviceIndex_t nDeviceIndex, vr::EVRTrackedCameraFrameType eFrameType, uint32_t *pnWidth, uint32_t *pnHeight, uint32_t *pnFrameBufferSize )
 	{
+		TRACE("");
 		return VRTrackedCamera()->GetCameraFrameSize(nDeviceIndex, eFrameType, pnWidth, pnHeight, pnFrameBufferSize);
 	}
 
 	WOVR_ENTRY vr::EVRTrackedCameraError GetCameraIntrinsics( vr::TrackedDeviceIndex_t nDeviceIndex, vr::EVRTrackedCameraFrameType eFrameType, vr::HmdVector2_t *pFocalLength, vr::HmdVector2_t *pCenter )
 	{
+		TRACE("");
 		return VRTrackedCamera()->GetCameraIntrinsics(nDeviceIndex, eFrameType, pFocalLength, pCenter);
 	}
 
 	WOVR_ENTRY vr::EVRTrackedCameraError GetCameraProjection( vr::TrackedDeviceIndex_t nDeviceIndex, vr::EVRTrackedCameraFrameType eFrameType, float flZNear, float flZFar, vr::HmdMatrix44_t *pProjection )
 	{
+		TRACE("");
 		return VRTrackedCamera()->GetCameraProjection(nDeviceIndex, eFrameType, flZNear, flZFar, pProjection);
 	}
 
 	WOVR_ENTRY vr::EVRTrackedCameraError AcquireVideoStreamingService( vr::TrackedDeviceIndex_t nDeviceIndex, WOVR_TrackedCameraHandle_t *pHandle )
 	{
+		TRACE("");
 		return VRTrackedCamera()->AcquireVideoStreamingService(nDeviceIndex, (TrackedCameraHandle_t*) pHandle);
 	}
 
 	WOVR_ENTRY vr::EVRTrackedCameraError ReleaseVideoStreamingService( WOVR_TrackedCameraHandle_t hTrackedCamera )
 	{
+		TRACE("");
 		return VRTrackedCamera()->ReleaseVideoStreamingService( (TrackedCameraHandle_t) hTrackedCamera);
 	}
 
 	WOVR_ENTRY vr::EVRTrackedCameraError GetVideoStreamFrameBuffer( WOVR_TrackedCameraHandle_t hTrackedCamera, vr::EVRTrackedCameraFrameType eFrameType, void *pFrameBuffer, uint32_t nFrameBufferSize, vr::CameraVideoStreamFrameHeader_t *pFrameHeader, uint32_t nFrameHeaderSize )
 	{
+		TRACE("");
 		return VRTrackedCamera()->GetVideoStreamFrameBuffer( (TrackedCameraHandle_t) hTrackedCamera, eFrameType, pFrameBuffer, nFrameBufferSize, pFrameHeader, nFrameHeaderSize);
 	}
 
 	WOVR_ENTRY vr::EVRTrackedCameraError GetVideoStreamTextureSize( vr::TrackedDeviceIndex_t nDeviceIndex, vr::EVRTrackedCameraFrameType eFrameType, vr::VRTextureBounds_t *pTextureBounds, uint32_t *pnWidth, uint32_t *pnHeight )
 	{
+		TRACE("");
 		return VRTrackedCamera()->GetVideoStreamTextureSize(nDeviceIndex, eFrameType, pTextureBounds, pnWidth, pnHeight);
 	}
 
 	WOVR_ENTRY vr::EVRTrackedCameraError GetVideoStreamTextureD3D11( WOVR_TrackedCameraHandle_t hTrackedCamera, vr::EVRTrackedCameraFrameType eFrameType, void *pD3D11DeviceOrResource, void **ppD3D11ShaderResourceView, vr::CameraVideoStreamFrameHeader_t *pFrameHeader, uint32_t nFrameHeaderSize )
 	{
+		TRACE("");
 		return D3DProxy()->GetVideoStreamTextureD3D11( (TrackedCameraHandle_t) hTrackedCamera, eFrameType, pD3D11DeviceOrResource, ppD3D11ShaderResourceView, pFrameHeader, nFrameHeaderSize);
 	}
 
 	WOVR_ENTRY vr::EVRTrackedCameraError GetVideoStreamTextureGL( WOVR_TrackedCameraHandle_t hTrackedCamera, vr::EVRTrackedCameraFrameType eFrameType, vr::glUInt_t *pglTextureId, vr::CameraVideoStreamFrameHeader_t *pFrameHeader, uint32_t nFrameHeaderSize )
 	{
+		TRACE("");
 		return VRTrackedCamera()->GetVideoStreamTextureGL( (TrackedCameraHandle_t) hTrackedCamera, eFrameType, pglTextureId, pFrameHeader, nFrameHeaderSize);
 	}
 
 	WOVR_ENTRY vr::EVRTrackedCameraError ReleaseVideoStreamTextureGL( WOVR_TrackedCameraHandle_t hTrackedCamera, vr::glUInt_t glTextureId )
 	{
+		TRACE("");
 		return VRTrackedCamera()->ReleaseVideoStreamTextureGL( (TrackedCameraHandle_t) hTrackedCamera, glTextureId);
 	}
 };

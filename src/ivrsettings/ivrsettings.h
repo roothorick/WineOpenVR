@@ -54,23 +54,27 @@ class PROXYCLASS : public CLONECLASS
 public:
     WOVR_ENTRY const char *GetSettingsErrorNameFromEnum( EVRSettingsError eError )
 	{
+		TRACE("");
 		return VRSettings()->GetSettingsErrorNameFromEnum(eError);
 	}
 
 	WOVR_ENTRY bool Sync( bool bForce, EVRSettingsError *peError )
 	{
+		TRACE("");
 		return VRSettings()->Sync(bForce, peError);
 	}
 
 #if ABIVER < 2
 	WOVR_ENTRY bool GetBool( const char *pchSection, const char *pchSettingsKey, bool bDefaultValue, EVRSettingsError *peError = nullptr )
 	{
+		TRACE("");
 		return VRSettings()->GetBool(pchSection, pchSettingsKey, peError);
 	}
 #endif
 
 	WOVR_ENTRY void SetBool( const char *pchSection, const char *pchSettingsKey, bool bValue, EVRSettingsError *peError )
 	{
+		TRACE("");
 		VRSettings()->SetBool(pchSection, pchSettingsKey, bValue, peError);
 		return;
 	}
@@ -78,12 +82,14 @@ public:
 #if ABIVER < 2
 	WOVR_ENTRY int32_t GetInt32( const char *pchSection, const char *pchSettingsKey, int32_t nDefaultValue, EVRSettingsError *peError = nullptr )
 	{
+		TRACE("");
 		return VRSettings()->GetInt32(pchSection, pchSettingsKey, peError);
 	}
 #endif
 
 	WOVR_ENTRY void SetInt32( const char *pchSection, const char *pchSettingsKey, int32_t nValue, EVRSettingsError *peError )
 	{
+		TRACE("");
 		VRSettings()->SetInt32(pchSection, pchSettingsKey, nValue, peError);
 		return;
 	}
@@ -91,12 +97,14 @@ public:
 #if ABIVER < 2
 	WOVR_ENTRY float GetFloat( const char *pchSection, const char *pchSettingsKey, float flDefaultValue, EVRSettingsError *peError = nullptr )
 	{
+		TRACE("");
 		return VRSettings()->GetFloat(pchSection, pchSettingsKey, peError);
 	}
 #endif
 
 	WOVR_ENTRY void SetFloat( const char *pchSection, const char *pchSettingsKey, float flValue, EVRSettingsError *peError )
 	{
+		TRACE("");
 		VRSettings()->SetFloat(pchSection, pchSettingsKey, flValue, peError);
 		return;
 	}
@@ -104,6 +112,7 @@ public:
 #if ABIVER < 2
 	WOVR_ENTRY void GetString( const char *pchSection, const char *pchSettingsKey, VR_OUT_STRING() char *pchValue, uint32_t unValueLen, const char *pchDefaultValue, EVRSettingsError *peError )
 	{
+		TRACE("");
 		VRSettings()->GetString(pchSection, pchSettingsKey, pchValue, unValueLen, peError);
 		return;
 	}
@@ -111,6 +120,7 @@ public:
 
 	WOVR_ENTRY void SetString( const char *pchSection, const char *pchSettingsKey, const char *pchValue, EVRSettingsError *peError )
 	{
+		TRACE("");
 		VRSettings()->SetString(pchSection, pchSettingsKey, pchValue, peError);
 		return;
 	}
@@ -118,21 +128,25 @@ public:
 #if ABIVER >= 2
 	WOVR_ENTRY bool GetBool( const char *pchSection, const char *pchSettingsKey, EVRSettingsError *peError )
 	{
+		TRACE("");
 		return VRSettings()->GetBool(pchSection, pchSettingsKey, peError);
 	}
 
 	WOVR_ENTRY int32_t GetInt32( const char *pchSection, const char *pchSettingsKey, EVRSettingsError *peError )
 	{
+		TRACE("");
 		return VRSettings()->GetInt32(pchSection, pchSettingsKey, peError);
 	}
 
 	WOVR_ENTRY float GetFloat( const char *pchSection, const char *pchSettingsKey, EVRSettingsError *peError )
 	{
+		TRACE("");
 		return VRSettings()->GetFloat(pchSection, pchSettingsKey, peError);
 	}
 
 	WOVR_ENTRY void GetString( const char *pchSection, const char *pchSettingsKey, VR_OUT_STRING() char *pchValue, uint32_t unValueLen, EVRSettingsError *peError )
 	{
+		TRACE("");
 		VRSettings()->GetString(pchSection, pchSettingsKey, pchValue, unValueLen, peError);
 		return;
 	}
@@ -140,12 +154,14 @@ public:
 
 	WOVR_ENTRY void RemoveSection( const char *pchSection, EVRSettingsError *peError )
 	{
+		TRACE("");
 		VRSettings()->RemoveSection(pchSection, peError);
 		return;
 	}
 
 	WOVR_ENTRY void RemoveKeyInSection( const char *pchSection, const char *pchSettingsKey, EVRSettingsError *peError )
 	{
+		TRACE("");
 		VRSettings()->RemoveKeyInSection(pchSection, pchSettingsKey, peError);
 		return;
 	}

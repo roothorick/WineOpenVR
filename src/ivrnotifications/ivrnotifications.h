@@ -36,11 +36,13 @@ class PROXYCLASS : public CLONECLASS
 public:
 	WOVR_ENTRY EVRNotificationError CreateNotification( VROverlayHandle_t ulOverlayHandle, uint64_t ulUserValue, EVRNotificationType type, const char *pchText, EVRNotificationStyle style, const NotificationBitmap_t *pImage, VRNotificationId *pNotificationId )
 	{
+		TRACE("");
 		return VRNotifications()->CreateNotification(ulOverlayHandle, ulUserValue, type, pchText, style, pImage, pNotificationId);
 	}
 
 	WOVR_ENTRY EVRNotificationError RemoveNotification( VRNotificationId notificationId )
 	{
+		TRACE("");
 		return VRNotifications()->RemoveNotification(notificationId);
 	}
 };

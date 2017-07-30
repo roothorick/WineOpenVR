@@ -33,18 +33,21 @@ class PROXYCLASS : public CLONECLASS
 public:
     WOVR_ENTRY void GetWindowBounds( int32_t *pnX, int32_t *pnY, uint32_t *pnWidth, uint32_t *pnHeight )
 	{
+		TRACE("");
 		VRExtendedDisplay()->GetWindowBounds(pnX, pnY, pnWidth, pnHeight);
 		return;
 	}
 
 	WOVR_ENTRY void GetEyeOutputViewport( EVREye eEye, uint32_t *pnX, uint32_t *pnY, uint32_t *pnWidth, uint32_t *pnHeight )
 	{
+		TRACE("");
 		VRExtendedDisplay()->GetEyeOutputViewport(eEye, pnX, pnY, pnWidth, pnHeight);
 		return;
 	}
 
 	WOVR_ENTRY void GetDXGIOutputInfo( int32_t *pnAdapterIndex, int32_t *pnAdapterOutputIndex )
 	{
+		TRACE("");
 		D3DProxy()->ExtendedDisplay_GetDXGIOutputInfo(pnAdapterIndex, pnAdapterOutputIndex);
 	}
 };

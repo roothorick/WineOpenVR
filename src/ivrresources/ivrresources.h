@@ -26,10 +26,12 @@ class PROXYCLASS : public CLONECLASS
 public:
     WOVR_ENTRY uint32_t LoadSharedResource( const char *pchResourceName, char *pchBuffer, uint32_t unBufferLen )
 	{
+		TRACE("");
 		return VRResources()->LoadSharedResource(pchResourceName, pchBuffer, unBufferLen);
 	}
 	WOVR_ENTRY uint32_t GetResourceFullPath( const char *pchResourceName, const char *pchResourceTypeDirectory, char *pchPathBuffer, uint32_t unBufferLen )
 	{
+		TRACE("");
 		// XXX: This should translate to a Windows X:\\etc path.
 		return VRResources()->GetResourceFullPath(pchResourceName, pchResourceTypeDirectory, pchPathBuffer, unBufferLen);
 	}

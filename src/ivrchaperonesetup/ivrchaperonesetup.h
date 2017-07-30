@@ -49,77 +49,91 @@ class PROXYCLASS : public CLONECLASS
 public:
     WOVR_ENTRY bool CommitWorkingCopy( EChaperoneConfigFile configFile )
 	{
+		TRACE("");
 		return VRChaperoneSetup()->CommitWorkingCopy(configFile);
 	}
 
 	WOVR_ENTRY void RevertWorkingCopy()
 	{
+		TRACE("");
 		VRChaperoneSetup()->RevertWorkingCopy();
 		return;
 	}
 
 	WOVR_ENTRY bool GetWorkingPlayAreaSize( float *pSizeX, float *pSizeZ )
 	{
+		TRACE("");
 		return VRChaperoneSetup()->GetWorkingPlayAreaSize(pSizeX, pSizeZ);
 	}
 
 	WOVR_ENTRY bool GetWorkingPlayAreaRect( HmdQuad_t *rect )
 	{
+		TRACE("");
 		return VRChaperoneSetup()->GetWorkingPlayAreaRect(rect);
 	}
 
 	WOVR_ENTRY bool GetWorkingCollisionBoundsInfo( VR_OUT_ARRAY_COUNT(punQuadsCount) HmdQuad_t *pQuadsBuffer, uint32_t* punQuadsCount )
 	{
+		TRACE("");
 		return VRChaperoneSetup()->GetWorkingCollisionBoundsInfo(pQuadsBuffer, punQuadsCount);
 	}
 
 	WOVR_ENTRY bool GetLiveCollisionBoundsInfo( VR_OUT_ARRAY_COUNT(punQuadsCount) HmdQuad_t *pQuadsBuffer, uint32_t* punQuadsCount )
 	{
+		TRACE("");
 		return VRChaperoneSetup()->GetLiveCollisionBoundsInfo(pQuadsBuffer, punQuadsCount);
 	}
 
 	WOVR_ENTRY bool GetWorkingSeatedZeroPoseToRawTrackingPose( HmdMatrix34_t *pmatSeatedZeroPoseToRawTrackingPose )
 	{
+		TRACE("");
 		return VRChaperoneSetup()->GetWorkingSeatedZeroPoseToRawTrackingPose(pmatSeatedZeroPoseToRawTrackingPose);
 	}
 
 	WOVR_ENTRY bool GetWorkingStandingZeroPoseToRawTrackingPose( HmdMatrix34_t *pmatStandingZeroPoseToRawTrackingPose )
 	{
+		TRACE("");
 		return VRChaperoneSetup()->GetWorkingStandingZeroPoseToRawTrackingPose(pmatStandingZeroPoseToRawTrackingPose);
 	}
 
 	WOVR_ENTRY void SetWorkingPlayAreaSize( float sizeX, float sizeZ )
 	{
+		TRACE("");
 		VRChaperoneSetup()->SetWorkingPlayAreaSize(sizeX, sizeZ);
 		return;
 	}
 
 	WOVR_ENTRY void SetWorkingCollisionBoundsInfo( VR_ARRAY_COUNT(unQuadsCount) HmdQuad_t *pQuadsBuffer, uint32_t unQuadsCount )
 	{
+		TRACE("");
 		VRChaperoneSetup()->SetWorkingCollisionBoundsInfo(pQuadsBuffer, unQuadsCount);
 		return;
 	}
 
 	WOVR_ENTRY void SetWorkingSeatedZeroPoseToRawTrackingPose( const HmdMatrix34_t *pMatSeatedZeroPoseToRawTrackingPose )
 	{
+		TRACE("");
 		VRChaperoneSetup()->SetWorkingSeatedZeroPoseToRawTrackingPose(pMatSeatedZeroPoseToRawTrackingPose);
 		return;
 	}
 
 	WOVR_ENTRY void SetWorkingStandingZeroPoseToRawTrackingPose( const HmdMatrix34_t *pMatStandingZeroPoseToRawTrackingPose )
 	{
+		TRACE("");
 		VRChaperoneSetup()->SetWorkingStandingZeroPoseToRawTrackingPose(pMatStandingZeroPoseToRawTrackingPose);
 		return;
 	}
 
 	WOVR_ENTRY void ReloadFromDisk( EChaperoneConfigFile configFile )
 	{
+		TRACE("");
 		VRChaperoneSetup()->ReloadFromDisk(configFile);
 		return;
 	}
 
 	WOVR_ENTRY bool GetLiveSeatedZeroPoseToRawTrackingPose( HmdMatrix34_t *pmatSeatedZeroPoseToRawTrackingPose )
 	{
+		TRACE("");
 		return VRChaperoneSetup()->GetLiveSeatedZeroPoseToRawTrackingPose(pmatSeatedZeroPoseToRawTrackingPose);
 	}
 
@@ -130,6 +144,7 @@ public:
 	WOVR_ENTRY void SetWorkingCollisionBoundsTagsInfo( VR_ARRAY_COUNT(unTagCount) uint8_t *pTagsBuffer, uint32_t unTagCount )
 #endif
 	{
+		TRACE("");
 		VRChaperoneSetup()->SetWorkingCollisionBoundsTagsInfo(pTagsBuffer, unTagCount);
 		return;
 	}
@@ -140,26 +155,31 @@ public:
 	WOVR_ENTRY bool GetLiveCollisionBoundsTagsInfo( VR_OUT_ARRAY_COUNT(punTagCount) uint8_t *pTagsBuffer, uint32_t *punTagCount )
 #endif
 	{
+		TRACE("");
 		return VRChaperoneSetup()->GetLiveCollisionBoundsTagsInfo(pTagsBuffer, punTagCount);
 	}
 
 	WOVR_ENTRY bool SetWorkingPhysicalBoundsInfo( VR_ARRAY_COUNT(unQuadsCount) HmdQuad_t *pQuadsBuffer, uint32_t unQuadsCount )
 	{
+		TRACE("");
 		return VRChaperoneSetup()->SetWorkingPhysicalBoundsInfo(pQuadsBuffer, unQuadsCount);
 	}
 
 	WOVR_ENTRY bool GetLivePhysicalBoundsInfo( VR_OUT_ARRAY_COUNT(punQuadsCount) HmdQuad_t *pQuadsBuffer, uint32_t* punQuadsCount )
 	{
+		TRACE("");
 		return VRChaperoneSetup()->GetLivePhysicalBoundsInfo(pQuadsBuffer, punQuadsCount);
 	}
 
 	WOVR_ENTRY bool ExportLiveToBuffer( VR_OUT_STRING() char *pBuffer, uint32_t *pnBufferLength )
 	{
+		TRACE("");
 		return VRChaperoneSetup()->ExportLiveToBuffer(pBuffer, pnBufferLength);
 	}
 
 	WOVR_ENTRY bool ImportFromBufferToWorking( const char *pBuffer, uint32_t nImportFlags )
 	{
+		TRACE("");
 		return VRChaperoneSetup()->ImportFromBufferToWorking(pBuffer, nImportFlags);
 	}
 };

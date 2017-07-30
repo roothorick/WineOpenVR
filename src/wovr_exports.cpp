@@ -68,7 +68,7 @@ vr::IVRDriverManager* getIVRDriverManagerProxy_001();
 /* Interface dispatcher. Try to acquire the native impl, then create and return our proxy. */
 WOVR_EXPORT void * WOVR_GetGenericInterface(const char *pchInterfaceVersion, EVRInitError *peError)
 {
-	printf("WOVR info: App requested API version %s\n", pchInterfaceVersion);
+	TRACE("%s", pchInterfaceVersion);
 
 	// Some apps are prefixing their IVRSystem requests with FnTable: for whatever reason.
 	if( strstr(pchInterfaceVersion, "FnTable:") != NULL)
@@ -178,7 +178,7 @@ WOVR_EXPORT void * WOVR_GetGenericInterface(const char *pchInterfaceVersion, EVR
 		return getIVRDriverManagerProxy_001();
 
 	// Fallthrough for unknowns
-	printf("WOVR WARNING: App requested unknown interface!\n");
+	ERR("App requested unknown interface!");
 
 	// Passing the native interface directly will cause cryptic crashes due to calling convention differences.
 	// Fail now and give the app a chance to do without.
@@ -188,48 +188,56 @@ WOVR_EXPORT void * WOVR_GetGenericInterface(const char *pchInterfaceVersion, EVR
 
 WOVR_EXPORT uint32_t  WOVR_GetInitToken()
 {
+	TRACE("");
 	return VR_GetInitToken();
 }
 
 WOVR_EXPORT const char * WOVR_GetVRInitErrorAsEnglishDescription(EVRInitError error)
 {
+	TRACE("");
 	return VR_GetVRInitErrorAsEnglishDescription(error);
 }
 
 WOVR_EXPORT const char * WOVR_GetVRInitErrorAsSymbol(EVRInitError error)
 {
+	TRACE("");
 	return VR_GetVRInitErrorAsSymbol(error);
 }
 
 WOVR_EXPORT uint32_t  WOVR_InitInternal(EVRInitError *peError, EVRApplicationType eApplicationType)
 {
-	// printf("c\n");
+	TRACE("");
 	return VR_InitInternal(peError, eApplicationType);
 }
 
 WOVR_EXPORT bool  WOVR_IsHmdPresent()
 {
+	TRACE("");
 	return VR_IsHmdPresent();
 }
 
 WOVR_EXPORT bool  WOVR_IsInterfaceVersionValid(const char *pchInterfaceVersion)
 {
-	printf("WOVR info: App requested version %s\n", pchInterfaceVersion);
+	TRACE("%s", pchInterfaceVersion);
 	return VR_IsInterfaceVersionValid(pchInterfaceVersion);
 }
 
 WOVR_EXPORT bool  WOVR_IsRuntimeInstalled()
 {
+	TRACE("");
 	return VR_IsRuntimeInstalled();
 }
 
 WOVR_EXPORT const char * WOVR_RuntimePath()
 {
+	TRACE("");
 	// FIXME: This should convert to a Wndows X:\\ type path before returning
+	WARN("Passing raw (unix) path!");
 	return VR_RuntimePath();
 }
 
 WOVR_EXPORT void  WOVR_ShutdownInternal()
 {
+	TRACE("");
 	VR_ShutdownInternal();
 }

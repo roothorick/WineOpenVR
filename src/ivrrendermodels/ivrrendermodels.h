@@ -62,6 +62,7 @@ class PROXYCLASS : public CLONECLASS
 	WOVR_ENTRY EVRRenderModelError LoadRenderModel_Async( const char *pchRenderModelName, Repacked_RenderModel_t **ppRenderModel )
 #endif
 	{
+		TRACE("");
 		// Struct packing mismatch
 		// Because The API impl itself allocates the RM, things are a little complicated.
 		EVRRenderModelError ret = VRRenderModelError_Loading;
@@ -88,6 +89,7 @@ class PROXYCLASS : public CLONECLASS
 
 	WOVR_ENTRY void FreeRenderModel( Repacked_RenderModel_t *pRenderModel )
 	{
+		TRACE("");
 		// Struct packing mismatch
 		VRRenderModels()->FreeRenderModel(pRenderModel->original);
 		delete pRenderModel;
@@ -99,6 +101,7 @@ class PROXYCLASS : public CLONECLASS
 	WOVR_ENTRY EVRRenderModelError LoadTexture_Async( TextureID_t textureId, Repacked_RenderModel_TextureMap_t **ppTexture )
 #endif
 	{
+		TRACE("");
 		// Struct packing mismatch
 		// Because The API impl itself allocates the texture, things are a little complicated.
 		EVRRenderModelError ret = VRRenderModelError_Loading;
@@ -126,6 +129,7 @@ class PROXYCLASS : public CLONECLASS
 
 	WOVR_ENTRY void FreeTexture( Repacked_RenderModel_TextureMap_t *pTexture )
 	{
+		TRACE("");
 		// Struct packing mismatch
 		VRRenderModels()->FreeTexture(pTexture->original);
 		delete pTexture;
@@ -134,18 +138,21 @@ class PROXYCLASS : public CLONECLASS
 #if ABIVER >= 4
 	WOVR_ENTRY EVRRenderModelError LoadTextureD3D11_Async( TextureID_t textureId, void *pD3D11Device, void **ppD3D11Texture2D )
 	{
+		TRACE("");
 		return D3DProxy()->LoadTextureD3D11_Async(textureId, pD3D11Device, ppD3D11Texture2D);
 	}
 
 #if ABIVER >= 5
 	WOVR_ENTRY EVRRenderModelError LoadIntoTextureD3D11_Async( TextureID_t textureId, void *pDstTexture )
 	{
+		TRACE("");
 		return D3DProxy()->LoadIntoTextureD3D11_Async(textureId, pDstTexture);
 	}
 #endif
 
 	WOVR_ENTRY void FreeTextureD3D11( void *pD3D11Texture2D )
 	{
+		TRACE("");
 		D3DProxy()->FreeTextureD3D11(pD3D11Texture2D);
 		return;
 	}
@@ -153,31 +160,37 @@ class PROXYCLASS : public CLONECLASS
 
 	WOVR_ENTRY uint32_t GetRenderModelName( uint32_t unRenderModelIndex, VR_OUT_STRING() char *pchRenderModelName, uint32_t unRenderModelNameLen )
 	{
+		TRACE("");
 		return VRRenderModels()->GetRenderModelName(unRenderModelIndex, pchRenderModelName, unRenderModelNameLen);
 	}
 
 	WOVR_ENTRY uint32_t GetRenderModelCount()
 	{
+		TRACE("");
 		return VRRenderModels()->GetRenderModelCount();
 	}
 
 	WOVR_ENTRY uint32_t GetComponentCount( const char *pchRenderModelName )
 	{
+		TRACE("");
 		return VRRenderModels()->GetComponentCount(pchRenderModelName);
 	}
 
 	WOVR_ENTRY uint32_t GetComponentName( const char *pchRenderModelName, uint32_t unComponentIndex, VR_OUT_STRING( ) char *pchComponentName, uint32_t unComponentNameLen )
 	{
+		TRACE("");
 		return VRRenderModels()->GetComponentName(pchRenderModelName, unComponentIndex, pchComponentName, unComponentNameLen);
 	}
 
 	WOVR_ENTRY uint64_t GetComponentButtonMask( const char *pchRenderModelName, const char *pchComponentName )
 	{
+		TRACE("");
 		return VRRenderModels()->GetComponentButtonMask(pchRenderModelName, pchComponentName);
 	}
 
 	WOVR_ENTRY uint32_t GetComponentRenderModelName( const char *pchRenderModelName, const char *pchComponentName, VR_OUT_STRING( ) char *pchComponentRenderModelName, uint32_t unComponentRenderModelNameLen )
 	{
+		TRACE("");
 		return VRRenderModels()->GetComponentRenderModelName(pchRenderModelName, pchComponentName, pchComponentRenderModelName, unComponentRenderModelNameLen);
 	}
 
@@ -187,6 +200,7 @@ class PROXYCLASS : public CLONECLASS
 	WOVR_ENTRY bool GetComponentState( const char *pchRenderModelName, const char *pchComponentName, const Repacked_VRControllerState_t *pControllerState, const RenderModel_ControllerMode_State_t *pState, RenderModel_ComponentState_t *pComponentState )
 #endif
 	{
+		TRACE("");
 		// Struct packing mismatch
 		VRControllerState_t linpacked;
 		repackVRControllerState(pControllerState, &linpacked);
@@ -201,21 +215,25 @@ class PROXYCLASS : public CLONECLASS
 
 	WOVR_ENTRY bool RenderModelHasComponent( const char *pchRenderModelName, const char *pchComponentName )
 	{
+		TRACE("");
 		return VRRenderModels()->RenderModelHasComponent(pchRenderModelName, pchComponentName);
 	}
 
 	WOVR_ENTRY uint32_t GetRenderModelThumbnailURL( const char *pchRenderModelName, VR_OUT_STRING() char *pchThumbnailURL, uint32_t unThumbnailURLLen, vr::EVRRenderModelError *peError )
 	{
+		TRACE("");
 		return VRRenderModels()->GetRenderModelThumbnailURL(pchRenderModelName, pchThumbnailURL, unThumbnailURLLen, peError);
 	}
 
 	WOVR_ENTRY uint32_t GetRenderModelOriginalPath( const char *pchRenderModelName, VR_OUT_STRING() char *pchOriginalPath, uint32_t unOriginalPathLen, vr::EVRRenderModelError *peError )
 	{
+		TRACE("");
 		return VRRenderModels()->GetRenderModelOriginalPath(pchRenderModelName, pchOriginalPath, unOriginalPathLen, peError);
 	}
 
 	WOVR_ENTRY const char *GetRenderModelErrorNameFromEnum( vr::EVRRenderModelError error )
 	{
+		TRACE("");
 		return VRRenderModels()->GetRenderModelErrorNameFromEnum(error);
 	}
 };

@@ -25,11 +25,13 @@ class PROXYCLASS : public CLONECLASS
 {
     WOVR_ENTRY uint32_t GetDriverCount() const
 	{
+		TRACE("");
 		return VRDriverManager()->GetDriverCount();
 	}
 
 	WOVR_ENTRY uint32_t GetDriverName( vr::DriverId_t nDriver, VR_OUT_STRING() char *pchValue, uint32_t unBufferSize )
 	{
+		TRACE("");
 		return VRDriverManager()->GetDriverName(nDriver, pchValue, unBufferSize);
 	}
 };

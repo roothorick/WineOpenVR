@@ -32,44 +32,52 @@ class PROXYCLASS : public CLONECLASS
 public:
     WOVR_ENTRY ChaperoneCalibrationState GetCalibrationState()
 	{
+		TRACE("");
 		return VRChaperone()->GetCalibrationState();
 	}
 
 	WOVR_ENTRY bool GetPlayAreaSize( float *pSizeX, float *pSizeZ )
 	{
+		TRACE("");
 		return VRChaperone()->GetPlayAreaSize(pSizeX, pSizeZ);
 	}
 
 	WOVR_ENTRY bool GetPlayAreaRect( HmdQuad_t *rect )
 	{
+		TRACE("");
 		return VRChaperone()->GetPlayAreaRect(rect);
 	}
 
 	WOVR_ENTRY void ReloadInfo( void )
 	{
+		TRACE("");
 		VRChaperone()->ReloadInfo();
 		return;
 	}
 
 	WOVR_ENTRY void SetSceneColor( HmdColor_t color )
 	{
+		TRACE("");
 		VRChaperone()->SetSceneColor(color);
 		return;
 	}
 
 	WOVR_ENTRY void GetBoundsColor( HmdColor_t *pOutputColorArray, int nNumOutputColors, float flCollisionBoundsFadeDistance, HmdColor_t *pOutputCameraColor )
 	{
+		TRACE("");
 		VRChaperone()->GetBoundsColor(pOutputColorArray, nNumOutputColors, flCollisionBoundsFadeDistance, pOutputCameraColor);
 		return;
 	}
 
 	WOVR_ENTRY bool AreBoundsVisible()
 	{
+		TRACE("");
 		return VRChaperone()->AreBoundsVisible();
 	}
 
 	WOVR_ENTRY void ForceBoundsVisible( bool bForce )
 	{
+		TRACE("");
 		VRChaperone()->ForceBoundsVisible(bForce);
 		return;
 	}
