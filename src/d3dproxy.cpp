@@ -14,6 +14,7 @@ bool initted = false;
 VkInstance instance;
 VkPhysicalDevice physDev;
 VkDevice logDev;
+uint32_t queueFam;
 
 int32_t ID3DProxy::GetD3D9AdapterIndex()
 {
@@ -222,33 +223,29 @@ bool Init()
 		}
 
 		// We don't need the queue ourselves, but SteamVR wants one.
-		uint32_t nQueueFams = 0;
-		vkGetPhysicalDeviceQueueFamilyProperties(physDev, &nQueueFams, 0);
-		if(nQueueFams < 1)
+		uint32_t nAllQueueFams = 0;
+		vkGetPhysicalDeviceQueueFamilyProperties(physDev, &nAllQueueFams, 0);
+		if(nAllQueueFams < 1)
 		{
 			printf("WOVR error: D3DProxy Init: Physical device apparently has no queue families?\n");
 			return false;
 		}
-		VkQueueFamilyProperties* queueFams = new VkQueueFamilyProperties[nQueueFams];
+		VkQueueFamilyProperties* allQueueFams = new VkQueueFamilyProperties[nAllQueueFams];
 
-		vkGetPhysicalDeviceQueueFamilyProperties(physDev, &nQueueFams, queueFams);
-		uint32_t ourQueueFam = -1;
-		for(int i=0; i<nQueueFams; i++)
+		vkGetPhysicalDeviceQueueFamilyProperties(physDev, &nAllQueueFams, allQueueFams);
+		for(queueFam=0; queueFam<nAllQueueFams; queueFam++)
 		{
 			// XXX: OpenVR API does not specify the needed queue family features. Graphics is a reasonable assumption.
-			if(queueFams[i].queueFlags & VK_QUEUE_GRAPHICS_BIT)
-			{
-				ourQueueFam = i;
+			if(allQueueFams[queueFam].queueFlags & VK_QUEUE_GRAPHICS_BIT)
 				break;
-			}
 		}
-		if(ourQueueFam == -1)
+		if(queueFam >= nAllQueueFams)
 		{
 			printf("WOVR error: D3DProxy Init: No suitable queue families!\n");
 			return false;
 		}
 
-		delete [] queueFams;
+		delete [] allQueueFams;
 
 		// We only need to do one very specific thing. No point in more than one queue.
 		VkDeviceQueueCreateInfo queueCI = {};
