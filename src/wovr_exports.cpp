@@ -188,7 +188,7 @@ WOVR_EXPORT void * WOVR_GetGenericInterface(const char *pchInterfaceVersion, EVR
 
 WOVR_EXPORT uint32_t  WOVR_GetInitToken()
 {
-	TRACE("");
+	TRACEHOT("");
 	return VR_GetInitToken();
 }
 

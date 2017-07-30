@@ -126,7 +126,7 @@ public:
 
 	WOVR_ENTRY void GetProjectionRaw( EVREye eEye, float *pfLeft, float *pfRight, float *pfTop, float *pfBottom )
 	{
-		TRACE("");
+		TRACEHOT("");
 		VRSystem()->GetProjectionRaw(eEye, pfLeft, pfRight, pfTop, pfBottom);
 		return;
 	}
@@ -265,13 +265,13 @@ public:
 
 	WOVR_ENTRY ETrackedDeviceClass GetTrackedDeviceClass( vr::TrackedDeviceIndex_t unDeviceIndex )
 	{
-		TRACE("");
+		TRACEHOT("");
 		return VRSystem()->GetTrackedDeviceClass(unDeviceIndex);
 	}
 
 	WOVR_ENTRY bool IsTrackedDeviceConnected( vr::TrackedDeviceIndex_t unDeviceIndex )
 	{
-		TRACE("");
+		TRACEHOT("");
 		return VRSystem()->IsTrackedDeviceConnected(unDeviceIndex);
 	}
 
@@ -325,7 +325,7 @@ public:
 	WOVR_ENTRY bool PollNextEvent( Repacked_VREvent_t *pEvent, uint32_t uncbVREvent )
 #endif
 	{
-		TRACE("");
+		TRACEHOT("");
 		// Struct packing mismatch
 		VREvent_t linpacked;
 		bool ret;
@@ -343,7 +343,7 @@ public:
 	WOVR_ENTRY bool PollNextEventWithPose( ETrackingUniverseOrigin eOrigin, Repacked_VREvent_t *pEvent, uint32_t uncbVREvent, vr::TrackedDevicePose_t *pTrackedDevicePose )
 #endif
 	{
-		TRACE("");
+		TRACEHOT("");
 		// Struct packing mismatch
 		VREvent_t linpacked;
 		bool ret;
@@ -382,7 +382,7 @@ public:
 	WOVR_ENTRY bool GetControllerState( vr::TrackedDeviceIndex_t unControllerDeviceIndex, Repacked_VRControllerState_t *pControllerState, uint32_t unControllerStateSize )
 #endif
 	{
-		TRACE("");
+		TRACEHOT("");
 		// Struct packing mismatch
 		VRControllerState_t linpacked;
 		// HACK: GCC seems to be interpreting #pragma pack differently from MSVC. We substitute our own value just to
@@ -441,7 +441,7 @@ public:
 
 	WOVR_ENTRY bool IsInputFocusCapturedByAnotherProcess()
 	{
-		TRACE("");
+		TRACEHOT("");
 		return VRSystem()->IsInputFocusCapturedByAnotherProcess();
 	}
 
