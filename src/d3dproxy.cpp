@@ -1,6 +1,7 @@
 #include "d3dproxy.h"
 #include <d3d11.h>
 #include <cstdio>
+#include <windows.h>
 
 bool initted = false;
 
@@ -12,6 +13,8 @@ int32_t ID3DProxy::GetD3D9AdapterIndex()
 
 void ID3DProxy::GetDXGIOutputInfo( int32_t *pnAdapterIndex )
 {
+    // TODO:
+    // Query OpenVR for the needed VkPhysicalDevice. Ask dxvk for the matching adapter index. Return that.
     ERR("stub!");
     *pnAdapterIndex = 0;
     return;
@@ -19,6 +22,8 @@ void ID3DProxy::GetDXGIOutputInfo( int32_t *pnAdapterIndex )
 
 void ID3DProxy::GetOutputDevice( uint64_t *pnDevice, ETextureType textureType )
 {
+    // TODO:
+    // Query OpenVR for the needed VkPhysicalDevice. Ask dxvk for the matching adapter LUID. Return that.
     ERR("stub!");
 }
 
@@ -37,6 +42,11 @@ void ID3DProxy::ReleaseMirrorTextureD3D11( void *pD3D11ShaderResourceView )
 
 EVRCompositorError ID3DProxy::Submit( EVREye eEye, const Texture_t *pTexture, const VRTextureBounds_t* pBounds, EVRSubmitFlags nSubmitFlags )
 {
+    // TODO:
+    // if we don't have the Vulkan device, queue, and queue family index in our struct
+        // Get them from dxvk
+    // Ask dxvk for the backing VkImage, width, height, format, and sample count. Fill out our texture data struct. Submit.
+
     ERR("stub!");
     return VRCompositorError_RequestFailed;
 }
@@ -44,6 +54,7 @@ EVRCompositorError ID3DProxy::Submit( EVREye eEye, const Texture_t *pTexture, co
 EVRCompositorError ID3DProxy::SetSkyboxOverride( VR_ARRAY_COUNT( unTextureCount ) const Texture_t *pTextures, uint32_t unTextureCount )
 {
     WARN("stub!");
+    // XXX: Probably should just fail silently here
     return VRCompositorError_RequestFailed;
 }
 
@@ -61,6 +72,13 @@ EVROverlayError ID3DProxy::SetOverlayTexture( VROverlayHandle_t ulOverlayHandle,
 
 EVRRenderModelError ID3DProxy::LoadTextureD3D11_Async( TextureID_t textureId, void *pD3D11Device, void **ppD3D11Texture2D )
 {
+    // TODO:
+    // call LoadTexture_Async. If it returns VRRenderModelError_Loading, then
+        // pass that on.
+    // if not
+        // Create a D3D112Texture2D and copy the texture into it. Immediately free the original texture. Return the D3D texture.
+        // (This should be a common method to LoadTextureD3D11_Async and LoadIntoTextureD3D11_Async)
+
     WARN("stub!");
     // (Pretend to) load forever
     return VRRenderModelError_Loading;
@@ -68,6 +86,13 @@ EVRRenderModelError ID3DProxy::LoadTextureD3D11_Async( TextureID_t textureId, vo
 
 EVRRenderModelError ID3DProxy::LoadIntoTextureD3D11_Async( TextureID_t textureId, void *pDstTexture )
 {
+    // TODO:
+    // call LoadTexture_Async. If it returns VRRenderModelError_Loading, then
+        // pass that on.
+    // if not
+        // Copy the texture from OpenVR into the app's texture. Immediately free the texture from OpenVR.
+        // (This should be a common method to LoadTextureD3D11_Async and LoadIntoTextureD3D11_Async)
+
     WARN("stub!");
     // (Pretend to) load forever
     return VRRenderModelError_Loading;
@@ -75,6 +100,8 @@ EVRRenderModelError ID3DProxy::LoadIntoTextureD3D11_Async( TextureID_t textureId
 
 void ID3DProxy::FreeTextureD3D11( void *pD3D11Texture2D )
 {
+    // TODO:
+    // Probably just blindly delete the texture, why not
     WARN("stub!");
     return;
 }
@@ -94,7 +121,13 @@ EVRTrackedCameraError ID3DProxy::GetVideoStreamTextureD3D11( TrackedCameraHandle
 
 bool Init()
 {
-    // TODO
+    // TODO:
+    // Query OpenVR for required instance extensions
+    // Create a Vulkan instance with those extensions and nothing else
+    // Use this instance to ask OpenVR for the required physical device. Save it in our texture struct
+    // Use the instance and physical device to ask OpenVR for required device extensions
+    // Send the required extensions and physical device to dxvk
+
     return true;
 }
 
