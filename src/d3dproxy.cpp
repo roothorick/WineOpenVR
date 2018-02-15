@@ -122,8 +122,6 @@ EVRTrackedCameraError ID3DProxy::GetVideoStreamTextureD3D11( TrackedCameraHandle
 // TODO: Callback to register with dxvk for providing additional instance and device extensions (one cb each),
 // by calling GetVulkanInstanceExtensionsRequired and GetVulkanDeviceExtensionsRequired respectively
 
-// TODO: A DllMain that registers the callbacks
-
 bool Init()
 {
     // XXX: Check if the callbacks were successfully registered?
