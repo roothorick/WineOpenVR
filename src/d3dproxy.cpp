@@ -119,15 +119,14 @@ EVRTrackedCameraError ID3DProxy::GetVideoStreamTextureD3D11( TrackedCameraHandle
     ERR("stub!");
 }
 
+// TODO: Callback to register with dxvk for providing additional instance and device extensions (one cb each),
+// by calling GetVulkanInstanceExtensionsRequired and GetVulkanDeviceExtensionsRequired respectively
+
+// TODO: A DllMain that registers the callbacks
+
 bool Init()
 {
-    // TODO:
-    // Query OpenVR for required instance extensions
-    // Create a Vulkan instance with those extensions and nothing else
-    // Use this instance to ask OpenVR for the required physical device. Save it in our texture struct
-    // Use the instance and physical device to ask OpenVR for required device extensions
-    // Send the required extensions and physical device to dxvk
-
+    // XXX: Check if the callbacks were successfully registered?
     return true;
 }
 
