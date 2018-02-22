@@ -18,13 +18,13 @@ bool initted = false;
 typedef unsigned int(*instanceCallback)(char***);
 typedef unsigned int(*deviceCallback)(VkPhysicalDevice,char***);
 
-void (__stdcall *dxvkRegisterInstanceExtCallback)(instanceCallback);
-void (__stdcall *dxvkRegisterDeviceExtCallback)(deviceCallback);
-void (__stdcall *dxvkGetVulkanImage)(ID3D11Texture2D*, VkImage*, uint32_t*, uint32_t*, uint32_t*, uint32_t*);
-VkInstance (__stdcall *dxvkInstanceOfFactory)(IDXGIFactory*);
-int32_t (__stdcall *dxvkPhysicalDeviceToAdapterIdx)(IDXGIFactory* fac, VkPhysicalDevice dev);
-void (__stdcall *dxvkPhysicalDeviceToAdapterLUID)(VkPhysicalDevice dev, uint64_t* luid);
-void (__stdcall *dxvkGetHandlesForVulkanOps)(ID3D11Device*, VkInstance*, VkPhysicalDevice*, VkDevice*, uint32_t*,
+void (__stdcall *p_dxvkRegisterInstanceExtCallback)(instanceCallback);
+void (__stdcall *p_dxvkRegisterDeviceExtCallback)(deviceCallback);
+void (__stdcall *p_dxvkGetVulkanImage)(ID3D11Texture2D*, VkImage*, uint32_t*, uint32_t*, uint32_t*, uint32_t*);
+VkInstance (__stdcall *p_dxvkInstanceOfFactory)(IDXGIFactory*);
+int32_t (__stdcall *p_dxvkPhysicalDeviceToAdapterIdx)(IDXGIFactory* fac, VkPhysicalDevice dev);
+void (__stdcall *p_dxvkPhysicalDeviceToAdapterLUID)(VkPhysicalDevice dev, uint64_t* luid);
+void (__stdcall *p_dxvkGetHandlesForVulkanOps)(ID3D11Device*, VkInstance*, VkPhysicalDevice*, VkDevice*, uint32_t*,
         VkQueue*);
 
 int32_t ID3DProxy::GetD3D9AdapterIndex()
@@ -203,8 +203,8 @@ bool Init()
     }
 
     // --- Step 2: Resolve Dxvk interop function addresses
-#define RESOLVE_FUNC(FUNC) FUNC = ( typeof(FUNC) ) GetProcAddress(dxvkHandle, "FUNC"); \
-        if(FUNC == NULL) \
+#define RESOLVE_FUNC(FUNC) p_ ## FUNC = ( typeof(p_ ## FUNC) ) GetProcAddress(dxvkHandle, "FUNC"); \
+        if(p_ ## FUNC == NULL) \
         { \
             ERR("Failed to resolve FUNC. This usually means Dxvk is not installed correctly or is an incompatible version."); \
             return false; \
@@ -221,8 +221,8 @@ bool Init()
 #undef RESOLVE_FUNC
 
     // --- Step 3: Register callbacks
-    dxvkRegisterInstanceExtCallback(&OurInstanceCallback);
-    dxvkRegisterDeviceExtCallback(&OurDeviceCallback);
+    p_dxvkRegisterInstanceExtCallback(&OurInstanceCallback);
+    p_dxvkRegisterDeviceExtCallback(&OurDeviceCallback);
 
     return true;
 }
