@@ -13,7 +13,7 @@ bool initted = false;
 typedef unsigned int(*instanceCallback)(char***);
 typedef unsigned int(*deviceCallback)(VkPhysicalDevice,char***);
 
-void (*dxvkRegisterInstanceExtCallback)(instanceCallback);
+void (__stdcall *dxvkRegisterInstanceExtCallback)(instanceCallback);
 void (__stdcall *dxvkRegisterDeviceExtCallback)(deviceCallback);
 void (__stdcall *dxvkGetVulkanImage)(ID3D11Texture2D*, VkImage*, uint32_t*, uint32_t*, uint32_t*, uint32_t*);
 VkInstance (__stdcall *dxvkInstanceOfFactory)(IDXGIFactory*);
