@@ -18,6 +18,10 @@ bool initted = false;
 typedef unsigned int(*instanceCallback)(char***);
 typedef unsigned int(*deviceCallback)(VkPhysicalDevice,char***);
 
+// We resolve the DXGI funcs manually, to ensure we're calling into dxvk
+// This also avoids pulling in dxgi.dll on OpenGL and Vulkan apps
+HRESULT (__stdcall *p_CreateDXGIFactory)(REFIID riid, void **ppFactory);
+
 void (__stdcall *p_dxvkRegisterInstanceExtCallback)(instanceCallback);
 void (__stdcall *p_dxvkRegisterDeviceExtCallback)(deviceCallback);
 void (__stdcall *p_dxvkGetVulkanImage)(ID3D11Texture2D*, VkImage*, uint32_t*, uint32_t*, uint32_t*, uint32_t*);
@@ -35,10 +39,22 @@ int32_t ID3DProxy::GetD3D9AdapterIndex()
 
 void ID3DProxy::GetDXGIOutputInfo( int32_t *pnAdapterIndex )
 {
-    // TODO:
-    // Query OpenVR for the needed VkPhysicalDevice. Ask dxvk for the matching adapter index. Return that.
-    ERR("stub!");
-    *pnAdapterIndex = 0;
+    IDXGIFactory* fac;
+    if ( p_CreateDXGIFactory(__uuidof(IDXGIFactory), (void**) &fac) != S_OK);
+    {
+        ERR("Failed to create DXGI Factory");
+        *pnAdapterIndex = 0;
+        return;
+    }
+    
+    VkInstance instance = p_dxvkInstanceOfFactory(fac);
+    
+    VkPhysicalDevice pdev;
+    // TODO: third arg was added since 1.0.8
+    // VRSystem()->GetOutputDevice(&pdev, TextureType_Vulkan, instance);
+     VRSystem()->GetOutputDevice( (uint64_t*) &pdev, TextureType_Vulkan);
+    
+    *pnAdapterIndex = p_dxvkPhysicalDeviceToAdapterIdx(fac, pdev);
     return;
 }
 
@@ -217,6 +233,7 @@ bool Init()
     RESOLVE_FUNC(dxvkPhysicalDeviceToAdapterIdx)
     RESOLVE_FUNC(dxvkPhysicalDeviceToAdapterLUID)
     RESOLVE_FUNC(dxvkGetHandlesForVulkanOps)
+    RESOLVE_FUNC(CreateDXGIFactory)
 
 #undef RESOLVE_FUNC
 
