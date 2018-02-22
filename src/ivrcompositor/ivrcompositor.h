@@ -83,6 +83,10 @@ public:
 	WOVR_ENTRY virtual uint32_t GetVulkanInstanceExtensionsRequired( VR_OUT_STRING() char *pchValue, uint32_t unBufferSize ) = 0;
 	WOVR_ENTRY virtual uint32_t GetVulkanDeviceExtensionsRequired( VkPhysicalDevice_T *pPhysicalDevice, VR_OUT_STRING() char *pchValue, uint32_t unBufferSize ) = 0;
 #endif
+#if ABIVER >= 21
+	WOVR_ENTRY virtual void SetExplicitTimingMode( bool bExplicitTimingMode ) = 0;
+	WOVR_ENTRY virtual EVRCompositorError SubmitExplicitTimingData() = 0;
+#endif
 };
 
 class PROXYCLASS : public CLONECLASS
@@ -420,6 +424,19 @@ public:
 	{
 		TRACE("");
 		return VRCompositor()->GetVulkanDeviceExtensionsRequired(pPhysicalDevice, pchValue, unBufferSize);
+	}
+#endif
+
+#if ABIVER >= 21
+	WOVR_ENTRY void SetExplicitTimingMode( bool bExplicitTimingMode )
+	{
+		TRACE("");
+		VRCompositor()->SetExplicitTimingMode(bExplicitTimingMode);
+	}
+	WOVR_ENTRY EVRCompositorError SubmitExplicitTimingData()
+	{
+		TRACEHOT("");
+		return VRCompositor()->SubmitExplicitTimingData();
 	}
 #endif
 };

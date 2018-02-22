@@ -136,6 +136,9 @@ public:
 	WOVR_ENTRY virtual EVROverlayError GetOverlayFlags( VROverlayHandle_t ulOverlayHandle, uint32_t *pFlags ) = 0;
 	WOVR_ENTRY virtual VRMessageOverlayResponse ShowMessageOverlay( const char* pchText, const char* pchCaption, const char* pchButton0Text, const char* pchButton1Text, const char* pchButton2Text, const char* pchButton3Text ) = 0;
 #endif
+#if ABIVER >= 16
+	WOVR_ENTRY virtual void CloseMessageOverlay() = 0;
+#endif
 };
 
 class PROXYCLASS : public CLONECLASS
@@ -661,6 +664,14 @@ public:
 		return VROverlay()->ShowMessageOverlay(pchText, pchCaption, pchButton0Text, pchButton1Text, pchButton2Text, pchButton3Text);
 	}
 #endif
+
+#if ABIVER >= 16
+	WOVR_ENTRY void CloseMessageOverlay()
+	{
+		VROverlay()->CloseMessageOverlay();
+	}
+#endif
+
 };
 
 IVROverlay* GETTER ()

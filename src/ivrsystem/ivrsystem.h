@@ -43,8 +43,10 @@ public:
 	WOVR_ENTRY virtual bool GetTimeSinceLastVsync( float *pfSecondsSinceLastVsync, uint64_t *pulFrameCounter ) = 0;
 	WOVR_ENTRY virtual int32_t GetD3D9AdapterIndex() = 0;
 	WOVR_ENTRY virtual void GetDXGIOutputInfo( int32_t *pnAdapterIndex ) = 0;
-#if ABIVER >= 16
+#if ABIVER == 16
 	WOVR_ENTRY virtual void GetOutputDevice( uint64_t *pnDevice, ETextureType textureType ) = 0;
+#elif ABIVER >= 17
+	WOVR_ENTRY virtual void GetOutputDevice( uint64_t *pnDevice, ETextureType textureType, VkInstance_T *pInstance ) = 0;
 #endif
 	WOVR_ENTRY virtual bool IsDisplayOnDesktop() = 0;
 	WOVR_ENTRY virtual bool SetDisplayVisibility( bool bIsVisibleOnDesktop ) = 0;
@@ -177,13 +179,20 @@ public:
 	}
 
 #if ABIVER >= 16
+#if ABIVER == 16
 	WOVR_ENTRY void GetOutputDevice( uint64_t *pnDevice, ETextureType textureType )
+#else // ABIVER >= 17
+	WOVR_ENTRY void GetOutputDevice( uint64_t *pnDevice, ETextureType textureType, VkInstance_T *pInstance )
+#endif
 	{
+#if ABIVER == 16
+		VkInstance_T *pInstance = nullptr;
+#endif
 		TRACE("");
 		if(textureType == TextureType_DirectX || textureType == TextureType_DirectX12)
 			D3DProxy()->GetOutputDevice(pnDevice, textureType);
 		else // Natively supported (OpenGL or Vulkan); pass directly
-			VRSystem()->GetOutputDevice(pnDevice, textureType);
+			VRSystem()->GetOutputDevice(pnDevice, textureType, pInstance);
 		return;
 	}
 #endif

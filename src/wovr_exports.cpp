@@ -204,10 +204,16 @@ WOVR_EXPORT const char * WOVR_GetVRInitErrorAsSymbol(EVRInitError error)
 	return VR_GetVRInitErrorAsSymbol(error);
 }
 
-WOVR_EXPORT uint32_t  WOVR_InitInternal(EVRInitError *peError, EVRApplicationType eApplicationType)
+WOVR_EXPORT uint32_t WOVR_InitInternal2(EVRInitError *peError, EVRApplicationType eApplicationType, const char* pStartupInfo)
 {
 	TRACE("");
-	return VR_InitInternal(peError, eApplicationType);
+	return VR_InitInternal2(peError, eApplicationType, pStartupInfo);
+}
+
+// Removed in v1.0.10
+WOVR_EXPORT uint32_t  WOVR_InitInternal(EVRInitError *peError, EVRApplicationType eApplicationType)
+{
+	return WOVR_InitInternal2(peError, eApplicationType, NULL);
 }
 
 WOVR_EXPORT bool  WOVR_IsHmdPresent()
