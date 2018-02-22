@@ -195,14 +195,15 @@ EVRTrackedCameraError ID3DProxy::GetVideoStreamTextureD3D11( TrackedCameraHandle
 unsigned int ArrayizeExts(char* extsIn, char*** extsOut)
 {
   std::vector<char*> extsVec;
+  std::vector<char> thisExtV;
   // strlen()+1 so as to include the trailing null
   for(unsigned int i=0; i< strlen(extsIn) + 1 ;i++)
   {
-      std::vector<char> thisExtV;
-      
       if(extsIn[i] == ' ' || extsIn[i] == '\0')
       {
+          thisExtV.push_back('\0');
           char* thisExtA = (char*) malloc(sizeof(char) * thisExtV.size());
+          TRACE("%s",thisExtV.data());
           strcpy(thisExtA, thisExtV.data());
           extsVec.push_back(thisExtA);
           thisExtV.clear();
@@ -224,6 +225,7 @@ unsigned int OurInstanceCallback(char*** extsOut)
     uint32_t extsIn_sz = VRCompositor()->GetVulkanInstanceExtensionsRequired(NULL, 0);
     char* extsIn = new char[extsIn_sz];
     VRCompositor()->GetVulkanInstanceExtensionsRequired(extsIn, extsIn_sz);
+    TRACE("%s", extsIn);
     
     unsigned int ret = ArrayizeExts(extsIn, extsOut);
     delete [] extsIn;
@@ -235,6 +237,7 @@ unsigned int OurDeviceCallback(VkPhysicalDevice pdev, char*** extsOut)
     uint32_t extsIn_sz = VRCompositor()->GetVulkanDeviceExtensionsRequired(pdev, NULL, 0);
     char* extsIn = new char[extsIn_sz];
     VRCompositor()->GetVulkanDeviceExtensionsRequired(pdev, extsIn, extsIn_sz);
+    TRACE("%s", extsIn);
     
     unsigned int ret = ArrayizeExts(extsIn, extsOut);
     delete [] extsIn;
