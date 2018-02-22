@@ -53,9 +53,7 @@ void ID3DProxy::GetDXGIOutputInfo( int32_t *pnAdapterIndex )
     VkInstance instance = p_dxvkInstanceOfFactory(fac);
     
     VkPhysicalDevice pdev;
-    // TODO: third arg was added since 1.0.8
-    // VRSystem()->GetOutputDevice(&pdev, TextureType_Vulkan, instance);
-     VRSystem()->GetOutputDevice( (uint64_t*) &pdev, TextureType_Vulkan);
+     VRSystem()->GetOutputDevice( (uint64_t*) &pdev, TextureType_Vulkan, instance);
     
     *pnAdapterIndex = p_dxvkPhysicalDeviceToAdapterIdx(fac, pdev);
     return;
