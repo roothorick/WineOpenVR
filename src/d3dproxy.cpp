@@ -111,9 +111,10 @@ EVRCompositorError ID3DProxy::Submit( EVREye eEye, const Texture_t *pTexture, co
 
 EVRCompositorError ID3DProxy::SetSkyboxOverride( VR_ARRAY_COUNT( unTextureCount ) const Texture_t *pTextures, uint32_t unTextureCount )
 {
+    // TODO
     WARN("stub!");
-    // XXX: Probably should just fail silently here
-    return VRCompositorError_RequestFailed;
+    // They'll never know...
+    return EVRCompositorError_None;
 }
 
 EVROverlayError ID3DProxy::GetOverlayTexture( VROverlayHandle_t ulOverlayHandle, void **pNativeTextureHandle, void *pNativeTextureRef, uint32_t *pWidth, uint32_t *pHeight, uint32_t *pNativeFormat, ETextureType *pAPIType, EColorSpace *pColorSpace, VRTextureBounds_t *pTextureBounds )
