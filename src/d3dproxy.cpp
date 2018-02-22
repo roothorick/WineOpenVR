@@ -86,33 +86,39 @@ void ID3DProxy::ReleaseMirrorTextureD3D11( void *pD3D11ShaderResourceView )
 // IVRCompositor
 EVRCompositorError ID3DProxy::Submit( EVREye eEye, const Texture_t *pTexture, const VRTextureBounds_t* pBounds, EVRSubmitFlags nSubmitFlags )
 {
-    ID3D11Texture2D* d3dTex = (ID3D11Texture2D*) pTexture;
+    ID3D11Texture2D* d3dTex = (ID3D11Texture2D*) pTexture->handle;
     ID3D11Device* d3ddev;
     d3dTex->GetDevice(&d3ddev);
-    VRVulkanTextureData_t texData;
+    VRVulkanTextureData_t vTexData;
+    Texture_t texOut;
+    texOut.handle = (void*) &vTexData;
+    texOut.eType = TextureType_Vulkan;
+    texOut.eColorSpace = pTexture->eColorSpace;
 
     // For whatever reason, VRVulkanTextureData_t has a uint64_t instead of a VkImage.
     VkImage img;
     p_dxvkGetVulkanImage(
         d3dTex,
         &img,
-        &texData.m_nWidth,
-        &texData.m_nHeight,
-        &texData.m_nFormat,
-        &texData.m_nSampleCount
+        &vTexData.m_nWidth,
+        &vTexData.m_nHeight,
+        &vTexData.m_nFormat,
+        &vTexData.m_nSampleCount
     );
-    texData.m_nImage = (uint64_t) img;
+    vTexData.m_nImage = (uint64_t) img;
 
     p_dxvkGetHandlesForVulkanOps(
             d3ddev,
-            &texData.m_pInstance,
-            &texData.m_pPhysicalDevice,
-            &texData.m_pDevice,
-            &texData.m_nQueueFamilyIndex,
-            &texData.m_pQueue
+            &vTexData.m_pInstance,
+            &vTexData.m_pPhysicalDevice,
+            &vTexData.m_pDevice,
+            &vTexData.m_nQueueFamilyIndex,
+            &vTexData.m_pQueue
         );
     
-    return VRCompositor()->Submit(eEye, (Texture_t*) &texData, pBounds, nSubmitFlags);
+    EVRCompositorError ret = VRCompositor()->Submit(eEye, &texOut, pBounds, nSubmitFlags);
+    if(ret != VRCompositorError_None) ERR("Submit failed: %u", ret);
+    return ret;
 }
 
 
