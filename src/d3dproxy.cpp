@@ -254,10 +254,10 @@ bool Init()
     }
 
     // --- Step 2: Resolve Dxvk interop function addresses
-#define RESOLVE_FUNC(FUNC) p_ ## FUNC = ( typeof(p_ ## FUNC) ) GetProcAddress(dxvkHandle, "FUNC"); \
+#define RESOLVE_FUNC(FUNC) p_ ## FUNC = ( typeof(p_ ## FUNC) ) GetProcAddress(dxvkHandle, # FUNC ); \
         if(p_ ## FUNC == NULL) \
         { \
-            ERR("Failed to resolve FUNC. This usually means Dxvk is not installed correctly or is an incompatible version."); \
+            ERR("Failed to resolve " # FUNC ". This usually means Dxvk is not installed correctly or is an incompatible version."); \
             return false; \
         }
 
