@@ -22,6 +22,7 @@ SOURCES= \
 	ivrsystem/ivrsystem_015.cpp \
 	ivrsystem/ivrsystem_016.cpp \
 	ivrsystem/ivrsystem_017.cpp \
+	ivrsystem/ivrsystem_019.cpp \
 	\
 	ivrapplications/ivrapplications_002.cpp \
 	ivrapplications/ivrapplications_003.cpp \
@@ -59,6 +60,7 @@ SOURCES= \
 	ivroverlay/ivroverlay_014.cpp \
 	ivroverlay/ivroverlay_016.cpp \
 	ivroverlay/ivroverlay_017.cpp \
+	ivroverlay/ivroverlay_018.cpp \
 	\
 	ivrrendermodels/ivrrendermodels_002.cpp \
 	ivrrendermodels/ivrrendermodels_004.cpp \

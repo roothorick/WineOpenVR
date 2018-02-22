@@ -99,7 +99,9 @@ public:
 	WOVR_ENTRY virtual EVROverlayError GetOverlayMouseScale( VROverlayHandle_t ulOverlayHandle, HmdVector2_t *pvecMouseScale ) = 0;
 	WOVR_ENTRY virtual EVROverlayError SetOverlayMouseScale( VROverlayHandle_t ulOverlayHandle, const HmdVector2_t *pvecMouseScale ) = 0;
 	WOVR_ENTRY virtual bool ComputeOverlayIntersection( VROverlayHandle_t ulOverlayHandle, const VROverlayIntersectionParams_t *pParams, VROverlayIntersectionResults_t *pResults ) = 0;
+#if ABIVER < 18
 	WOVR_ENTRY virtual bool HandleControllerOverlayInteractionAsMouse( VROverlayHandle_t ulOverlayHandle, TrackedDeviceIndex_t unControllerDeviceIndex ) = 0;
+#endif
 	WOVR_ENTRY virtual bool IsHoverTargetOverlay( VROverlayHandle_t ulOverlayHandle ) = 0;
 	WOVR_ENTRY virtual vr::VROverlayHandle_t GetGamepadFocusOverlay() = 0;
 	WOVR_ENTRY virtual EVROverlayError SetGamepadFocusOverlay( VROverlayHandle_t ulNewFocusOverlay ) = 0;
@@ -478,11 +480,13 @@ public:
 		return VROverlay()->ComputeOverlayIntersection(ulOverlayHandle, pParams, pResults);
 	}
 
+#if ABIVER < 18
 	WOVR_ENTRY bool HandleControllerOverlayInteractionAsMouse( VROverlayHandle_t ulOverlayHandle, TrackedDeviceIndex_t unControllerDeviceIndex )
 	{
-		TRACE("");
-		return VROverlay()->HandleControllerOverlayInteractionAsMouse(ulOverlayHandle, unControllerDeviceIndex);
+		WARN("stub");
+		return false;
 	}
+#endif
 
 	WOVR_ENTRY bool IsHoverTargetOverlay( VROverlayHandle_t ulOverlayHandle )
 	{

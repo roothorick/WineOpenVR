@@ -68,6 +68,9 @@ public:
 	WOVR_ENTRY virtual int32_t GetInt32TrackedDeviceProperty( vr::TrackedDeviceIndex_t unDeviceIndex, ETrackedDeviceProperty prop, ETrackedPropertyError *pError ) = 0;
 	WOVR_ENTRY virtual uint64_t GetUint64TrackedDeviceProperty( vr::TrackedDeviceIndex_t unDeviceIndex, ETrackedDeviceProperty prop, ETrackedPropertyError *pError ) = 0;
 	WOVR_ENTRY virtual void GetMatrix34TrackedDeviceProperty(HmdMatrix34_t* ret, vr::TrackedDeviceIndex_t unDeviceIndex, ETrackedDeviceProperty prop, ETrackedPropertyError *pError ) = 0; // ERP hack
+#if ABIVER >= 19
+	WOVR_ENTRY virtual uint32_t GetArrayTrackedDeviceProperty( vr::TrackedDeviceIndex_t unDeviceIndex, ETrackedDeviceProperty prop, PropertyTypeTag_t propType, void *pBuffer, uint32_t unBufferSize, ETrackedPropertyError *pError ) = 0;
+#endif
 	WOVR_ENTRY virtual uint32_t GetStringTrackedDeviceProperty( vr::TrackedDeviceIndex_t unDeviceIndex, ETrackedDeviceProperty prop, VR_OUT_STRING() char *pchValue, uint32_t unBufferSize, ETrackedPropertyError *pError ) = 0;
 	WOVR_ENTRY virtual const char *GetPropErrorNameFromEnum( ETrackedPropertyError error ) = 0;
 #if ABIVER < 11
@@ -90,9 +93,17 @@ public:
 	WOVR_ENTRY virtual void TriggerHapticPulse( vr::TrackedDeviceIndex_t unControllerDeviceIndex, uint32_t unAxisId, unsigned short usDurationMicroSec ) = 0;
 	WOVR_ENTRY virtual const char *GetButtonIdNameFromEnum( EVRButtonId eButtonId ) = 0;
 	WOVR_ENTRY virtual const char *GetControllerAxisTypeNameFromEnum( EVRControllerAxisType eAxisType ) = 0;
+#if ABIVER < 19
 	WOVR_ENTRY virtual bool CaptureInputFocus() = 0;
 	WOVR_ENTRY virtual void ReleaseInputFocus() = 0;
 	WOVR_ENTRY virtual bool IsInputFocusCapturedByAnotherProcess() = 0;
+#endif
+#if ABIVER >= 19
+	WOVR_ENTRY virtual bool IsInputAvailable() = 0;
+	WOVR_ENTRY virtual bool IsSteamVRDrawingControllers() = 0;
+	WOVR_ENTRY virtual bool ShouldApplicationPause() = 0;
+	WOVR_ENTRY virtual bool ShouldApplicationReduceRenderingWork() = 0;
+#endif
 	WOVR_ENTRY virtual uint32_t DriverDebugRequest( vr::TrackedDeviceIndex_t unDeviceIndex, const char *pchRequest, char *pchResponseBuffer, uint32_t unResponseBufferSize ) = 0;
 	WOVR_ENTRY virtual vr::EVRFirmwareError PerformFirmwareUpdate( vr::TrackedDeviceIndex_t unDeviceIndex ) = 0;
 	WOVR_ENTRY virtual void AcknowledgeQuit_Exiting() = 0;
@@ -316,6 +327,14 @@ public:
 		return;
 	}
 
+#if ABIVER >= 19
+	WOVR_ENTRY virtual uint32_t GetArrayTrackedDeviceProperty( vr::TrackedDeviceIndex_t unDeviceIndex, ETrackedDeviceProperty prop, PropertyTypeTag_t propType, void *pBuffer, uint32_t unBufferSize, ETrackedPropertyError *pError )
+	{
+		return VRSystem()->GetArrayTrackedDeviceProperty(unDeviceIndex, prop, propType, pBuffer, unBufferSize, pError);
+	}
+#endif
+
+
 	WOVR_ENTRY uint32_t GetStringTrackedDeviceProperty( vr::TrackedDeviceIndex_t unDeviceIndex, ETrackedDeviceProperty prop, VR_OUT_STRING() char *pchValue, uint32_t unBufferSize, ETrackedPropertyError *pError)
 	{
 		TRACE("");
@@ -436,23 +455,47 @@ public:
 		return VRSystem()->GetControllerAxisTypeNameFromEnum(eAxisType);
 	}
 
+#if ABIVER < 19
 	WOVR_ENTRY bool CaptureInputFocus()
 	{
 		TRACE("");
-		return VRSystem()->CaptureInputFocus();
+		return VRSystem()->IsInputAvailable();
 	}
 
 	WOVR_ENTRY void ReleaseInputFocus()
 	{
 		TRACE("");
-		return VRSystem()->ReleaseInputFocus();
+		// No-op -- the concept has been removed from the API.
 	}
 
 	WOVR_ENTRY bool IsInputFocusCapturedByAnotherProcess()
 	{
 		TRACEHOT("");
-		return VRSystem()->IsInputFocusCapturedByAnotherProcess();
+		return VRSystem()->ShouldApplicationPause();
 	}
+#endif
+
+#if ABIVER >= 19
+	WOVR_ENTRY bool IsInputAvailable()
+	{
+		return VRSystem()->IsInputAvailable();
+	}
+	
+	WOVR_ENTRY bool IsSteamVRDrawingControllers()
+	{
+		return VRSystem()->IsSteamVRDrawingControllers();
+	}
+	
+	WOVR_ENTRY bool ShouldApplicationPause()
+	{
+		return VRSystem()->ShouldApplicationPause();
+	}
+	
+	WOVR_ENTRY bool ShouldApplicationReduceRenderingWork()
+	{
+		return VRSystem()->ShouldApplicationReduceRenderingWork();
+	}
+#endif
 
 	WOVR_ENTRY uint32_t DriverDebugRequest( vr::TrackedDeviceIndex_t unDeviceIndex, const char *pchRequest, char *pchResponseBuffer, uint32_t unResponseBufferSize )
 	{
