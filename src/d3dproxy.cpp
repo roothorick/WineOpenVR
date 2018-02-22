@@ -203,6 +203,7 @@ unsigned int ArrayizeExts(char* extsIn, char*** extsOut)
       if(extsIn[i] == ' ' || extsIn[i] == '\0')
       {
           char* thisExtA = (char*) malloc(sizeof(char) * thisExtV.size());
+          strcpy(thisExtA, thisExtV.data());
           extsVec.push_back(thisExtA);
           thisExtV.clear();
       }
