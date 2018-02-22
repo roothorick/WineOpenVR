@@ -80,13 +80,33 @@ void ID3DProxy::ReleaseMirrorTextureD3D11( void *pD3D11ShaderResourceView )
 
 EVRCompositorError ID3DProxy::Submit( EVREye eEye, const Texture_t *pTexture, const VRTextureBounds_t* pBounds, EVRSubmitFlags nSubmitFlags )
 {
-    // TODO:
-    // if we don't have the Vulkan device, queue, and queue family index in our struct
-        // Get them from dxvk
-    // Ask dxvk for the backing VkImage, width, height, format, and sample count. Fill out our texture data struct. Submit.
+    ID3D11Texture2D* d3dTex = (ID3D11Texture2D*) pTexture;
+    ID3D11Device* d3ddev;
+    d3dTex->GetDevice(&d3ddev);
+    VRVulkanTextureData_t texData;
 
-    ERR("stub!");
-    return VRCompositorError_RequestFailed;
+    // For whatever reason, VRVulkanTextureData_t has a uint64_t instead of a VkImage.
+    VkImage img;
+    p_dxvkGetVulkanImage(
+        d3dTex,
+        &img,
+        &texData.m_nWidth,
+        &texData.m_nHeight,
+        &texData.m_nFormat,
+        &texData.m_nSampleCount
+    );
+    texData.m_nImage = (uint64_t) img;
+
+    p_dxvkGetHandlesForVulkanOps(
+            d3ddev,
+            &texData.m_pInstance,
+            &texData.m_pPhysicalDevice,
+            &texData.m_pDevice,
+            &texData.m_nQueueFamilyIndex,
+            &texData.m_pQueue
+        );
+    
+    return VRCompositor()->Submit(eEye, (Texture_t*) &texData, pBounds, nSubmitFlags);
 }
 
 EVRCompositorError ID3DProxy::SetSkyboxOverride( VR_ARRAY_COUNT( unTextureCount ) const Texture_t *pTextures, uint32_t unTextureCount )
