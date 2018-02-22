@@ -121,7 +121,7 @@ EVRCompositorError ID3DProxy::SetSkyboxOverride( VR_ARRAY_COUNT( unTextureCount 
     // TODO
     WARN("stub!");
     // They'll never know...
-    return EVRCompositorError_None;
+    return VRCompositorError_None;
 }
 
 // IVROverlay
