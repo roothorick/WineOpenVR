@@ -31,12 +31,14 @@ void (__stdcall *p_dxvkPhysicalDeviceToAdapterLUID)(VkPhysicalDevice dev, uint64
 void (__stdcall *p_dxvkGetHandlesForVulkanOps)(ID3D11Device*, VkInstance*, VkPhysicalDevice*, VkDevice*, uint32_t*,
         VkQueue*);
 
+// IVRSystem
 int32_t ID3DProxy::GetD3D9AdapterIndex()
 {
     ERR("stub!");
     return -1;
 }
 
+// IVRSystem
 void ID3DProxy::GetDXGIOutputInfo( int32_t *pnAdapterIndex )
 {
     IDXGIFactory* fac;
@@ -58,6 +60,7 @@ void ID3DProxy::GetDXGIOutputInfo( int32_t *pnAdapterIndex )
     return;
 }
 
+// IVRSystem
 void ID3DProxy::GetOutputDevice( uint64_t *pnDevice, ETextureType textureType )
 {
     // TODO:
@@ -72,12 +75,14 @@ EVRCompositorError ID3DProxy::GetMirrorTextureD3D11( EVREye eEye, void *pD3D11De
     return VRCompositorError_RequestFailed;
 }
 
+// IVRCompositor
 void ID3DProxy::ReleaseMirrorTextureD3D11( void *pD3D11ShaderResourceView )
 {
     WARN("stub!");
     return;
 }
 
+// IVRCompositor
 EVRCompositorError ID3DProxy::Submit( EVREye eEye, const Texture_t *pTexture, const VRTextureBounds_t* pBounds, EVRSubmitFlags nSubmitFlags )
 {
     ID3D11Texture2D* d3dTex = (ID3D11Texture2D*) pTexture;
@@ -109,6 +114,8 @@ EVRCompositorError ID3DProxy::Submit( EVREye eEye, const Texture_t *pTexture, co
     return VRCompositor()->Submit(eEye, (Texture_t*) &texData, pBounds, nSubmitFlags);
 }
 
+
+// IVRCompositor
 EVRCompositorError ID3DProxy::SetSkyboxOverride( VR_ARRAY_COUNT( unTextureCount ) const Texture_t *pTextures, uint32_t unTextureCount )
 {
     // TODO
@@ -117,18 +124,21 @@ EVRCompositorError ID3DProxy::SetSkyboxOverride( VR_ARRAY_COUNT( unTextureCount 
     return EVRCompositorError_None;
 }
 
+// IVRCompositor
 EVROverlayError ID3DProxy::GetOverlayTexture( VROverlayHandle_t ulOverlayHandle, void **pNativeTextureHandle, void *pNativeTextureRef, uint32_t *pWidth, uint32_t *pHeight, uint32_t *pNativeFormat, ETextureType *pAPIType, EColorSpace *pColorSpace, VRTextureBounds_t *pTextureBounds )
 {
     WARN("stub!");
     return VROverlayError_RequestFailed;
 }
 
+// IVRCompositor
 EVROverlayError ID3DProxy::SetOverlayTexture( VROverlayHandle_t ulOverlayHandle, const Texture_t *pTexture )
 {
     WARN("stub!");
     return VROverlayError_RequestFailed;
 }
 
+// IVRRenderModels
 EVRRenderModelError ID3DProxy::LoadTextureD3D11_Async( TextureID_t textureId, void *pD3D11Device, void **ppD3D11Texture2D )
 {
     // TODO:
@@ -143,6 +153,7 @@ EVRRenderModelError ID3DProxy::LoadTextureD3D11_Async( TextureID_t textureId, vo
     return VRRenderModelError_Loading;
 }
 
+// IVRRenderModels
 EVRRenderModelError ID3DProxy::LoadIntoTextureD3D11_Async( TextureID_t textureId, void *pDstTexture )
 {
     // TODO:
@@ -157,6 +168,7 @@ EVRRenderModelError ID3DProxy::LoadIntoTextureD3D11_Async( TextureID_t textureId
     return VRRenderModelError_Loading;
 }
 
+// IVRRenderModels
 void ID3DProxy::FreeTextureD3D11( void *pD3D11Texture2D )
 {
     // TODO:
@@ -165,6 +177,7 @@ void ID3DProxy::FreeTextureD3D11( void *pD3D11Texture2D )
     return;
 }
 
+// IVRExtendedDisplay
 void ID3DProxy::ExtendedDisplay_GetDXGIOutputInfo( int32_t *pnAdapterIndex, int32_t *pnAdapterOutputIndex )
 {
     ERR("stub!");
@@ -173,6 +186,7 @@ void ID3DProxy::ExtendedDisplay_GetDXGIOutputInfo( int32_t *pnAdapterIndex, int3
     return;
 }
 
+// IVRTrackedCamera
 EVRTrackedCameraError ID3DProxy::GetVideoStreamTextureD3D11( TrackedCameraHandle_t hTrackedCamera, EVRTrackedCameraFrameType eFrameType, void *pD3D11DeviceOrResource, void **ppD3D11ShaderResourceView, CameraVideoStreamFrameHeader_t *pFrameHeader, uint32_t nFrameHeaderSize )
 {
     ERR("stub!");
