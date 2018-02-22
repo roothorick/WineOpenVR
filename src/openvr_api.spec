@@ -17,8 +17,9 @@
 12 cdecl VR_GetVRInitErrorAsEnglishDescription(long) WOVR_GetVRInitErrorAsEnglishDescription
 13 cdecl VR_GetVRInitErrorAsSymbol(long) WOVR_GetVRInitErrorAsSymbol
 14 cdecl VR_InitInternal(ptr long) WOVR_InitInternal
-15 cdecl VR_IsHmdPresent() WOVR_IsHmdPresent
-16 cdecl VR_IsInterfaceVersionValid(str) WOVR_IsInterfaceVersionValid
-17 cdecl VR_IsRuntimeInstalled() WOVR_IsRuntimeInstalled
-18 cdecl VR_RuntimePath() WOVR_RuntimePath
-19 cdecl VR_ShutdownInternal() WOVR_ShutdownInternal
+15 cdecl VR_InitInternal2(ptr long ptr) WOVR_InitInternal2
+16 cdecl VR_IsHmdPresent() WOVR_IsHmdPresent
+17 cdecl VR_IsInterfaceVersionValid(str) WOVR_IsInterfaceVersionValid
+18 cdecl VR_IsRuntimeInstalled() WOVR_IsRuntimeInstalled
+19 cdecl VR_RuntimePath() WOVR_RuntimePath
+20 cdecl VR_ShutdownInternal() WOVR_ShutdownInternal
