@@ -15,8 +15,8 @@
 bool initted = false;
 
 // Copied from dxvk_interop.h, because we kinda have to anyway
-typedef unsigned int(*instanceCallback)(char***);
-typedef unsigned int(*deviceCallback)(VkPhysicalDevice,char***);
+typedef unsigned int(__stdcall *instanceCallback)(char***);
+typedef unsigned int(__stdcall *deviceCallback)(VkPhysicalDevice,char***);
 
 // We resolve the DXGI funcs manually, to ensure we're calling into dxvk
 // This also avoids pulling in dxgi.dll on OpenGL and Vulkan apps
@@ -220,8 +220,9 @@ unsigned int ArrayizeExts(char* extsIn, char*** extsOut)
   return nExts;
 }
 
-unsigned int OurInstanceCallback(char*** extsOut)
+__stdcall unsigned int OurInstanceCallback(char*** extsOut)
 {
+    TRACE("passed ptr %x", extsOut);
     uint32_t extsIn_sz = VRCompositor()->GetVulkanInstanceExtensionsRequired(NULL, 0);
     char* extsIn = new char[extsIn_sz];
     VRCompositor()->GetVulkanInstanceExtensionsRequired(extsIn, extsIn_sz);
@@ -232,7 +233,7 @@ unsigned int OurInstanceCallback(char*** extsOut)
     return ret;
 }
 
-unsigned int OurDeviceCallback(VkPhysicalDevice pdev, char*** extsOut)
+__stdcall unsigned int OurDeviceCallback(VkPhysicalDevice pdev, char*** extsOut)
 {
     uint32_t extsIn_sz = VRCompositor()->GetVulkanDeviceExtensionsRequired(pdev, NULL, 0);
     char* extsIn = new char[extsIn_sz];
