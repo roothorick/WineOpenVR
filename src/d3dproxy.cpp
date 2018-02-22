@@ -1,6 +1,11 @@
 #include "d3dproxy.h"
+
 #include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <typeinfo>
+#include <vector>
+
 #include <vulkan/vulkan.h>
 
 #include <windows.h>
@@ -136,8 +141,53 @@ EVRTrackedCameraError ID3DProxy::GetVideoStreamTextureD3D11( TrackedCameraHandle
     ERR("stub!");
 }
 
-// TODO: Callback to register with dxvk for providing additional instance and device extensions (one cb each),
-// by calling GetVulkanInstanceExtensionsRequired and GetVulkanDeviceExtensionsRequired respectively
+unsigned int ArrayizeExts(char* extsIn, char*** extsOut)
+{
+  std::vector<char*> extsVec;
+  // strlen()+1 so as to include the trailing null
+  for(unsigned int i=0; i< strlen(extsIn) + 1 ;i++)
+  {
+      std::vector<char> thisExtV;
+      
+      if(extsIn[i] == ' ' || extsIn[i] == '\0')
+      {
+          char* thisExtA = (char*) malloc(sizeof(char) * thisExtV.size());
+          extsVec.push_back(thisExtA);
+          thisExtV.clear();
+      }
+      else
+          thisExtV.push_back(extsIn[i]);
+  }
+  
+  unsigned int nExts = extsVec.size();
+  *extsOut = (char**) malloc(sizeof(char*) * nExts);
+  for(unsigned int i=0;i<nExts;i++)
+      (*extsOut)[i] = extsVec[i];
+  
+  return nExts;
+}
+
+unsigned int OurInstanceCallback(char*** extsOut)
+{
+    uint32_t extsIn_sz = VRCompositor()->GetVulkanInstanceExtensionsRequired(NULL, 0);
+    char* extsIn = new char[extsIn_sz];
+    VRCompositor()->GetVulkanInstanceExtensionsRequired(extsIn, extsIn_sz);
+    
+    unsigned int ret = ArrayizeExts(extsIn, extsOut);
+    delete [] extsIn;
+    return ret;
+}
+
+unsigned int OurDeviceCallback(VkPhysicalDevice pdev, char*** extsOut)
+{
+    uint32_t extsIn_sz = VRCompositor()->GetVulkanDeviceExtensionsRequired(pdev, NULL, 0);
+    char* extsIn = new char[extsIn_sz];
+    VRCompositor()->GetVulkanDeviceExtensionsRequired(pdev, extsIn, extsIn_sz);
+    
+    unsigned int ret = ArrayizeExts(extsIn, extsOut);
+    delete [] extsIn;
+    return ret;
+}
 
 bool Init()
 {
@@ -171,7 +221,8 @@ bool Init()
 #undef RESOLVE_FUNC
 
     // --- Step 3: Register callbacks
-    // TODO
+    dxvkRegisterInstanceExtCallback(&OurInstanceCallback);
+    dxvkRegisterDeviceExtCallback(&OurDeviceCallback);
 
     return true;
 }
