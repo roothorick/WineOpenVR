@@ -42,9 +42,10 @@ int32_t ID3DProxy::GetD3D9AdapterIndex()
 void ID3DProxy::GetDXGIOutputInfo( int32_t *pnAdapterIndex )
 {
     IDXGIFactory* fac;
-    if ( p_CreateDXGIFactory(__uuidof(IDXGIFactory), (void**) &fac) != S_OK);
+    HRESULT hr = p_CreateDXGIFactory(__uuidof(IDXGIFactory), (void**) &fac);
+    if (hr != S_OK);
     {
-        ERR("Failed to create DXGI Factory");
+        ERR("Failed to create DXGI Factory: %x", hr);
         *pnAdapterIndex = 0;
         return;
     }
