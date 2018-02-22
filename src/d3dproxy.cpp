@@ -1,9 +1,26 @@
 #include "d3dproxy.h"
-#include <d3d11.h>
 #include <cstdio>
+#include <typeinfo>
+#include <vulkan/vulkan.h>
+
 #include <windows.h>
+#include <dxgi.h>
+#include <d3d11.h>
 
 bool initted = false;
+
+// Copied from dxvk_interop.h, because we kinda have to anyway
+typedef unsigned int(*instanceCallback)(char***);
+typedef unsigned int(*deviceCallback)(VkPhysicalDevice,char***);
+
+void (*dxvkRegisterInstanceExtCallback)(instanceCallback);
+void (__stdcall *dxvkRegisterDeviceExtCallback)(deviceCallback);
+void (__stdcall *dxvkGetVulkanImage)(ID3D11Texture2D*, VkImage*, uint32_t*, uint32_t*, uint32_t*, uint32_t*);
+VkInstance (__stdcall *dxvkInstanceOfFactory)(IDXGIFactory*);
+int32_t (__stdcall *dxvkPhysicalDeviceToAdapterIdx)(IDXGIFactory* fac, VkPhysicalDevice dev);
+void (__stdcall *dxvkPhysicalDeviceToAdapterLUID)(VkPhysicalDevice dev, uint64_t* luid);
+void (__stdcall *dxvkGetHandlesForVulkanOps)(ID3D11Device*, VkInstance*, VkPhysicalDevice*, VkDevice*, uint32_t*,
+        VkQueue*);
 
 int32_t ID3DProxy::GetD3D9AdapterIndex()
 {
@@ -124,7 +141,38 @@ EVRTrackedCameraError ID3DProxy::GetVideoStreamTextureD3D11( TrackedCameraHandle
 
 bool Init()
 {
-    // XXX: Check if the callbacks were successfully registered?
+    // --- Step 1: Get handle of dxgi.dll (Dxvk)
+    
+    // The application has no business calling DirectX-related OpenVR methods without linking dxgi.
+    // XXX: This will break if some psycho decides to runtime link dxgi but does VR_Init() first.
+    HMODULE dxvkHandle = GetModuleHandle("dxgi.dll");
+    if(dxvkHandle == NULL)
+    {
+        ERR("Tried to initialize D3DProxy when dxgi.dll isn't loaded");
+        return false;
+    }
+
+    // --- Step 2: Resolve Dxvk interop function addresses
+#define RESOLVE_FUNC(FUNC) FUNC = ( typeof(FUNC) ) GetProcAddress(dxvkHandle, "FUNC"); \
+        if(FUNC == NULL) \
+        { \
+            ERR("Failed to resolve FUNC. This usually means Dxvk is not installed correctly or is an incompatible version."); \
+            return false; \
+        }
+
+    RESOLVE_FUNC(dxvkRegisterInstanceExtCallback)
+    RESOLVE_FUNC(dxvkRegisterDeviceExtCallback)
+    RESOLVE_FUNC(dxvkGetVulkanImage)
+    RESOLVE_FUNC(dxvkInstanceOfFactory)
+    RESOLVE_FUNC(dxvkPhysicalDeviceToAdapterIdx)
+    RESOLVE_FUNC(dxvkPhysicalDeviceToAdapterLUID)
+    RESOLVE_FUNC(dxvkGetHandlesForVulkanOps)
+
+#undef RESOLVE_FUNC
+
+    // --- Step 3: Register callbacks
+    // TODO
+
     return true;
 }
 
