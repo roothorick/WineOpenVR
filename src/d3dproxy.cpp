@@ -124,14 +124,14 @@ EVRCompositorError ID3DProxy::SetSkyboxOverride( VR_ARRAY_COUNT( unTextureCount 
     return EVRCompositorError_None;
 }
 
-// IVRCompositor
+// IVROverlay
 EVROverlayError ID3DProxy::GetOverlayTexture( VROverlayHandle_t ulOverlayHandle, void **pNativeTextureHandle, void *pNativeTextureRef, uint32_t *pWidth, uint32_t *pHeight, uint32_t *pNativeFormat, ETextureType *pAPIType, EColorSpace *pColorSpace, VRTextureBounds_t *pTextureBounds )
 {
     WARN("stub!");
     return VROverlayError_RequestFailed;
 }
 
-// IVRCompositor
+// IVROverlay
 EVROverlayError ID3DProxy::SetOverlayTexture( VROverlayHandle_t ulOverlayHandle, const Texture_t *pTexture )
 {
     WARN("stub!");
