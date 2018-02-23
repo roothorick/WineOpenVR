@@ -357,9 +357,7 @@ public:
 		// Struct packing mismatch
 		VREvent_t linpacked;
 		bool ret;
-		//printf("WOVR trace: PollNextEvent: winpack %u, linpack %u, passed %u\n", sizeof(Repacked_VREvent_t), sizeof(VREvent_t), uncbVREvent);
-		// HACK: GCC seems to be interpreting #pragma pack differently from MSVC. We substitute our own value just to
-		// preserve the stack.
+		//TRACE("winpack %u, linpack %u, passed %u\n", sizeof(Repacked_VREvent_t), sizeof(VREvent_t), uncbVREvent);
 		ret = VRSystem()->PollNextEvent(&linpacked, sizeof(VREvent_t) );
 		repackVREvent(&linpacked, pEvent);
 		return ret;
@@ -413,8 +411,6 @@ public:
 		TRACEHOT("");
 		// Struct packing mismatch
 		VRControllerState_t linpacked;
-		// HACK: GCC seems to be interpreting #pragma pack differently from MSVC. We substitute our own value just to
-		// preserve the stack.
 		bool ret = VRSystem()->GetControllerState(unControllerDeviceIndex, &linpacked, sizeof(VRControllerState_t) );
 		repackVRControllerState(&linpacked, pControllerState);
 		return ret;
@@ -429,8 +425,6 @@ public:
 		TRACEHOT("");
 		// Struct packing mismatch
 		VRControllerState_t linpacked;
-		// HACK: GCC seems to be interpreting #pragma pack differently from MSVC. We substitute our own value just to
-		// preserve the stack.
 		bool ret = VRSystem()->GetControllerStateWithPose(eOrigin, unControllerDeviceIndex, &linpacked, sizeof(VRControllerState_t), pTrackedDevicePose);
 		repackVRControllerState(&linpacked, pControllerState);
 		return ret;

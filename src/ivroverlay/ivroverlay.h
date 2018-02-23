@@ -442,8 +442,6 @@ public:
 		// Mismatched struct packing
 		VREvent_t linpacked;
 
-		// HACK: GCC seems to be interpreting #pragma pack differently from MSVC. We substitute our own value just to
-		// preserve the stack.
 		bool ret = VROverlay()->PollNextOverlayEvent(ulOverlayHandle, &linpacked, sizeof(VREvent_t));
 
 		repackVREvent(&linpacked, pEvent);
