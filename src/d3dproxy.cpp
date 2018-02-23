@@ -14,16 +14,11 @@
 
 bool initted = false;
 
-// Copied from dxvk_interop.h, because we kinda have to anyway
-typedef unsigned int(__stdcall *instanceCallback)(char***);
-typedef unsigned int(__stdcall *deviceCallback)(VkPhysicalDevice,char***);
-
 // We resolve the DXGI funcs manually, to ensure we're calling into dxvk
 // This also avoids pulling in dxgi.dll on OpenGL and Vulkan apps
 HRESULT (__stdcall *p_CreateDXGIFactory)(REFIID riid, void **ppFactory);
 
-void (__stdcall *p_dxvkRegisterInstanceExtCallback)(instanceCallback);
-void (__stdcall *p_dxvkRegisterDeviceExtCallback)(deviceCallback);
+// Copied from dxvk_interop.h, because we kinda have to anyway
 void (__stdcall *p_dxvkGetVulkanImage)(ID3D11Texture2D*, VkImage*, uint32_t*, uint32_t*, uint32_t*, uint32_t*);
 VkInstance (__stdcall *p_dxvkInstanceOfFactory)(IDXGIFactory*);
 int32_t (__stdcall *p_dxvkPhysicalDeviceToAdapterIdx)(IDXGIFactory* fac, VkPhysicalDevice dev);
@@ -225,31 +220,6 @@ unsigned int ArrayizeExts(char* extsIn, char*** extsOut)
   return nExts;
 }
 
-__stdcall unsigned int OurInstanceCallback(char*** extsOut)
-{
-    TRACE("passed ptr %x", extsOut);
-    uint32_t extsIn_sz = VRCompositor()->GetVulkanInstanceExtensionsRequired(NULL, 0);
-    char* extsIn = new char[extsIn_sz];
-    VRCompositor()->GetVulkanInstanceExtensionsRequired(extsIn, extsIn_sz);
-    TRACE("%s", extsIn);
-    
-    unsigned int ret = ArrayizeExts(extsIn, extsOut);
-    delete [] extsIn;
-    return ret;
-}
-
-__stdcall unsigned int OurDeviceCallback(VkPhysicalDevice pdev, char*** extsOut)
-{
-    uint32_t extsIn_sz = VRCompositor()->GetVulkanDeviceExtensionsRequired(pdev, NULL, 0);
-    char* extsIn = new char[extsIn_sz];
-    VRCompositor()->GetVulkanDeviceExtensionsRequired(pdev, extsIn, extsIn_sz);
-    TRACE("%s", extsIn);
-    
-    unsigned int ret = ArrayizeExts(extsIn, extsOut);
-    delete [] extsIn;
-    return ret;
-}
-
 bool Init()
 {
     // --- Step 1: Get handle of dxgi.dll (Dxvk)
@@ -271,8 +241,6 @@ bool Init()
             return false; \
         }
 
-    RESOLVE_FUNC(dxvkRegisterInstanceExtCallback)
-    RESOLVE_FUNC(dxvkRegisterDeviceExtCallback)
     RESOLVE_FUNC(dxvkGetVulkanImage)
     RESOLVE_FUNC(dxvkInstanceOfFactory)
     RESOLVE_FUNC(dxvkPhysicalDeviceToAdapterIdx)
@@ -281,10 +249,6 @@ bool Init()
     RESOLVE_FUNC(CreateDXGIFactory)
 
 #undef RESOLVE_FUNC
-
-    // --- Step 3: Register callbacks
-    p_dxvkRegisterInstanceExtCallback(&OurInstanceCallback);
-    p_dxvkRegisterDeviceExtCallback(&OurDeviceCallback);
 
     return true;
 }
