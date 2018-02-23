@@ -225,7 +225,8 @@ WOVR_EXPORT const char * WOVR_GetVRInitErrorAsSymbol(EVRInitError error)
 WOVR_EXPORT uint32_t WOVR_InitInternal2(EVRInitError *peError, EVRApplicationType eApplicationType, const char* pStartupInfo)
 {
 	TRACE("");
-	return VR_InitInternal2(peError, eApplicationType, pStartupInfo);
+	VR_Init(peError, eApplicationType, pStartupInfo);
+	return VRToken();
 }
 
 // Removed in v1.0.10
