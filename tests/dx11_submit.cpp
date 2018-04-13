@@ -28,7 +28,7 @@ int main()
 	
 	{
 		vr::EVRInitError err = vr::VRInitError_None;
-		vr::VR_Init( &err, vr::VRApplication_Scene );   assert( err != vr::VRInitError_None );
+		vr::VR_Init( &err, vr::VRApplication_Scene );   assert( err == vr::VRInitError_None );
 	}
 	
 	{
@@ -44,7 +44,7 @@ int main()
 		
 		hr = D3D11CreateDevice(
 				pAdapter, // pAdapter
-				D3D_DRIVER_TYPE_HARDWARE, // DriverType
+				D3D_DRIVER_TYPE_UNKNOWN, // DriverType
 				NULL, // Software
 				0, // Flags
 				NULL, // pFeatureLevels
@@ -112,6 +112,7 @@ void MakeEyeTexture( ID3D11Texture2D** tex, ID3D11RenderTargetView** rtv )
 		dsc.MipLevels = 1;
 		dsc.ArraySize = 1;
 		dsc.Format = DXGI_FORMAT_R8G8B8A8_UINT;
+		dsc.SampleDesc.Count = 1;
 		dsc.BindFlags = D3D11_BIND_RENDER_TARGET;
 		
 		hr = pDevice->CreateTexture2D( &dsc, NULL, tex );   assert( !FAILED(hr) );
