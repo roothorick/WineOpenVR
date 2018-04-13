@@ -37,7 +37,7 @@ int main()
 		IDXGIAdapter* pAdapter = NULL;
 		
 		vr::VRSystem()->GetDXGIOutputInfo( &pAdapterIdx );   assert( pAdapterIdx != -1 );
-		hr = CreateDXGIFactory( __uuidof(IDXGIFactory), (void**) &pFactory );   assert( !FAILED(hr) );
+		hr = CreateDXGIFactory1( __uuidof(IDXGIFactory1), (void**) &pFactory );   assert( !FAILED(hr) );
 		
 		hr = pFactory->EnumAdapters( pAdapterIdx, &pAdapter );   assert( !FAILED(hr) );
 		pFactory->Release();
@@ -111,7 +111,7 @@ void MakeEyeTexture( ID3D11Texture2D** tex, ID3D11RenderTargetView** rtv )
 		dsc.Height = texHeight;
 		dsc.MipLevels = 1;
 		dsc.ArraySize = 1;
-		dsc.Format = DXGI_FORMAT_R8G8B8A8_UINT;
+		dsc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 		dsc.SampleDesc.Count = 1;
 		dsc.BindFlags = D3D11_BIND_RENDER_TARGET;
 		
@@ -120,7 +120,7 @@ void MakeEyeTexture( ID3D11Texture2D** tex, ID3D11RenderTargetView** rtv )
 	
 	{
 		D3D11_RENDER_TARGET_VIEW_DESC dsc = {};
-		dsc.Format = DXGI_FORMAT_R8G8B8A8_UINT;
+		dsc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 		dsc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
 		
 		hr = pDevice->CreateRenderTargetView( *tex, &dsc, rtv );   assert( !FAILED(hr) );
