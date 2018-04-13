@@ -14,16 +14,11 @@
 
 bool initted = false;
 
-// Copied from dxvk_interop.h, because we kinda have to anyway
-typedef unsigned int(*instanceCallback)(char***);
-typedef unsigned int(*deviceCallback)(VkPhysicalDevice,char***);
-
 // We resolve the DXGI funcs manually, to ensure we're calling into dxvk
 // This also avoids pulling in dxgi.dll on OpenGL and Vulkan apps
 HRESULT (__stdcall *p_CreateDXGIFactory)(REFIID riid, void **ppFactory);
 
-void (__stdcall *p_dxvkRegisterInstanceExtCallback)(instanceCallback);
-void (__stdcall *p_dxvkRegisterDeviceExtCallback)(deviceCallback);
+// Copied from dxvk_interop.h, because we kinda have to anyway
 void (__stdcall *p_dxvkGetVulkanImage)(ID3D11Texture2D*, VkImage*, uint32_t*, uint32_t*, uint32_t*, uint32_t*);
 VkInstance (__stdcall *p_dxvkInstanceOfFactory)(IDXGIFactory*);
 int32_t (__stdcall *p_dxvkPhysicalDeviceToAdapterIdx)(IDXGIFactory* fac, VkPhysicalDevice dev);
@@ -42,9 +37,10 @@ int32_t ID3DProxy::GetD3D9AdapterIndex()
 void ID3DProxy::GetDXGIOutputInfo( int32_t *pnAdapterIndex )
 {
     IDXGIFactory* fac;
-    if ( p_CreateDXGIFactory(__uuidof(IDXGIFactory), (void**) &fac) != S_OK);
+    HRESULT hr = p_CreateDXGIFactory(__uuidof(IDXGIFactory), (void**) &fac);
+    if (hr != S_OK)
     {
-        ERR("Failed to create DXGI Factory");
+        ERR("Failed to create DXGI Factory: %x", hr);
         *pnAdapterIndex = 0;
         return;
     }
@@ -52,9 +48,7 @@ void ID3DProxy::GetDXGIOutputInfo( int32_t *pnAdapterIndex )
     VkInstance instance = p_dxvkInstanceOfFactory(fac);
     
     VkPhysicalDevice pdev;
-    // TODO: third arg was added since 1.0.8
-    // VRSystem()->GetOutputDevice(&pdev, TextureType_Vulkan, instance);
-     VRSystem()->GetOutputDevice( (uint64_t*) &pdev, TextureType_Vulkan);
+     VRSystem()->GetOutputDevice( (uint64_t*) &pdev, TextureType_Vulkan, instance);
     
     *pnAdapterIndex = p_dxvkPhysicalDeviceToAdapterIdx(fac, pdev);
     return;
@@ -85,33 +79,39 @@ void ID3DProxy::ReleaseMirrorTextureD3D11( void *pD3D11ShaderResourceView )
 // IVRCompositor
 EVRCompositorError ID3DProxy::Submit( EVREye eEye, const Texture_t *pTexture, const VRTextureBounds_t* pBounds, EVRSubmitFlags nSubmitFlags )
 {
-    ID3D11Texture2D* d3dTex = (ID3D11Texture2D*) pTexture;
+    ID3D11Texture2D* d3dTex = (ID3D11Texture2D*) pTexture->handle;
     ID3D11Device* d3ddev;
     d3dTex->GetDevice(&d3ddev);
-    VRVulkanTextureData_t texData;
+    VRVulkanTextureData_t vTexData;
+    Texture_t texOut;
+    texOut.handle = (void*) &vTexData;
+    texOut.eType = TextureType_Vulkan;
+    texOut.eColorSpace = pTexture->eColorSpace;
 
     // For whatever reason, VRVulkanTextureData_t has a uint64_t instead of a VkImage.
     VkImage img;
     p_dxvkGetVulkanImage(
         d3dTex,
         &img,
-        &texData.m_nWidth,
-        &texData.m_nHeight,
-        &texData.m_nFormat,
-        &texData.m_nSampleCount
+        &vTexData.m_nWidth,
+        &vTexData.m_nHeight,
+        &vTexData.m_nFormat,
+        &vTexData.m_nSampleCount
     );
-    texData.m_nImage = (uint64_t) img;
+    vTexData.m_nImage = (uint64_t) img;
 
     p_dxvkGetHandlesForVulkanOps(
             d3ddev,
-            &texData.m_pInstance,
-            &texData.m_pPhysicalDevice,
-            &texData.m_pDevice,
-            &texData.m_nQueueFamilyIndex,
-            &texData.m_pQueue
+            &vTexData.m_pInstance,
+            &vTexData.m_pPhysicalDevice,
+            &vTexData.m_pDevice,
+            &vTexData.m_nQueueFamilyIndex,
+            &vTexData.m_pQueue
         );
     
-    return VRCompositor()->Submit(eEye, (Texture_t*) &texData, pBounds, nSubmitFlags);
+    EVRCompositorError ret = VRCompositor()->Submit(eEye, &texOut, pBounds, nSubmitFlags);
+    if(ret != VRCompositorError_None) ERR("Submit failed: %u", ret);
+    return ret;
 }
 
 
@@ -121,7 +121,7 @@ EVRCompositorError ID3DProxy::SetSkyboxOverride( VR_ARRAY_COUNT( unTextureCount 
     // TODO
     WARN("stub!");
     // They'll never know...
-    return EVRCompositorError_None;
+    return VRCompositorError_None;
 }
 
 // IVROverlay
@@ -195,14 +195,16 @@ EVRTrackedCameraError ID3DProxy::GetVideoStreamTextureD3D11( TrackedCameraHandle
 unsigned int ArrayizeExts(char* extsIn, char*** extsOut)
 {
   std::vector<char*> extsVec;
+  std::vector<char> thisExtV;
   // strlen()+1 so as to include the trailing null
   for(unsigned int i=0; i< strlen(extsIn) + 1 ;i++)
   {
-      std::vector<char> thisExtV;
-      
       if(extsIn[i] == ' ' || extsIn[i] == '\0')
       {
+          thisExtV.push_back('\0');
           char* thisExtA = (char*) malloc(sizeof(char) * thisExtV.size());
+          TRACE("%s",thisExtV.data());
+          strcpy(thisExtA, thisExtV.data());
           extsVec.push_back(thisExtA);
           thisExtV.clear();
       }
@@ -216,28 +218,6 @@ unsigned int ArrayizeExts(char* extsIn, char*** extsOut)
       (*extsOut)[i] = extsVec[i];
   
   return nExts;
-}
-
-unsigned int OurInstanceCallback(char*** extsOut)
-{
-    uint32_t extsIn_sz = VRCompositor()->GetVulkanInstanceExtensionsRequired(NULL, 0);
-    char* extsIn = new char[extsIn_sz];
-    VRCompositor()->GetVulkanInstanceExtensionsRequired(extsIn, extsIn_sz);
-    
-    unsigned int ret = ArrayizeExts(extsIn, extsOut);
-    delete [] extsIn;
-    return ret;
-}
-
-unsigned int OurDeviceCallback(VkPhysicalDevice pdev, char*** extsOut)
-{
-    uint32_t extsIn_sz = VRCompositor()->GetVulkanDeviceExtensionsRequired(pdev, NULL, 0);
-    char* extsIn = new char[extsIn_sz];
-    VRCompositor()->GetVulkanDeviceExtensionsRequired(pdev, extsIn, extsIn_sz);
-    
-    unsigned int ret = ArrayizeExts(extsIn, extsOut);
-    delete [] extsIn;
-    return ret;
 }
 
 bool Init()
@@ -254,15 +234,13 @@ bool Init()
     }
 
     // --- Step 2: Resolve Dxvk interop function addresses
-#define RESOLVE_FUNC(FUNC) p_ ## FUNC = ( typeof(p_ ## FUNC) ) GetProcAddress(dxvkHandle, "FUNC"); \
+#define RESOLVE_FUNC(FUNC) p_ ## FUNC = ( typeof(p_ ## FUNC) ) GetProcAddress(dxvkHandle, # FUNC ); \
         if(p_ ## FUNC == NULL) \
         { \
-            ERR("Failed to resolve FUNC. This usually means Dxvk is not installed correctly or is an incompatible version."); \
+            ERR("Failed to resolve " # FUNC ". This usually means Dxvk is not installed correctly or is an incompatible version."); \
             return false; \
         }
 
-    RESOLVE_FUNC(dxvkRegisterInstanceExtCallback)
-    RESOLVE_FUNC(dxvkRegisterDeviceExtCallback)
     RESOLVE_FUNC(dxvkGetVulkanImage)
     RESOLVE_FUNC(dxvkInstanceOfFactory)
     RESOLVE_FUNC(dxvkPhysicalDeviceToAdapterIdx)
@@ -272,16 +250,13 @@ bool Init()
 
 #undef RESOLVE_FUNC
 
-    // --- Step 3: Register callbacks
-    p_dxvkRegisterInstanceExtCallback(&OurInstanceCallback);
-    p_dxvkRegisterDeviceExtCallback(&OurDeviceCallback);
-
     return true;
 }
 
 ID3DProxy* D3DProxy()
 {
-    if(!Init()) return NULL;
+    if(!initted && !Init()) return NULL;
+    initted = true;
     static ID3DProxy ret;
     return &ret;
 }

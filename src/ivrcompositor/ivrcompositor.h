@@ -83,6 +83,14 @@ public:
 	WOVR_ENTRY virtual uint32_t GetVulkanInstanceExtensionsRequired( VR_OUT_STRING() char *pchValue, uint32_t unBufferSize ) = 0;
 	WOVR_ENTRY virtual uint32_t GetVulkanDeviceExtensionsRequired( VkPhysicalDevice_T *pPhysicalDevice, VR_OUT_STRING() char *pchValue, uint32_t unBufferSize ) = 0;
 #endif
+#if ABIVER >= 21
+#if ABIVER >= 22
+	WOVR_ENTRY virtual void SetExplicitTimingMode( EVRCompositorTimingMode eTimingMode ) = 0;
+#else // ABIVER == 21
+	WOVR_ENTRY virtual void SetExplicitTimingMode( bool bExplicitTimingMode ) = 0;
+#endif
+	WOVR_ENTRY virtual EVRCompositorError SubmitExplicitTimingData() = 0;
+#endif
 };
 
 class PROXYCLASS : public CLONECLASS
@@ -420,6 +428,31 @@ public:
 	{
 		TRACE("");
 		return VRCompositor()->GetVulkanDeviceExtensionsRequired(pPhysicalDevice, pchValue, unBufferSize);
+	}
+#endif
+
+#if ABIVER >= 21
+#if ABIVER >= 22
+	WOVR_ENTRY void SetExplicitTimingMode( EVRCompositorTimingMode eTimingMode )
+#else // ABIVER == 21
+	WOVR_ENTRY void SetExplicitTimingMode( bool bExplicitTimingMode )
+#endif
+	{
+		TRACE("");
+#if ABIVER >= 22
+		VRCompositor()->SetExplicitTimingMode(eTimingMode);
+#else // ABIVER == 21
+		VRCompositor()->SetExplicitTimingMode( bExplicitTimingMode ?
+					VRCompositorTimingMode_Explicit_ApplicationPerformsPostPresentHandoff : 
+					VRCompositorTimingMode_Implicit
+				);
+#endif
+	}
+	
+	WOVR_ENTRY EVRCompositorError SubmitExplicitTimingData()
+	{
+		TRACEHOT("");
+		return VRCompositor()->SubmitExplicitTimingData();
 	}
 #endif
 };

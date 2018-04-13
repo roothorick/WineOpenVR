@@ -206,7 +206,7 @@ class PROXYCLASS : public CLONECLASS
 		repackVRControllerState(pControllerState, &linpacked);
 
 #if ABIVER < 4
-		printf("WOVR warning: IVRRenderModels::GetComponentState: Passing NULL for controller mode state\n");
+		WARN("Passing NULL for controller mode state\n");
 		return VRRenderModels()->GetComponentState(pchRenderModelName, pchComponentName, &linpacked, NULL, pComponentState);
 #else
 		return VRRenderModels()->GetComponentState(pchRenderModelName, pchComponentName, &linpacked, pState, pComponentState);

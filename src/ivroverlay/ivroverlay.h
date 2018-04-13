@@ -99,12 +99,18 @@ public:
 	WOVR_ENTRY virtual EVROverlayError GetOverlayMouseScale( VROverlayHandle_t ulOverlayHandle, HmdVector2_t *pvecMouseScale ) = 0;
 	WOVR_ENTRY virtual EVROverlayError SetOverlayMouseScale( VROverlayHandle_t ulOverlayHandle, const HmdVector2_t *pvecMouseScale ) = 0;
 	WOVR_ENTRY virtual bool ComputeOverlayIntersection( VROverlayHandle_t ulOverlayHandle, const VROverlayIntersectionParams_t *pParams, VROverlayIntersectionResults_t *pResults ) = 0;
+#if ABIVER < 18
 	WOVR_ENTRY virtual bool HandleControllerOverlayInteractionAsMouse( VROverlayHandle_t ulOverlayHandle, TrackedDeviceIndex_t unControllerDeviceIndex ) = 0;
+#endif
 	WOVR_ENTRY virtual bool IsHoverTargetOverlay( VROverlayHandle_t ulOverlayHandle ) = 0;
 	WOVR_ENTRY virtual vr::VROverlayHandle_t GetGamepadFocusOverlay() = 0;
 	WOVR_ENTRY virtual EVROverlayError SetGamepadFocusOverlay( VROverlayHandle_t ulNewFocusOverlay ) = 0;
 	WOVR_ENTRY virtual EVROverlayError SetOverlayNeighbor( EOverlayDirection eDirection, VROverlayHandle_t ulFrom, VROverlayHandle_t ulTo ) = 0;
 	WOVR_ENTRY virtual EVROverlayError MoveGamepadFocusToNeighbor( EOverlayDirection eDirection, VROverlayHandle_t ulFrom ) = 0;
+#if ABIVER >= 17
+	WOVR_ENTRY virtual EVROverlayError SetOverlayDualAnalogTransform( VROverlayHandle_t ulOverlay, EDualAnalogWhich eWhich, const HmdVector2_t & vCenter, float fRadius ) = 0;
+	WOVR_ENTRY virtual EVROverlayError GetOverlayDualAnalogTransform( VROverlayHandle_t ulOverlay, EDualAnalogWhich eWhich, HmdVector2_t *pvCenter, float *pfRadius ) = 0;
+#endif
 	WOVR_ENTRY virtual EVROverlayError SetOverlayTexture( VROverlayHandle_t ulOverlayHandle, const Texture_t *pTexture ) = 0;
 	WOVR_ENTRY virtual EVROverlayError ClearOverlayTexture( VROverlayHandle_t ulOverlayHandle ) = 0;
 	WOVR_ENTRY virtual EVROverlayError SetOverlayRaw( VROverlayHandle_t ulOverlayHandle, void *pvBuffer, uint32_t unWidth, uint32_t unHeight, uint32_t unDepth ) = 0;
@@ -135,6 +141,9 @@ public:
 #if ABIVER >= 14
 	WOVR_ENTRY virtual EVROverlayError GetOverlayFlags( VROverlayHandle_t ulOverlayHandle, uint32_t *pFlags ) = 0;
 	WOVR_ENTRY virtual VRMessageOverlayResponse ShowMessageOverlay( const char* pchText, const char* pchCaption, const char* pchButton0Text, const char* pchButton1Text, const char* pchButton2Text, const char* pchButton3Text ) = 0;
+#endif
+#if ABIVER >= 16
+	WOVR_ENTRY virtual void CloseMessageOverlay() = 0;
 #endif
 };
 
@@ -433,8 +442,6 @@ public:
 		// Mismatched struct packing
 		VREvent_t linpacked;
 
-		// HACK: GCC seems to be interpreting #pragma pack differently from MSVC. We substitute our own value just to
-		// preserve the stack.
 		bool ret = VROverlay()->PollNextOverlayEvent(ulOverlayHandle, &linpacked, sizeof(VREvent_t));
 
 		repackVREvent(&linpacked, pEvent);
@@ -471,11 +478,13 @@ public:
 		return VROverlay()->ComputeOverlayIntersection(ulOverlayHandle, pParams, pResults);
 	}
 
+#if ABIVER < 18
 	WOVR_ENTRY bool HandleControllerOverlayInteractionAsMouse( VROverlayHandle_t ulOverlayHandle, TrackedDeviceIndex_t unControllerDeviceIndex )
 	{
-		TRACE("");
-		return VROverlay()->HandleControllerOverlayInteractionAsMouse(ulOverlayHandle, unControllerDeviceIndex);
+		WARN("stub");
+		return false;
 	}
+#endif
 
 	WOVR_ENTRY bool IsHoverTargetOverlay( VROverlayHandle_t ulOverlayHandle )
 	{
@@ -506,6 +515,17 @@ public:
 		TRACE("");
 		return VROverlay()->MoveGamepadFocusToNeighbor(eDirection, ulFrom);
 	}
+
+#if ABIVER >= 17
+	WOVR_ENTRY virtual EVROverlayError SetOverlayDualAnalogTransform( VROverlayHandle_t ulOverlay, EDualAnalogWhich eWhich, const HmdVector2_t & vCenter, float fRadius )
+	{
+		return SetOverlayDualAnalogTransform(ulOverlay, eWhich, vCenter, fRadius);
+	}
+	WOVR_ENTRY virtual EVROverlayError GetOverlayDualAnalogTransform( VROverlayHandle_t ulOverlay, EDualAnalogWhich eWhich, HmdVector2_t *pvCenter, float *pfRadius )
+	{
+		return GetOverlayDualAnalogTransform(ulOverlay, eWhich, pvCenter, pfRadius);
+	}
+#endif
 
 	WOVR_ENTRY EVROverlayError SetOverlayTexture( VROverlayHandle_t ulOverlayHandle, const Texture_t *pTexture )
 	{
@@ -661,6 +681,14 @@ public:
 		return VROverlay()->ShowMessageOverlay(pchText, pchCaption, pchButton0Text, pchButton1Text, pchButton2Text, pchButton3Text);
 	}
 #endif
+
+#if ABIVER >= 16
+	WOVR_ENTRY void CloseMessageOverlay()
+	{
+		VROverlay()->CloseMessageOverlay();
+	}
+#endif
+
 };
 
 IVROverlay* GETTER ()

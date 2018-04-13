@@ -15,6 +15,8 @@ vr::IVRSystem* getIVRSystemProxy_012();
 vr::IVRSystem* getIVRSystemProxy_014();
 vr::IVRSystem* getIVRSystemProxy_015();
 vr::IVRSystem* getIVRSystemProxy_016();
+vr::IVRSystem* getIVRSystemProxy_017();
+vr::IVRSystem* getIVRSystemProxy_019();
 
 vr::IVRApplications* getIVRApplicationsProxy_002();
 vr::IVRApplications* getIVRApplicationsProxy_003();
@@ -39,6 +41,8 @@ vr::IVRCompositor* getIVRCompositorProxy_016();
 vr::IVRCompositor* getIVRCompositorProxy_018();
 vr::IVRCompositor* getIVRCompositorProxy_019();
 vr::IVRCompositor* getIVRCompositorProxy_020();
+vr::IVRCompositor* getIVRCompositorProxy_021();
+vr::IVRCompositor* getIVRCompositorProxy_022();
 
 vr::IVRNotifications* getIVRNotificationsProxy_002();
 
@@ -49,6 +53,8 @@ vr::IVROverlay* getIVROverlayProxy_012();
 vr::IVROverlay* getIVROverlayProxy_013();
 vr::IVROverlay* getIVROverlayProxy_014();
 vr::IVROverlay* getIVROverlayProxy_016();
+vr::IVROverlay* getIVROverlayProxy_017();
+vr::IVROverlay* getIVROverlayProxy_018();
 
 vr::IVRRenderModels* getIVRRenderModelsProxy_002();
 vr::IVRRenderModels* getIVRRenderModelsProxy_004();
@@ -91,6 +97,10 @@ WOVR_EXPORT void * WOVR_GetGenericInterface(const char *pchInterfaceVersion, EVR
 		return getIVRSystemProxy_015();
 	if( strcmp(pchInterfaceVersion, "IVRSystem_016") == 0 )
 		return getIVRSystemProxy_016();
+	if( strcmp(pchInterfaceVersion, "IVRSystem_017") == 0 )
+		return getIVRSystemProxy_017();
+	if( strcmp(pchInterfaceVersion, "IVRSystem_019") == 0 )
+		return getIVRSystemProxy_019();
 
 	if( strcmp(pchInterfaceVersion, "IVRApplications_002") == 0)
 		return getIVRApplicationsProxy_002();
@@ -134,6 +144,10 @@ WOVR_EXPORT void * WOVR_GetGenericInterface(const char *pchInterfaceVersion, EVR
 		return getIVRCompositorProxy_019();
 	if( strcmp(pchInterfaceVersion, "IVRCompositor_020") == 0 )
 		return getIVRCompositorProxy_020();
+	if( strcmp(pchInterfaceVersion, "IVRCompositor_021") == 0 )
+		return getIVRCompositorProxy_021();
+	if( strcmp(pchInterfaceVersion, "IVRCompositor_022") == 0 )
+		return getIVRCompositorProxy_022();
 
 	if( strcmp(pchInterfaceVersion, "IVRNotifications_002") == 0 )
 		return getIVRNotificationsProxy_002();
@@ -152,6 +166,10 @@ WOVR_EXPORT void * WOVR_GetGenericInterface(const char *pchInterfaceVersion, EVR
 		return getIVROverlayProxy_014();
 	if( strcmp(pchInterfaceVersion, "IVROverlay_016") == 0 )
 		return getIVROverlayProxy_016();
+	if( strcmp(pchInterfaceVersion, "IVROverlay_017") == 0 )
+		return getIVROverlayProxy_017();
+	if( strcmp(pchInterfaceVersion, "IVROverlay_018") == 0 )
+		return getIVROverlayProxy_018();
 
 	if( strcmp(pchInterfaceVersion, "IVRRenderModels_002") == 0 )
 		return getIVRRenderModelsProxy_002();
@@ -204,10 +222,17 @@ WOVR_EXPORT const char * WOVR_GetVRInitErrorAsSymbol(EVRInitError error)
 	return VR_GetVRInitErrorAsSymbol(error);
 }
 
-WOVR_EXPORT uint32_t  WOVR_InitInternal(EVRInitError *peError, EVRApplicationType eApplicationType)
+WOVR_EXPORT uint32_t WOVR_InitInternal2(EVRInitError *peError, EVRApplicationType eApplicationType, const char* pStartupInfo)
 {
 	TRACE("");
-	return VR_InitInternal(peError, eApplicationType);
+	VR_Init(peError, eApplicationType, pStartupInfo);
+	return VRToken();
+}
+
+// Removed in v1.0.10
+WOVR_EXPORT uint32_t  WOVR_InitInternal(EVRInitError *peError, EVRApplicationType eApplicationType)
+{
+	return WOVR_InitInternal2(peError, eApplicationType, NULL);
 }
 
 WOVR_EXPORT bool  WOVR_IsHmdPresent()

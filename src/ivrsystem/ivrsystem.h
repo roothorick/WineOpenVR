@@ -43,8 +43,10 @@ public:
 	WOVR_ENTRY virtual bool GetTimeSinceLastVsync( float *pfSecondsSinceLastVsync, uint64_t *pulFrameCounter ) = 0;
 	WOVR_ENTRY virtual int32_t GetD3D9AdapterIndex() = 0;
 	WOVR_ENTRY virtual void GetDXGIOutputInfo( int32_t *pnAdapterIndex ) = 0;
-#if ABIVER >= 16
+#if ABIVER == 16
 	WOVR_ENTRY virtual void GetOutputDevice( uint64_t *pnDevice, ETextureType textureType ) = 0;
+#elif ABIVER >= 17
+	WOVR_ENTRY virtual void GetOutputDevice( uint64_t *pnDevice, ETextureType textureType, VkInstance_T *pInstance ) = 0;
 #endif
 	WOVR_ENTRY virtual bool IsDisplayOnDesktop() = 0;
 	WOVR_ENTRY virtual bool SetDisplayVisibility( bool bIsVisibleOnDesktop ) = 0;
@@ -66,6 +68,9 @@ public:
 	WOVR_ENTRY virtual int32_t GetInt32TrackedDeviceProperty( vr::TrackedDeviceIndex_t unDeviceIndex, ETrackedDeviceProperty prop, ETrackedPropertyError *pError ) = 0;
 	WOVR_ENTRY virtual uint64_t GetUint64TrackedDeviceProperty( vr::TrackedDeviceIndex_t unDeviceIndex, ETrackedDeviceProperty prop, ETrackedPropertyError *pError ) = 0;
 	WOVR_ENTRY virtual void GetMatrix34TrackedDeviceProperty(HmdMatrix34_t* ret, vr::TrackedDeviceIndex_t unDeviceIndex, ETrackedDeviceProperty prop, ETrackedPropertyError *pError ) = 0; // ERP hack
+#if ABIVER >= 19
+	WOVR_ENTRY virtual uint32_t GetArrayTrackedDeviceProperty( vr::TrackedDeviceIndex_t unDeviceIndex, ETrackedDeviceProperty prop, PropertyTypeTag_t propType, void *pBuffer, uint32_t unBufferSize, ETrackedPropertyError *pError ) = 0;
+#endif
 	WOVR_ENTRY virtual uint32_t GetStringTrackedDeviceProperty( vr::TrackedDeviceIndex_t unDeviceIndex, ETrackedDeviceProperty prop, VR_OUT_STRING() char *pchValue, uint32_t unBufferSize, ETrackedPropertyError *pError ) = 0;
 	WOVR_ENTRY virtual const char *GetPropErrorNameFromEnum( ETrackedPropertyError error ) = 0;
 #if ABIVER < 11
@@ -88,9 +93,17 @@ public:
 	WOVR_ENTRY virtual void TriggerHapticPulse( vr::TrackedDeviceIndex_t unControllerDeviceIndex, uint32_t unAxisId, unsigned short usDurationMicroSec ) = 0;
 	WOVR_ENTRY virtual const char *GetButtonIdNameFromEnum( EVRButtonId eButtonId ) = 0;
 	WOVR_ENTRY virtual const char *GetControllerAxisTypeNameFromEnum( EVRControllerAxisType eAxisType ) = 0;
+#if ABIVER < 19
 	WOVR_ENTRY virtual bool CaptureInputFocus() = 0;
 	WOVR_ENTRY virtual void ReleaseInputFocus() = 0;
 	WOVR_ENTRY virtual bool IsInputFocusCapturedByAnotherProcess() = 0;
+#endif
+#if ABIVER >= 19
+	WOVR_ENTRY virtual bool IsInputAvailable() = 0;
+	WOVR_ENTRY virtual bool IsSteamVRDrawingControllers() = 0;
+	WOVR_ENTRY virtual bool ShouldApplicationPause() = 0;
+	WOVR_ENTRY virtual bool ShouldApplicationReduceRenderingWork() = 0;
+#endif
 	WOVR_ENTRY virtual uint32_t DriverDebugRequest( vr::TrackedDeviceIndex_t unDeviceIndex, const char *pchRequest, char *pchResponseBuffer, uint32_t unResponseBufferSize ) = 0;
 	WOVR_ENTRY virtual vr::EVRFirmwareError PerformFirmwareUpdate( vr::TrackedDeviceIndex_t unDeviceIndex ) = 0;
 	WOVR_ENTRY virtual void AcknowledgeQuit_Exiting() = 0;
@@ -177,13 +190,20 @@ public:
 	}
 
 #if ABIVER >= 16
+#if ABIVER == 16
 	WOVR_ENTRY void GetOutputDevice( uint64_t *pnDevice, ETextureType textureType )
+#else // ABIVER >= 17
+	WOVR_ENTRY void GetOutputDevice( uint64_t *pnDevice, ETextureType textureType, VkInstance_T *pInstance )
+#endif
 	{
+#if ABIVER == 16
+		VkInstance_T *pInstance = nullptr;
+#endif
 		TRACE("");
 		if(textureType == TextureType_DirectX || textureType == TextureType_DirectX12)
 			D3DProxy()->GetOutputDevice(pnDevice, textureType);
 		else // Natively supported (OpenGL or Vulkan); pass directly
-			VRSystem()->GetOutputDevice(pnDevice, textureType);
+			VRSystem()->GetOutputDevice(pnDevice, textureType, pInstance);
 		return;
 	}
 #endif
@@ -307,6 +327,14 @@ public:
 		return;
 	}
 
+#if ABIVER >= 19
+	WOVR_ENTRY virtual uint32_t GetArrayTrackedDeviceProperty( vr::TrackedDeviceIndex_t unDeviceIndex, ETrackedDeviceProperty prop, PropertyTypeTag_t propType, void *pBuffer, uint32_t unBufferSize, ETrackedPropertyError *pError )
+	{
+		return VRSystem()->GetArrayTrackedDeviceProperty(unDeviceIndex, prop, propType, pBuffer, unBufferSize, pError);
+	}
+#endif
+
+
 	WOVR_ENTRY uint32_t GetStringTrackedDeviceProperty( vr::TrackedDeviceIndex_t unDeviceIndex, ETrackedDeviceProperty prop, VR_OUT_STRING() char *pchValue, uint32_t unBufferSize, ETrackedPropertyError *pError)
 	{
 		TRACE("");
@@ -329,9 +357,7 @@ public:
 		// Struct packing mismatch
 		VREvent_t linpacked;
 		bool ret;
-		//printf("WOVR trace: PollNextEvent: winpack %u, linpack %u, passed %u\n", sizeof(Repacked_VREvent_t), sizeof(VREvent_t), uncbVREvent);
-		// HACK: GCC seems to be interpreting #pragma pack differently from MSVC. We substitute our own value just to
-		// preserve the stack.
+		//TRACE("winpack %u, linpack %u, passed %u\n", sizeof(Repacked_VREvent_t), sizeof(VREvent_t), uncbVREvent);
 		ret = VRSystem()->PollNextEvent(&linpacked, sizeof(VREvent_t) );
 		repackVREvent(&linpacked, pEvent);
 		return ret;
@@ -385,8 +411,6 @@ public:
 		TRACEHOT("");
 		// Struct packing mismatch
 		VRControllerState_t linpacked;
-		// HACK: GCC seems to be interpreting #pragma pack differently from MSVC. We substitute our own value just to
-		// preserve the stack.
 		bool ret = VRSystem()->GetControllerState(unControllerDeviceIndex, &linpacked, sizeof(VRControllerState_t) );
 		repackVRControllerState(&linpacked, pControllerState);
 		return ret;
@@ -401,8 +425,6 @@ public:
 		TRACEHOT("");
 		// Struct packing mismatch
 		VRControllerState_t linpacked;
-		// HACK: GCC seems to be interpreting #pragma pack differently from MSVC. We substitute our own value just to
-		// preserve the stack.
 		bool ret = VRSystem()->GetControllerStateWithPose(eOrigin, unControllerDeviceIndex, &linpacked, sizeof(VRControllerState_t), pTrackedDevicePose);
 		repackVRControllerState(&linpacked, pControllerState);
 		return ret;
@@ -427,23 +449,47 @@ public:
 		return VRSystem()->GetControllerAxisTypeNameFromEnum(eAxisType);
 	}
 
+#if ABIVER < 19
 	WOVR_ENTRY bool CaptureInputFocus()
 	{
 		TRACE("");
-		return VRSystem()->CaptureInputFocus();
+		return VRSystem()->IsInputAvailable();
 	}
 
 	WOVR_ENTRY void ReleaseInputFocus()
 	{
 		TRACE("");
-		return VRSystem()->ReleaseInputFocus();
+		// No-op -- the concept has been removed from the API.
 	}
 
 	WOVR_ENTRY bool IsInputFocusCapturedByAnotherProcess()
 	{
 		TRACEHOT("");
-		return VRSystem()->IsInputFocusCapturedByAnotherProcess();
+		return VRSystem()->ShouldApplicationPause();
 	}
+#endif
+
+#if ABIVER >= 19
+	WOVR_ENTRY bool IsInputAvailable()
+	{
+		return VRSystem()->IsInputAvailable();
+	}
+	
+	WOVR_ENTRY bool IsSteamVRDrawingControllers()
+	{
+		return VRSystem()->IsSteamVRDrawingControllers();
+	}
+	
+	WOVR_ENTRY bool ShouldApplicationPause()
+	{
+		return VRSystem()->ShouldApplicationPause();
+	}
+	
+	WOVR_ENTRY bool ShouldApplicationReduceRenderingWork()
+	{
+		return VRSystem()->ShouldApplicationReduceRenderingWork();
+	}
+#endif
 
 	WOVR_ENTRY uint32_t DriverDebugRequest( vr::TrackedDeviceIndex_t unDeviceIndex, const char *pchRequest, char *pchResponseBuffer, uint32_t unResponseBufferSize )
 	{
